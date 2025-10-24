@@ -1,0 +1,517 @@
+
+==== Running experiments with batch_size: 4 (fixed replay capacity=100000) ====
+[batch 4] fail          | ep 0 | score 2782.9 | last_reward -500.0 | loss 0.000 | eps 0.900 | steps 58 | fails_since_last 1
+[batch 4] >>> SUCCESS #1 | ep 1 | score 9464.4 | last_reward 3000.0 | loss 0.000 | eps 0.900 | steps 92 | attempts 2 (fails 1+1)
+[batch 4] >>> SUCCESS #2 | ep 2 | score 9455.7 | last_reward 3000.0 | loss 0.000 | eps 0.900 | steps 93 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #3 | ep 3 | score 9404.4 | last_reward 3000.0 | loss 0.000 | eps 0.900 | steps 109 | attempts 1 (fails 0+1)
+[batch 4] fail          | ep 4 | score 2487.1 | last_reward -500.0 | loss 0.000 | eps 0.900 | steps 55 | fails_since_last 1
+[batch 4] fail          | ep 5 | score 5428.5 | last_reward -500.0 | loss 0.000 | eps 0.900 | steps 91 | fails_since_last 2
+[batch 4] fail          | ep 6 | score 5727.2 | last_reward -500.0 | loss 0.000 | eps 0.900 | steps 104 | fails_since_last 3
+[batch 4] fail          | ep 7 | score 4221.2 | last_reward -500.0 | loss 0.000 | eps 0.900 | steps 76 | fails_since_last 4
+[batch 4] fail          | ep 8 | score 2577.9 | last_reward -500.0 | loss 0.000 | eps 0.900 | steps 52 | fails_since_last 5
+[batch 4] fail          | ep 9 | score 823.7 | last_reward -500.0 | loss 0.000 | eps 0.900 | steps 32 | fails_since_last 6
+[batch 4] >>> SUCCESS #4 | ep 10 | score 9410.4 | last_reward 3000.0 | loss 0.000 | eps 0.900 | steps 100 | attempts 7 (fails 6+1)
+[batch 4] >>> SUCCESS #5 | ep 11 | score 9427.5 | last_reward 3000.0 | loss 0.000 | eps 0.900 | steps 101 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #6 | ep 12 | score 9443.4 | last_reward 3000.0 | loss 122.413 | eps 0.839 | steps 97 | attempts 1 (fails 0+1)
+[batch 4] fail          | ep 13 | score 2216.1 | last_reward -500.0 | loss 58.602 | eps 0.786 | steps 53 | fails_since_last 1
+[batch 4] fail          | ep 14 | score 2439.5 | last_reward -500.0 | loss 91.925 | eps 0.736 | steps 50 | fails_since_last 2
+[batch 4] fail          | ep 15 | score 3137.8 | last_reward -500.0 | loss 81.777 | eps 0.678 | steps 58 | fails_since_last 3
+[batch 4] fail          | ep 16 | score 3459.4 | last_reward -500.0 | loss 24.748 | eps 0.618 | steps 60 | fails_since_last 4
+[batch 4] >>> SUCCESS #7 | ep 17 | score 9451.4 | last_reward 3000.0 | loss 53.116 | eps 0.523 | steps 95 | attempts 5 (fails 4+1)
+[batch 4] fail          | ep 18 | score 3221.1 | last_reward -500.0 | loss 23.444 | eps 0.462 | steps 61 | fails_since_last 1
+[batch 4] fail          | ep 19 | score 3424.9 | last_reward -500.0 | loss 12.817 | eps 0.399 | steps 63 | fails_since_last 2
+[batch 4] fail          | ep 20 | score 608.9 | last_reward -500.0 | loss 46.793 | eps 0.374 | steps 25 | fails_since_last 3
+[batch 4] fail          | ep 21 | score 368.2 | last_reward -500.0 | loss 22.759 | eps 0.348 | steps 26 | fails_since_last 4
+[batch 4] fail          | ep 22 | score 407.8 | last_reward -500.0 | loss 6.123 | eps 0.322 | steps 26 | fails_since_last 5
+[batch 4] fail          | ep 23 | score 306.8 | last_reward -500.0 | loss 38.788 | eps 0.300 | steps 22 | fails_since_last 6
+[batch 4] fail          | ep 24 | score 618.9 | last_reward -500.0 | loss 4.756 | eps 0.273 | steps 27 | fails_since_last 7
+[batch 4] fail          | ep 25 | score 328.3 | last_reward -500.0 | loss 24.529 | eps 0.251 | steps 22 | fails_since_last 8
+[batch 4] fail          | ep 26 | score 334.1 | last_reward -500.0 | loss 45.718 | eps 0.229 | steps 22 | fails_since_last 9
+[batch 4] fail          | ep 27 | score 206.4 | last_reward -500.0 | loss 10.943 | eps 0.202 | steps 27 | fails_since_last 10
+[batch 4] >>> SUCCESS #8 | ep 28 | score 9442.2 | last_reward 3000.0 | loss 27.373 | eps 0.112 | steps 90 | attempts 11 (fails 10+1)
+[batch 4] fail          | ep 29 | score 1318.1 | last_reward -500.0 | loss 12.996 | eps 0.079 | steps 33 | fails_since_last 1
+[batch 4] fail          | ep 30 | score 107.8 | last_reward -500.0 | loss 4.670 | eps 0.059 | steps 20 | fails_since_last 2
+[batch 4] fail          | ep 31 | score 380.4 | last_reward -500.0 | loss 50.686 | eps 0.050 | steps 22 | fails_since_last 3
+[batch 4] fail          | ep 32 | score 912.9 | last_reward -500.0 | loss 30.496 | eps 0.050 | steps 28 | fails_since_last 4
+[batch 4] fail          | ep 33 | score 287.7 | last_reward -500.0 | loss 73.465 | eps 0.050 | steps 25 | fails_since_last 5
+[batch 4] fail          | ep 34 | score 2497.2 | last_reward -500.0 | loss 27.224 | eps 0.050 | steps 55 | fails_since_last 6
+[batch 4] fail          | ep 35 | score 200.1 | last_reward -500.0 | loss 40.295 | eps 0.050 | steps 21 | fails_since_last 7
+[batch 4] fail          | ep 36 | score 344.0 | last_reward -500.0 | loss 43.358 | eps 0.050 | steps 22 | fails_since_last 8
+[batch 4] fail          | ep 37 | score 1110.9 | last_reward -500.0 | loss 24.904 | eps 0.050 | steps 34 | fails_since_last 9
+[batch 4] fail          | ep 38 | score 2867.0 | last_reward -500.0 | loss 26.344 | eps 0.050 | steps 51 | fails_since_last 10
+[batch 4] fail          | ep 39 | score 270.8 | last_reward -500.0 | loss 4.643 | eps 0.050 | steps 23 | fails_since_last 11
+[batch 4] fail          | ep 40 | score 535.3 | last_reward -500.0 | loss 47.600 | eps 0.050 | steps 24 | fails_since_last 12
+[batch 4] fail          | ep 41 | score 3079.6 | last_reward -500.0 | loss 22.412 | eps 0.050 | steps 59 | fails_since_last 13
+[batch 4] fail          | ep 42 | score 2216.0 | last_reward -500.0 | loss 6.725 | eps 0.050 | steps 43 | fails_since_last 14
+[batch 4] fail          | ep 43 | score 5675.3 | last_reward -500.0 | loss 29.582 | eps 0.050 | steps 87 | fails_since_last 15
+[batch 4] fail          | ep 44 | score 3747.7 | last_reward -500.0 | loss 17.054 | eps 0.050 | steps 62 | fails_since_last 16
+[batch 4] fail          | ep 45 | score 5295.9 | last_reward -500.0 | loss 36.102 | eps 0.050 | steps 83 | fails_since_last 17
+[batch 4] fail          | ep 46 | score 609.8 | last_reward -500.0 | loss 73.112 | eps 0.050 | steps 25 | fails_since_last 18
+[batch 4] >>> SUCCESS #9 | ep 47 | score 9424.1 | last_reward 3000.0 | loss 16.293 | eps 0.050 | steps 89 | attempts 19 (fails 18+1)
+[batch 4] >>> SUCCESS #10 | ep 48 | score 9502.4 | last_reward 3000.0 | loss 10.843 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #11 | ep 49 | score 9504.0 | last_reward 3000.0 | loss 4.348 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #12 | ep 50 | score 9435.6 | last_reward 3000.0 | loss 14.803 | eps 0.050 | steps 90 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #13 | ep 51 | score 9468.2 | last_reward 3000.0 | loss 24.951 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #14 | ep 52 | score 9375.2 | last_reward 3000.0 | loss 5.673 | eps 0.050 | steps 90 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #15 | ep 53 | score 9447.6 | last_reward 3000.0 | loss 11.571 | eps 0.050 | steps 90 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #16 | ep 54 | score 9425.2 | last_reward 3000.0 | loss 49.160 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #17 | ep 55 | score 9483.8 | last_reward 3000.0 | loss 26.213 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #18 | ep 56 | score 9449.9 | last_reward 3000.0 | loss 30.167 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #19 | ep 57 | score 9479.7 | last_reward 3000.0 | loss 33.567 | eps 0.050 | steps 90 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #20 | ep 58 | score 9501.4 | last_reward 3000.0 | loss 33.931 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #21 | ep 59 | score 9445.4 | last_reward 3000.0 | loss 16.258 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #22 | ep 60 | score 9486.9 | last_reward 3000.0 | loss 47.373 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #23 | ep 61 | score 9425.1 | last_reward 3000.0 | loss 44.162 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #24 | ep 62 | score 9469.2 | last_reward 3000.0 | loss 12.560 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #25 | ep 63 | score 9438.7 | last_reward 3000.0 | loss 27.324 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #26 | ep 64 | score 9440.3 | last_reward 3000.0 | loss 35.115 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #27 | ep 65 | score 9441.4 | last_reward 3000.0 | loss 50.951 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #28 | ep 66 | score 9462.6 | last_reward 3000.0 | loss 26.727 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #29 | ep 67 | score 9479.1 | last_reward 3000.0 | loss 23.495 | eps 0.050 | steps 91 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #30 | ep 68 | score 9475.6 | last_reward 3000.0 | loss 22.595 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #31 | ep 69 | score 9499.0 | last_reward 3000.0 | loss 26.948 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #32 | ep 70 | score 9436.4 | last_reward 3000.0 | loss 58.676 | eps 0.050 | steps 90 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #33 | ep 71 | score 9443.1 | last_reward 3000.0 | loss 12.027 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #34 | ep 72 | score 9410.7 | last_reward 3000.0 | loss 34.782 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #35 | ep 73 | score 9488.3 | last_reward 3000.0 | loss 16.967 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #36 | ep 74 | score 9467.9 | last_reward 3000.0 | loss 28.529 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #37 | ep 75 | score 9443.1 | last_reward 3000.0 | loss 10.068 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #38 | ep 76 | score 9441.7 | last_reward 3000.0 | loss 10.048 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #39 | ep 77 | score 9464.6 | last_reward 3000.0 | loss 27.686 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #40 | ep 78 | score 9493.3 | last_reward 3000.0 | loss 21.243 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #41 | ep 79 | score 9489.0 | last_reward 3000.0 | loss 9.700 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #42 | ep 80 | score 9432.5 | last_reward 3000.0 | loss 12.948 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #43 | ep 81 | score 9507.7 | last_reward 3000.0 | loss 13.004 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #44 | ep 82 | score 9493.7 | last_reward 3000.0 | loss 21.993 | eps 0.050 | steps 90 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #45 | ep 83 | score 9509.2 | last_reward 3000.0 | loss 38.592 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #46 | ep 84 | score 9490.0 | last_reward 3000.0 | loss 24.554 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #47 | ep 85 | score 9425.4 | last_reward 3000.0 | loss 34.093 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #48 | ep 86 | score 9427.3 | last_reward 3000.0 | loss 4.696 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #49 | ep 87 | score 9500.6 | last_reward 3000.0 | loss 27.628 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #50 | ep 88 | score 9443.9 | last_reward 3000.0 | loss 37.111 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #51 | ep 89 | score 9433.2 | last_reward 3000.0 | loss 11.298 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #52 | ep 90 | score 9500.4 | last_reward 3000.0 | loss 60.674 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #53 | ep 91 | score 9452.0 | last_reward 3000.0 | loss 28.869 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #54 | ep 92 | score 9432.0 | last_reward 3000.0 | loss 24.534 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #55 | ep 93 | score 9501.5 | last_reward 3000.0 | loss 14.506 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #56 | ep 94 | score 9444.3 | last_reward 3000.0 | loss 30.570 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #57 | ep 95 | score 9505.7 | last_reward 3000.0 | loss 36.137 | eps 0.050 | steps 90 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #58 | ep 96 | score 9509.7 | last_reward 3000.0 | loss 19.076 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #59 | ep 97 | score 9497.9 | last_reward 3000.0 | loss 57.534 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #60 | ep 98 | score 9446.7 | last_reward 3000.0 | loss 25.079 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #61 | ep 99 | score 9462.3 | last_reward 3000.0 | loss 29.855 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #62 | ep 100 | score 9449.3 | last_reward 3000.0 | loss 62.676 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #63 | ep 101 | score 9449.4 | last_reward 3000.0 | loss 19.632 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #64 | ep 102 | score 9501.2 | last_reward 3000.0 | loss 46.943 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #65 | ep 103 | score 9442.3 | last_reward 3000.0 | loss 27.421 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #66 | ep 104 | score 9483.6 | last_reward 3000.0 | loss 19.423 | eps 0.050 | steps 90 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #67 | ep 105 | score 9496.0 | last_reward 3000.0 | loss 36.883 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #68 | ep 106 | score 9513.0 | last_reward 3000.0 | loss 48.485 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #69 | ep 107 | score 9446.8 | last_reward 3000.0 | loss 25.242 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #70 | ep 108 | score 9441.4 | last_reward 3000.0 | loss 3.845 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #71 | ep 109 | score 9492.6 | last_reward 3000.0 | loss 32.544 | eps 0.050 | steps 90 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #72 | ep 110 | score 9492.2 | last_reward 3000.0 | loss 5.162 | eps 0.050 | steps 90 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #73 | ep 111 | score 9453.9 | last_reward 3000.0 | loss 17.136 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #74 | ep 112 | score 9507.7 | last_reward 3000.0 | loss 36.617 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #75 | ep 113 | score 9441.6 | last_reward 3000.0 | loss 51.071 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #76 | ep 114 | score 9430.7 | last_reward 3000.0 | loss 24.903 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #77 | ep 115 | score 9441.6 | last_reward 3000.0 | loss 36.768 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #78 | ep 116 | score 9442.6 | last_reward 3000.0 | loss 24.982 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #79 | ep 117 | score 9450.9 | last_reward 3000.0 | loss 56.285 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #80 | ep 118 | score 9428.9 | last_reward 3000.0 | loss 16.739 | eps 0.050 | steps 90 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #81 | ep 119 | score 9438.2 | last_reward 3000.0 | loss 24.999 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #82 | ep 120 | score 9498.4 | last_reward 3000.0 | loss 89.022 | eps 0.050 | steps 91 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #83 | ep 121 | score 9450.1 | last_reward 3000.0 | loss 20.665 | eps 0.050 | steps 90 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #84 | ep 122 | score 9454.4 | last_reward 3000.0 | loss 36.780 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #85 | ep 123 | score 9472.6 | last_reward 3000.0 | loss 42.462 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #86 | ep 124 | score 9484.2 | last_reward 3000.0 | loss 17.072 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #87 | ep 125 | score 9483.3 | last_reward 3000.0 | loss 62.845 | eps 0.050 | steps 90 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #88 | ep 126 | score 9434.0 | last_reward 3000.0 | loss 16.962 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #89 | ep 127 | score 9491.2 | last_reward 3000.0 | loss 18.922 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #90 | ep 128 | score 9439.4 | last_reward 3000.0 | loss 11.592 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #91 | ep 129 | score 9477.2 | last_reward 3000.0 | loss 12.682 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #92 | ep 130 | score 9440.6 | last_reward 3000.0 | loss 9.141 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #93 | ep 131 | score 9446.2 | last_reward 3000.0 | loss 52.134 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #94 | ep 132 | score 9477.4 | last_reward 3000.0 | loss 26.698 | eps 0.050 | steps 90 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #95 | ep 133 | score 9437.4 | last_reward 3000.0 | loss 40.643 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #96 | ep 134 | score 9427.4 | last_reward 3000.0 | loss 27.393 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #97 | ep 135 | score 9438.2 | last_reward 3000.0 | loss 19.277 | eps 0.050 | steps 90 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #98 | ep 136 | score 9436.7 | last_reward 3000.0 | loss 11.943 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #99 | ep 137 | score 9499.5 | last_reward 3000.0 | loss 28.909 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 4] >>> SUCCESS #100 | ep 138 | score 9504.8 | last_reward 3000.0 | loss 16.746 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+
+==== Running experiments with batch_size: 64 (fixed replay capacity=100000) ====
+[batch 64] fail          | ep 0 | score 1512.6 | last_reward -500.0 | loss 0.000 | eps 0.900 | steps 40 | fails_since_last 1
+[batch 64] fail          | ep 1 | score 4163.2 | last_reward -500.0 | loss 0.000 | eps 0.900 | steps 83 | fails_since_last 2
+[batch 64] fail          | ep 2 | score 1556.1 | last_reward -500.0 | loss 0.000 | eps 0.900 | steps 44 | fails_since_last 3
+[batch 64] >>> SUCCESS #1 | ep 3 | score 9381.4 | last_reward 3000.0 | loss 0.000 | eps 0.900 | steps 96 | attempts 4 (fails 3+1)
+[batch 64] fail          | ep 4 | score 2445.0 | last_reward -500.0 | loss 0.000 | eps 0.900 | steps 56 | fails_since_last 1
+[batch 64] fail          | ep 5 | score 1249.0 | last_reward -500.0 | loss 0.000 | eps 0.900 | steps 32 | fails_since_last 2
+[batch 64] fail          | ep 6 | score 1963.1 | last_reward -500.0 | loss 0.000 | eps 0.900 | steps 44 | fails_since_last 3
+[batch 64] fail          | ep 7 | score 2967.9 | last_reward -500.0 | loss 0.000 | eps 0.900 | steps 63 | fails_since_last 4
+[batch 64] fail          | ep 8 | score 2550.2 | last_reward -500.0 | loss 0.000 | eps 0.900 | steps 55 | fails_since_last 5
+[batch 64] fail          | ep 9 | score 1704.6 | last_reward -500.0 | loss 0.000 | eps 0.900 | steps 47 | fails_since_last 6
+[batch 64] fail          | ep 10 | score 4498.4 | last_reward -500.0 | loss 0.000 | eps 0.900 | steps 80 | fails_since_last 7
+[batch 64] fail          | ep 11 | score 2196.3 | last_reward -500.0 | loss 0.000 | eps 0.900 | steps 49 | fails_since_last 8
+[batch 64] fail          | ep 12 | score 4794.4 | last_reward -500.0 | loss 0.000 | eps 0.900 | steps 79 | fails_since_last 9
+[batch 64] fail          | ep 13 | score 2626.1 | last_reward -500.0 | loss 0.000 | eps 0.900 | steps 65 | fails_since_last 10
+[batch 64] fail          | ep 14 | score 1142.6 | last_reward -500.0 | loss 0.000 | eps 0.900 | steps 48 | fails_since_last 11
+[batch 64] fail          | ep 15 | score 2526.5 | last_reward -500.0 | loss 0.000 | eps 0.900 | steps 53 | fails_since_last 12
+[batch 64] fail          | ep 16 | score 4499.0 | last_reward -500.0 | loss 65.074 | eps 0.883 | steps 82 | fails_since_last 13
+[batch 64] fail          | ep 17 | score 2317.7 | last_reward -500.0 | loss 64.136 | eps 0.832 | steps 51 | fails_since_last 14
+[batch 64] fail          | ep 18 | score 921.2 | last_reward -500.0 | loss 58.860 | eps 0.782 | steps 50 | fails_since_last 15
+[batch 64] fail          | ep 19 | score 575.7 | last_reward -500.0 | loss 54.694 | eps 0.748 | steps 34 | fails_since_last 16
+[batch 64] fail          | ep 20 | score 1947.0 | last_reward -500.0 | loss 46.716 | eps 0.704 | steps 44 | fails_since_last 17
+[batch 64] fail          | ep 21 | score 593.7 | last_reward -500.0 | loss 41.203 | eps 0.664 | steps 40 | fails_since_last 18
+[batch 64] fail          | ep 22 | score 369.6 | last_reward -500.0 | loss 37.953 | eps 0.635 | steps 29 | fails_since_last 19
+[batch 64] fail          | ep 23 | score 499.0 | last_reward -500.0 | loss 30.826 | eps 0.609 | steps 26 | fails_since_last 20
+[batch 64] fail          | ep 24 | score 661.8 | last_reward -500.0 | loss 27.419 | eps 0.575 | steps 34 | fails_since_last 21
+[batch 64] fail          | ep 25 | score 975.1 | last_reward -500.0 | loss 21.451 | eps 0.545 | steps 30 | fails_since_last 22
+[batch 64] fail          | ep 26 | score 1383.6 | last_reward -500.0 | loss 22.609 | eps 0.506 | steps 39 | fails_since_last 23
+[batch 64] fail          | ep 27 | score 3271.8 | last_reward -500.0 | loss 18.654 | eps 0.447 | steps 59 | fails_since_last 24
+[batch 64] fail          | ep 28 | score 95.8 | last_reward -500.0 | loss 15.969 | eps 0.422 | steps 25 | fails_since_last 25
+[batch 64] fail          | ep 29 | score 785.1 | last_reward -500.0 | loss 18.691 | eps 0.392 | steps 30 | fails_since_last 26
+[batch 64] fail          | ep 30 | score 623.3 | last_reward -500.0 | loss 19.840 | eps 0.365 | steps 27 | fails_since_last 27
+[batch 64] >>> SUCCESS #2 | ep 31 | score 9376.6 | last_reward 3000.0 | loss 15.996 | eps 0.274 | steps 91 | attempts 28 (fails 27+1)
+[batch 64] >>> SUCCESS #3 | ep 32 | score 9410.5 | last_reward 3000.0 | loss 16.715 | eps 0.183 | steps 91 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #4 | ep 33 | score 9434.4 | last_reward 3000.0 | loss 16.717 | eps 0.093 | steps 90 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #5 | ep 34 | score 9444.3 | last_reward 3000.0 | loss 14.246 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #6 | ep 35 | score 9491.1 | last_reward 3000.0 | loss 18.036 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #7 | ep 36 | score 9471.7 | last_reward 3000.0 | loss 16.476 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #8 | ep 37 | score 9500.8 | last_reward 3000.0 | loss 22.614 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #9 | ep 38 | score 9470.0 | last_reward 3000.0 | loss 22.050 | eps 0.050 | steps 90 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #10 | ep 39 | score 9447.1 | last_reward 3000.0 | loss 19.333 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #11 | ep 40 | score 9511.6 | last_reward 3000.0 | loss 16.247 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #12 | ep 41 | score 9506.9 | last_reward 3000.0 | loss 23.338 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #13 | ep 42 | score 9498.7 | last_reward 3000.0 | loss 21.515 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #14 | ep 43 | score 9496.0 | last_reward 3000.0 | loss 24.913 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #15 | ep 44 | score 9437.7 | last_reward 3000.0 | loss 17.906 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #16 | ep 45 | score 9500.1 | last_reward 3000.0 | loss 22.093 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #17 | ep 46 | score 9435.9 | last_reward 3000.0 | loss 19.581 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #18 | ep 47 | score 9436.1 | last_reward 3000.0 | loss 18.750 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #19 | ep 48 | score 9441.5 | last_reward 3000.0 | loss 23.340 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #20 | ep 49 | score 9439.1 | last_reward 3000.0 | loss 20.262 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #21 | ep 50 | score 9439.4 | last_reward 3000.0 | loss 23.639 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #22 | ep 51 | score 9506.5 | last_reward 3000.0 | loss 26.429 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #23 | ep 52 | score 9456.4 | last_reward 3000.0 | loss 22.785 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #24 | ep 53 | score 9433.9 | last_reward 3000.0 | loss 26.661 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #25 | ep 54 | score 9445.2 | last_reward 3000.0 | loss 28.526 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #26 | ep 55 | score 9442.5 | last_reward 3000.0 | loss 23.027 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #27 | ep 56 | score 9448.7 | last_reward 3000.0 | loss 20.310 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #28 | ep 57 | score 9454.8 | last_reward 3000.0 | loss 25.458 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #29 | ep 58 | score 9440.1 | last_reward 3000.0 | loss 40.045 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #30 | ep 59 | score 9462.0 | last_reward 3000.0 | loss 51.768 | eps 0.050 | steps 90 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #31 | ep 60 | score 9507.9 | last_reward 3000.0 | loss 29.917 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #32 | ep 61 | score 9452.1 | last_reward 3000.0 | loss 25.202 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #33 | ep 62 | score 9443.2 | last_reward 3000.0 | loss 31.593 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #34 | ep 63 | score 9462.9 | last_reward 3000.0 | loss 26.295 | eps 0.050 | steps 90 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #35 | ep 64 | score 9455.6 | last_reward 3000.0 | loss 29.241 | eps 0.050 | steps 90 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #36 | ep 65 | score 9444.3 | last_reward 3000.0 | loss 24.904 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #37 | ep 66 | score 9448.4 | last_reward 3000.0 | loss 32.039 | eps 0.050 | steps 90 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #38 | ep 67 | score 9436.6 | last_reward 3000.0 | loss 22.867 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #39 | ep 68 | score 9445.4 | last_reward 3000.0 | loss 23.160 | eps 0.050 | steps 90 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #40 | ep 69 | score 9448.7 | last_reward 3000.0 | loss 20.536 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #41 | ep 70 | score 9477.3 | last_reward 3000.0 | loss 24.288 | eps 0.050 | steps 90 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #42 | ep 71 | score 9449.3 | last_reward 3000.0 | loss 26.596 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #43 | ep 72 | score 9437.8 | last_reward 3000.0 | loss 23.966 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #44 | ep 73 | score 9449.5 | last_reward 3000.0 | loss 27.443 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #45 | ep 74 | score 9457.9 | last_reward 3000.0 | loss 32.626 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #46 | ep 75 | score 9446.2 | last_reward 3000.0 | loss 31.988 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #47 | ep 76 | score 9457.5 | last_reward 3000.0 | loss 23.657 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #48 | ep 77 | score 9460.5 | last_reward 3000.0 | loss 24.848 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #49 | ep 78 | score 9442.8 | last_reward 3000.0 | loss 34.029 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #50 | ep 79 | score 9450.2 | last_reward 3000.0 | loss 30.169 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #51 | ep 80 | score 9457.4 | last_reward 3000.0 | loss 33.040 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #52 | ep 81 | score 9457.2 | last_reward 3000.0 | loss 30.358 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #53 | ep 82 | score 9458.8 | last_reward 3000.0 | loss 33.583 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #54 | ep 83 | score 9478.1 | last_reward 3000.0 | loss 31.164 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #55 | ep 84 | score 9496.2 | last_reward 3000.0 | loss 34.306 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #56 | ep 85 | score 9459.9 | last_reward 3000.0 | loss 28.457 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #57 | ep 86 | score 9451.8 | last_reward 3000.0 | loss 25.077 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #58 | ep 87 | score 9447.3 | last_reward 3000.0 | loss 33.371 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #59 | ep 88 | score 9440.1 | last_reward 3000.0 | loss 23.607 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #60 | ep 89 | score 9457.3 | last_reward 3000.0 | loss 28.799 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #61 | ep 90 | score 9446.1 | last_reward 3000.0 | loss 26.788 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #62 | ep 91 | score 9448.3 | last_reward 3000.0 | loss 24.399 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #63 | ep 92 | score 9438.9 | last_reward 3000.0 | loss 50.976 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #64 | ep 93 | score 9440.6 | last_reward 3000.0 | loss 37.611 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #65 | ep 94 | score 9457.0 | last_reward 3000.0 | loss 29.083 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #66 | ep 95 | score 9452.8 | last_reward 3000.0 | loss 29.431 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #67 | ep 96 | score 9489.5 | last_reward 3000.0 | loss 28.555 | eps 0.050 | steps 90 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #68 | ep 97 | score 9447.0 | last_reward 3000.0 | loss 28.264 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #69 | ep 98 | score 9458.2 | last_reward 3000.0 | loss 31.087 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #70 | ep 99 | score 9514.4 | last_reward 3000.0 | loss 31.344 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #71 | ep 100 | score 9446.7 | last_reward 3000.0 | loss 31.342 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #72 | ep 101 | score 9459.8 | last_reward 3000.0 | loss 27.943 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #73 | ep 102 | score 9458.5 | last_reward 3000.0 | loss 24.402 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #74 | ep 103 | score 9460.2 | last_reward 3000.0 | loss 26.894 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #75 | ep 104 | score 9447.8 | last_reward 3000.0 | loss 24.416 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #76 | ep 105 | score 9456.2 | last_reward 3000.0 | loss 27.842 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #77 | ep 106 | score 9447.8 | last_reward 3000.0 | loss 28.180 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #78 | ep 107 | score 9500.1 | last_reward 3000.0 | loss 37.557 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #79 | ep 108 | score 9439.9 | last_reward 3000.0 | loss 26.229 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #80 | ep 109 | score 9438.8 | last_reward 3000.0 | loss 32.391 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #81 | ep 110 | score 9508.6 | last_reward 3000.0 | loss 27.544 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #82 | ep 111 | score 9477.0 | last_reward 3000.0 | loss 30.924 | eps 0.050 | steps 90 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #83 | ep 112 | score 9443.0 | last_reward 3000.0 | loss 32.003 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #84 | ep 113 | score 9455.5 | last_reward 3000.0 | loss 30.562 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #85 | ep 114 | score 9447.5 | last_reward 3000.0 | loss 24.927 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #86 | ep 115 | score 9440.2 | last_reward 3000.0 | loss 31.273 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #87 | ep 116 | score 9448.9 | last_reward 3000.0 | loss 32.737 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #88 | ep 117 | score 9457.9 | last_reward 3000.0 | loss 24.441 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #89 | ep 118 | score 9477.0 | last_reward 3000.0 | loss 30.692 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #90 | ep 119 | score 9449.5 | last_reward 3000.0 | loss 27.996 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #91 | ep 120 | score 9476.7 | last_reward 3000.0 | loss 28.338 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #92 | ep 121 | score 9511.7 | last_reward 3000.0 | loss 21.659 | eps 0.050 | steps 91 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #93 | ep 122 | score 9447.8 | last_reward 3000.0 | loss 25.846 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #94 | ep 123 | score 9452.4 | last_reward 3000.0 | loss 33.002 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #95 | ep 124 | score 9447.1 | last_reward 3000.0 | loss 36.923 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #96 | ep 125 | score 9440.4 | last_reward 3000.0 | loss 26.928 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #97 | ep 126 | score 9454.1 | last_reward 3000.0 | loss 56.028 | eps 0.050 | steps 90 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #98 | ep 127 | score 9496.1 | last_reward 3000.0 | loss 30.767 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #99 | ep 128 | score 9445.0 | last_reward 3000.0 | loss 31.184 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 64] >>> SUCCESS #100 | ep 129 | score 9455.6 | last_reward 3000.0 | loss 31.632 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+
+==== Running experiments with batch_size: 128 (fixed replay capacity=100000) ====
+[batch 128] fail          | ep 0 | score 1776.7 | last_reward -500.0 | loss 0.000 | eps 0.900 | steps 48 | fails_since_last 1
+[batch 128] fail          | ep 1 | score 2428.7 | last_reward -500.0 | loss 0.000 | eps 0.900 | steps 54 | fails_since_last 2
+[batch 128] fail          | ep 2 | score 2805.4 | last_reward -500.0 | loss 0.000 | eps 0.900 | steps 61 | fails_since_last 3
+[batch 128] fail          | ep 3 | score 2449.0 | last_reward -500.0 | loss 0.000 | eps 0.900 | steps 61 | fails_since_last 4
+[batch 128] fail          | ep 4 | score 2134.6 | last_reward -500.0 | loss 0.000 | eps 0.900 | steps 44 | fails_since_last 5
+[batch 128] fail          | ep 5 | score 985.7 | last_reward -500.0 | loss 0.000 | eps 0.900 | steps 38 | fails_since_last 6
+[batch 128] fail          | ep 6 | score 985.7 | last_reward -500.0 | loss 0.000 | eps 0.900 | steps 36 | fails_since_last 7
+[batch 128] fail          | ep 7 | score 5003.3 | last_reward -500.0 | loss 0.000 | eps 0.900 | steps 93 | fails_since_last 8
+[batch 128] fail          | ep 8 | score 578.3 | last_reward -500.0 | loss 0.000 | eps 0.900 | steps 28 | fails_since_last 9
+[batch 128] >>> SUCCESS #1 | ep 9 | score 9407.0 | last_reward 3000.0 | loss 0.000 | eps 0.900 | steps 103 | attempts 10 (fails 9+1)
+[batch 128] fail          | ep 10 | score 1511.0 | last_reward -500.0 | loss 0.000 | eps 0.900 | steps 44 | fails_since_last 1
+[batch 128] fail          | ep 11 | score 2193.9 | last_reward -500.0 | loss 0.000 | eps 0.900 | steps 45 | fails_since_last 2
+[batch 128] fail          | ep 12 | score 2228.4 | last_reward -500.0 | loss 0.000 | eps 0.900 | steps 49 | fails_since_last 3
+[batch 128] fail          | ep 13 | score 2221.1 | last_reward -500.0 | loss 0.000 | eps 0.900 | steps 78 | fails_since_last 4
+[batch 128] fail          | ep 14 | score 2035.1 | last_reward -500.0 | loss 0.000 | eps 0.900 | steps 57 | fails_since_last 5
+[batch 128] fail          | ep 15 | score 1261.8 | last_reward -500.0 | loss 0.000 | eps 0.900 | steps 56 | fails_since_last 6
+[batch 128] >>> SUCCESS #2 | ep 16 | score 9467.5 | last_reward 3000.0 | loss 59.733 | eps 0.886 | steps 118 | attempts 7 (fails 6+1)
+[batch 128] fail          | ep 17 | score 1023.2 | last_reward -500.0 | loss 60.972 | eps 0.856 | steps 30 | fails_since_last 1
+[batch 128] fail          | ep 18 | score 1223.1 | last_reward -500.0 | loss 62.772 | eps 0.816 | steps 40 | fails_since_last 2
+[batch 128] fail          | ep 19 | score 5154.7 | last_reward -500.0 | loss 53.699 | eps 0.725 | steps 91 | fails_since_last 3
+[batch 128] fail          | ep 20 | score 1979.8 | last_reward -500.0 | loss 40.233 | eps 0.677 | steps 48 | fails_since_last 4
+[batch 128] fail          | ep 21 | score 2002.2 | last_reward -500.0 | loss 29.114 | eps 0.631 | steps 46 | fails_since_last 5
+[batch 128] fail          | ep 22 | score 2988.2 | last_reward -500.0 | loss 21.463 | eps 0.573 | steps 58 | fails_since_last 6
+[batch 128] >>> SUCCESS #3 | ep 23 | score 9419.5 | last_reward 3000.0 | loss 18.746 | eps 0.478 | steps 95 | attempts 7 (fails 6+1)
+[batch 128] fail          | ep 24 | score 5380.2 | last_reward -500.0 | loss 19.421 | eps 0.389 | steps 89 | fails_since_last 1
+[batch 128] >>> SUCCESS #4 | ep 25 | score 9448.6 | last_reward 3000.0 | loss 18.394 | eps 0.297 | steps 92 | attempts 2 (fails 1+1)
+[batch 128] >>> SUCCESS #5 | ep 26 | score 9436.6 | last_reward 3000.0 | loss 16.336 | eps 0.205 | steps 92 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #6 | ep 27 | score 9436.8 | last_reward 3000.0 | loss 17.076 | eps 0.114 | steps 91 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #7 | ep 28 | score 9466.6 | last_reward 3000.0 | loss 18.053 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #8 | ep 29 | score 9450.4 | last_reward 3000.0 | loss 18.729 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #9 | ep 30 | score 9506.2 | last_reward 3000.0 | loss 20.784 | eps 0.050 | steps 91 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #10 | ep 31 | score 9495.3 | last_reward 3000.0 | loss 23.931 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #11 | ep 32 | score 9444.5 | last_reward 3000.0 | loss 19.170 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #12 | ep 33 | score 9508.1 | last_reward 3000.0 | loss 21.503 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #13 | ep 34 | score 9441.5 | last_reward 3000.0 | loss 24.869 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #14 | ep 35 | score 9434.3 | last_reward 3000.0 | loss 25.150 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #15 | ep 36 | score 9501.8 | last_reward 3000.0 | loss 20.741 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #16 | ep 37 | score 9501.4 | last_reward 3000.0 | loss 25.174 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #17 | ep 38 | score 9441.9 | last_reward 3000.0 | loss 21.959 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #18 | ep 39 | score 9503.4 | last_reward 3000.0 | loss 22.220 | eps 0.050 | steps 90 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #19 | ep 40 | score 9448.3 | last_reward 3000.0 | loss 27.267 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #20 | ep 41 | score 9497.4 | last_reward 3000.0 | loss 21.071 | eps 0.050 | steps 90 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #21 | ep 42 | score 9508.0 | last_reward 3000.0 | loss 25.891 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #22 | ep 43 | score 9451.4 | last_reward 3000.0 | loss 20.074 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #23 | ep 44 | score 9444.0 | last_reward 3000.0 | loss 25.993 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #24 | ep 45 | score 9483.4 | last_reward 3000.0 | loss 23.809 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #25 | ep 46 | score 9458.0 | last_reward 3000.0 | loss 26.185 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #26 | ep 47 | score 9444.0 | last_reward 3000.0 | loss 26.766 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #27 | ep 48 | score 9461.1 | last_reward 3000.0 | loss 26.416 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #28 | ep 49 | score 9511.2 | last_reward 3000.0 | loss 27.529 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #29 | ep 50 | score 9450.8 | last_reward 3000.0 | loss 26.329 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #30 | ep 51 | score 9457.2 | last_reward 3000.0 | loss 28.045 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #31 | ep 52 | score 9442.6 | last_reward 3000.0 | loss 29.207 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #32 | ep 53 | score 9427.4 | last_reward 3000.0 | loss 58.568 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #33 | ep 54 | score 9501.7 | last_reward 3000.0 | loss 30.580 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #34 | ep 55 | score 9443.2 | last_reward 3000.0 | loss 25.579 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #35 | ep 56 | score 9429.2 | last_reward 3000.0 | loss 30.883 | eps 0.050 | steps 90 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #36 | ep 57 | score 9456.1 | last_reward 3000.0 | loss 24.861 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #37 | ep 58 | score 9456.8 | last_reward 3000.0 | loss 24.861 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #38 | ep 59 | score 9458.6 | last_reward 3000.0 | loss 24.725 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #39 | ep 60 | score 9462.3 | last_reward 3000.0 | loss 25.751 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #40 | ep 61 | score 9489.4 | last_reward 3000.0 | loss 26.310 | eps 0.050 | steps 90 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #41 | ep 62 | score 9468.6 | last_reward 3000.0 | loss 28.295 | eps 0.050 | steps 90 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #42 | ep 63 | score 9463.6 | last_reward 3000.0 | loss 25.304 | eps 0.050 | steps 90 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #43 | ep 64 | score 9439.9 | last_reward 3000.0 | loss 28.318 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #44 | ep 65 | score 9508.8 | last_reward 3000.0 | loss 30.216 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #45 | ep 66 | score 9445.9 | last_reward 3000.0 | loss 26.776 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #46 | ep 67 | score 9440.9 | last_reward 3000.0 | loss 24.404 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #47 | ep 68 | score 9440.2 | last_reward 3000.0 | loss 25.028 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #48 | ep 69 | score 9446.8 | last_reward 3000.0 | loss 24.103 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #49 | ep 70 | score 9442.5 | last_reward 3000.0 | loss 24.285 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #50 | ep 71 | score 9449.8 | last_reward 3000.0 | loss 25.912 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #51 | ep 72 | score 9455.4 | last_reward 3000.0 | loss 28.274 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #52 | ep 73 | score 9435.6 | last_reward 3000.0 | loss 25.196 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #53 | ep 74 | score 9449.4 | last_reward 3000.0 | loss 25.981 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #54 | ep 75 | score 9451.5 | last_reward 3000.0 | loss 33.249 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #55 | ep 76 | score 9461.5 | last_reward 3000.0 | loss 24.660 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #56 | ep 77 | score 9500.3 | last_reward 3000.0 | loss 20.891 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #57 | ep 78 | score 9454.2 | last_reward 3000.0 | loss 29.050 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #58 | ep 79 | score 9446.6 | last_reward 3000.0 | loss 25.271 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #59 | ep 80 | score 9512.6 | last_reward 3000.0 | loss 26.747 | eps 0.050 | steps 90 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #60 | ep 81 | score 9510.8 | last_reward 3000.0 | loss 25.574 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #61 | ep 82 | score 9476.9 | last_reward 3000.0 | loss 27.198 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #62 | ep 83 | score 9439.2 | last_reward 3000.0 | loss 30.359 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #63 | ep 84 | score 9441.7 | last_reward 3000.0 | loss 28.929 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #64 | ep 85 | score 9447.7 | last_reward 3000.0 | loss 31.048 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #65 | ep 86 | score 9451.4 | last_reward 3000.0 | loss 35.801 | eps 0.050 | steps 90 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #66 | ep 87 | score 9511.2 | last_reward 3000.0 | loss 46.787 | eps 0.050 | steps 91 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #67 | ep 88 | score 9435.6 | last_reward 3000.0 | loss 24.588 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #68 | ep 89 | score 9450.9 | last_reward 3000.0 | loss 29.689 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #69 | ep 90 | score 9442.5 | last_reward 3000.0 | loss 27.108 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #70 | ep 91 | score 9449.1 | last_reward 3000.0 | loss 27.992 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #71 | ep 92 | score 9488.6 | last_reward 3000.0 | loss 30.208 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #72 | ep 93 | score 9489.2 | last_reward 3000.0 | loss 31.930 | eps 0.050 | steps 90 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #73 | ep 94 | score 9492.5 | last_reward 3000.0 | loss 29.727 | eps 0.050 | steps 90 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #74 | ep 95 | score 9453.5 | last_reward 3000.0 | loss 33.326 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #75 | ep 96 | score 9443.8 | last_reward 3000.0 | loss 24.917 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #76 | ep 97 | score 9459.2 | last_reward 3000.0 | loss 24.953 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #77 | ep 98 | score 9443.1 | last_reward 3000.0 | loss 27.422 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #78 | ep 99 | score 9455.5 | last_reward 3000.0 | loss 26.488 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #79 | ep 100 | score 9481.1 | last_reward 3000.0 | loss 30.982 | eps 0.050 | steps 90 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #80 | ep 101 | score 9459.1 | last_reward 3000.0 | loss 26.894 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #81 | ep 102 | score 9453.6 | last_reward 3000.0 | loss 28.776 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #82 | ep 103 | score 9458.7 | last_reward 3000.0 | loss 31.334 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #83 | ep 104 | score 9451.0 | last_reward 3000.0 | loss 31.562 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #84 | ep 105 | score 9440.3 | last_reward 3000.0 | loss 31.165 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #85 | ep 106 | score 9439.9 | last_reward 3000.0 | loss 32.625 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #86 | ep 107 | score 9456.7 | last_reward 3000.0 | loss 28.416 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #87 | ep 108 | score 9458.2 | last_reward 3000.0 | loss 25.972 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #88 | ep 109 | score 9437.3 | last_reward 3000.0 | loss 26.355 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #89 | ep 110 | score 9461.5 | last_reward 3000.0 | loss 27.438 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #90 | ep 111 | score 9437.3 | last_reward 3000.0 | loss 26.783 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #91 | ep 112 | score 9462.2 | last_reward 3000.0 | loss 25.033 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #92 | ep 113 | score 9449.9 | last_reward 3000.0 | loss 31.453 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #93 | ep 114 | score 9439.5 | last_reward 3000.0 | loss 36.555 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #94 | ep 115 | score 9451.3 | last_reward 3000.0 | loss 25.136 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #95 | ep 116 | score 9447.8 | last_reward 3000.0 | loss 27.014 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #96 | ep 117 | score 9448.7 | last_reward 3000.0 | loss 29.636 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #97 | ep 118 | score 9460.5 | last_reward 3000.0 | loss 28.531 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #98 | ep 119 | score 9440.4 | last_reward 3000.0 | loss 25.069 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #99 | ep 120 | score 9451.1 | last_reward 3000.0 | loss 40.046 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 128] >>> SUCCESS #100 | ep 121 | score 9443.7 | last_reward 3000.0 | loss 50.085 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+
+==== Running experiments with batch_size: 1280 (fixed replay capacity=100000) ====
+[batch 1280] fail          | ep 0 | score 4910.4 | last_reward -500.0 | loss 0.000 | eps 0.900 | steps 94 | fails_since_last 1
+[batch 1280] fail          | ep 1 | score 3855.3 | last_reward -500.0 | loss 0.000 | eps 0.900 | steps 70 | fails_since_last 2
+[batch 1280] fail          | ep 2 | score 5271.4 | last_reward -500.0 | loss 0.000 | eps 0.900 | steps 104 | fails_since_last 3
+[batch 1280] fail          | ep 3 | score 1854.9 | last_reward -500.0 | loss 0.000 | eps 0.900 | steps 53 | fails_since_last 4
+[batch 1280] fail          | ep 4 | score 5723.0 | last_reward -500.0 | loss 0.000 | eps 0.900 | steps 100 | fails_since_last 5
+[batch 1280] fail          | ep 5 | score 3792.6 | last_reward -500.0 | loss 0.000 | eps 0.900 | steps 78 | fails_since_last 6
+[batch 1280] fail          | ep 6 | score 1987.6 | last_reward -500.0 | loss 0.000 | eps 0.900 | steps 90 | fails_since_last 7
+[batch 1280] fail          | ep 7 | score 1857.1 | last_reward -500.0 | loss 0.000 | eps 0.900 | steps 47 | fails_since_last 8
+[batch 1280] fail          | ep 8 | score 3693.7 | last_reward -500.0 | loss 0.000 | eps 0.900 | steps 107 | fails_since_last 9
+[batch 1280] fail          | ep 9 | score 2513.4 | last_reward -500.0 | loss 0.000 | eps 0.900 | steps 71 | fails_since_last 10
+[batch 1280] fail          | ep 10 | score 839.0 | last_reward -500.0 | loss 0.000 | eps 0.900 | steps 41 | fails_since_last 11
+[batch 1280] fail          | ep 11 | score 5846.7 | last_reward -500.0 | loss 0.000 | eps 0.900 | steps 156 | fails_since_last 12
+[batch 1280] fail          | ep 12 | score 2164.5 | last_reward -500.0 | loss 0.000 | eps 0.900 | steps 73 | fails_since_last 13
+[batch 1280] fail          | ep 13 | score 1323.5 | last_reward -500.0 | loss 0.000 | eps 0.900 | steps 72 | fails_since_last 14
+[batch 1280] >>> SUCCESS #1 | ep 14 | score 9477.2 | last_reward 3000.0 | loss 50.644 | eps 0.887 | steps 136 | attempts 15 (fails 14+1)
+[batch 1280] fail          | ep 15 | score 1595.0 | last_reward -500.0 | loss 49.500 | eps 0.816 | steps 71 | fails_since_last 1
+[batch 1280] fail          | ep 16 | score 5026.8 | last_reward -500.0 | loss 34.508 | eps 0.655 | steps 161 | fails_since_last 2
+[batch 1280] fail          | ep 17 | score 509.9 | last_reward -500.0 | loss 18.859 | eps 0.627 | steps 28 | fails_since_last 3
+[batch 1280] fail          | ep 18 | score 4243.7 | last_reward -500.0 | loss 14.545 | eps 0.550 | steps 77 | fails_since_last 4
+[batch 1280] >>> SUCCESS #2 | ep 19 | score 9437.5 | last_reward 3000.0 | loss 10.260 | eps 0.459 | steps 91 | attempts 5 (fails 4+1)
+[batch 1280] >>> SUCCESS #3 | ep 20 | score 9445.5 | last_reward 3000.0 | loss 10.630 | eps 0.362 | steps 97 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #4 | ep 21 | score 9485.0 | last_reward 3000.0 | loss 10.913 | eps 0.272 | steps 90 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #5 | ep 22 | score 9469.2 | last_reward 3000.0 | loss 11.766 | eps 0.183 | steps 89 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #6 | ep 23 | score 9510.8 | last_reward 3000.0 | loss 12.735 | eps 0.094 | steps 89 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #7 | ep 24 | score 9447.5 | last_reward 3000.0 | loss 14.198 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #8 | ep 25 | score 9442.7 | last_reward 3000.0 | loss 14.457 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #9 | ep 26 | score 9499.6 | last_reward 3000.0 | loss 15.422 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #10 | ep 27 | score 9451.0 | last_reward 3000.0 | loss 15.863 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #11 | ep 28 | score 9446.6 | last_reward 3000.0 | loss 16.602 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #12 | ep 29 | score 9452.3 | last_reward 3000.0 | loss 16.794 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #13 | ep 30 | score 9448.4 | last_reward 3000.0 | loss 17.885 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #14 | ep 31 | score 9458.4 | last_reward 3000.0 | loss 17.913 | eps 0.050 | steps 90 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #15 | ep 32 | score 9454.9 | last_reward 3000.0 | loss 18.239 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #16 | ep 33 | score 9451.5 | last_reward 3000.0 | loss 18.322 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #17 | ep 34 | score 9448.2 | last_reward 3000.0 | loss 19.874 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #18 | ep 35 | score 9445.3 | last_reward 3000.0 | loss 20.744 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #19 | ep 36 | score 9461.7 | last_reward 3000.0 | loss 20.238 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #20 | ep 37 | score 9462.9 | last_reward 3000.0 | loss 20.880 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #21 | ep 38 | score 9449.2 | last_reward 3000.0 | loss 21.077 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #22 | ep 39 | score 9506.3 | last_reward 3000.0 | loss 21.621 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #23 | ep 40 | score 9463.8 | last_reward 3000.0 | loss 20.480 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #24 | ep 41 | score 9440.7 | last_reward 3000.0 | loss 21.120 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #25 | ep 42 | score 9455.1 | last_reward 3000.0 | loss 21.688 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #26 | ep 43 | score 9477.6 | last_reward 3000.0 | loss 22.975 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #27 | ep 44 | score 9453.4 | last_reward 3000.0 | loss 22.503 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #28 | ep 45 | score 9462.2 | last_reward 3000.0 | loss 21.652 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #29 | ep 46 | score 9468.6 | last_reward 3000.0 | loss 22.379 | eps 0.050 | steps 90 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #30 | ep 47 | score 9465.7 | last_reward 3000.0 | loss 22.359 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #31 | ep 48 | score 9439.8 | last_reward 3000.0 | loss 32.456 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #32 | ep 49 | score 9507.5 | last_reward 3000.0 | loss 47.395 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #33 | ep 50 | score 9445.6 | last_reward 3000.0 | loss 26.608 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #34 | ep 51 | score 9444.3 | last_reward 3000.0 | loss 24.793 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #35 | ep 52 | score 9450.0 | last_reward 3000.0 | loss 22.508 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #36 | ep 53 | score 9458.6 | last_reward 3000.0 | loss 24.865 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #37 | ep 54 | score 9453.0 | last_reward 3000.0 | loss 24.966 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #38 | ep 55 | score 9463.8 | last_reward 3000.0 | loss 24.050 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #39 | ep 56 | score 9463.9 | last_reward 3000.0 | loss 24.475 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #40 | ep 57 | score 9455.0 | last_reward 3000.0 | loss 23.940 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #41 | ep 58 | score 9463.7 | last_reward 3000.0 | loss 25.169 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #42 | ep 59 | score 9464.8 | last_reward 3000.0 | loss 24.248 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #43 | ep 60 | score 9453.7 | last_reward 3000.0 | loss 24.787 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #44 | ep 61 | score 9454.2 | last_reward 3000.0 | loss 23.583 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #45 | ep 62 | score 9514.2 | last_reward 3000.0 | loss 24.776 | eps 0.050 | steps 92 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #46 | ep 63 | score 9454.4 | last_reward 3000.0 | loss 24.797 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #47 | ep 64 | score 9443.4 | last_reward 3000.0 | loss 25.604 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #48 | ep 65 | score 9451.6 | last_reward 3000.0 | loss 26.250 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #49 | ep 66 | score 9453.6 | last_reward 3000.0 | loss 25.577 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #50 | ep 67 | score 9506.8 | last_reward 3000.0 | loss 25.762 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #51 | ep 68 | score 9464.3 | last_reward 3000.0 | loss 25.936 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #52 | ep 69 | score 9512.0 | last_reward 3000.0 | loss 26.474 | eps 0.050 | steps 90 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #53 | ep 70 | score 9463.9 | last_reward 3000.0 | loss 26.702 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #54 | ep 71 | score 9453.6 | last_reward 3000.0 | loss 25.285 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #55 | ep 72 | score 9462.7 | last_reward 3000.0 | loss 24.899 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #56 | ep 73 | score 9455.0 | last_reward 3000.0 | loss 27.004 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #57 | ep 74 | score 9453.9 | last_reward 3000.0 | loss 27.156 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #58 | ep 75 | score 9455.3 | last_reward 3000.0 | loss 26.571 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #59 | ep 76 | score 9443.7 | last_reward 3000.0 | loss 26.186 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #60 | ep 77 | score 9464.4 | last_reward 3000.0 | loss 27.183 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #61 | ep 78 | score 9454.8 | last_reward 3000.0 | loss 27.216 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #62 | ep 79 | score 9455.3 | last_reward 3000.0 | loss 25.839 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #63 | ep 80 | score 9463.6 | last_reward 3000.0 | loss 27.878 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #64 | ep 81 | score 9455.0 | last_reward 3000.0 | loss 26.109 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #65 | ep 82 | score 9452.1 | last_reward 3000.0 | loss 37.416 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #66 | ep 83 | score 9445.7 | last_reward 3000.0 | loss 43.829 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #67 | ep 84 | score 9418.6 | last_reward 3000.0 | loss 27.123 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #68 | ep 85 | score 9433.9 | last_reward 3000.0 | loss 27.284 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #69 | ep 86 | score 9452.9 | last_reward 3000.0 | loss 26.023 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #70 | ep 87 | score 9445.3 | last_reward 3000.0 | loss 27.132 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #71 | ep 88 | score 9486.6 | last_reward 3000.0 | loss 25.772 | eps 0.050 | steps 91 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #72 | ep 89 | score 9488.6 | last_reward 3000.0 | loss 27.763 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #73 | ep 90 | score 9452.8 | last_reward 3000.0 | loss 27.077 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #74 | ep 91 | score 9454.7 | last_reward 3000.0 | loss 26.567 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #75 | ep 92 | score 9453.6 | last_reward 3000.0 | loss 27.069 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #76 | ep 93 | score 9446.6 | last_reward 3000.0 | loss 25.891 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #77 | ep 94 | score 9491.9 | last_reward 3000.0 | loss 25.890 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #78 | ep 95 | score 9497.9 | last_reward 3000.0 | loss 26.840 | eps 0.050 | steps 90 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #79 | ep 96 | score 9462.4 | last_reward 3000.0 | loss 26.944 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #80 | ep 97 | score 9441.5 | last_reward 3000.0 | loss 26.775 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #81 | ep 98 | score 9454.1 | last_reward 3000.0 | loss 27.689 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #82 | ep 99 | score 9441.3 | last_reward 3000.0 | loss 27.613 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #83 | ep 100 | score 9454.1 | last_reward 3000.0 | loss 27.256 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #84 | ep 101 | score 9463.7 | last_reward 3000.0 | loss 27.942 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #85 | ep 102 | score 9445.7 | last_reward 3000.0 | loss 26.812 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #86 | ep 103 | score 9509.4 | last_reward 3000.0 | loss 28.738 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #87 | ep 104 | score 9430.4 | last_reward 3000.0 | loss 27.767 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #88 | ep 105 | score 9448.0 | last_reward 3000.0 | loss 28.336 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #89 | ep 106 | score 9461.0 | last_reward 3000.0 | loss 29.297 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #90 | ep 107 | score 9513.1 | last_reward 3000.0 | loss 26.326 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #91 | ep 108 | score 9504.5 | last_reward 3000.0 | loss 27.605 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #92 | ep 109 | score 9441.7 | last_reward 3000.0 | loss 26.920 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #93 | ep 110 | score 9461.5 | last_reward 3000.0 | loss 26.925 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #94 | ep 111 | score 9460.2 | last_reward 3000.0 | loss 27.542 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #95 | ep 112 | score 9464.2 | last_reward 3000.0 | loss 26.983 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #96 | ep 113 | score 9451.7 | last_reward 3000.0 | loss 26.342 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #97 | ep 114 | score 9461.8 | last_reward 3000.0 | loss 26.964 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #98 | ep 115 | score 9511.5 | last_reward 3000.0 | loss 27.838 | eps 0.050 | steps 89 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #99 | ep 116 | score 9463.4 | last_reward 3000.0 | loss 42.191 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)
+[batch 1280] >>> SUCCESS #100 | ep 117 | score 9414.9 | last_reward 3000.0 | loss 38.703 | eps 0.050 | steps 88 | attempts 1 (fails 0+1)

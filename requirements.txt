@@ -1,0 +1,32 @@
+torch==1.13.1  # 支持Python 3.9的较新版本
+numpy==1.23.5  # 兼容版本
+pygame==2.1.2  # 兼容版本
+turtle
+charset_normalizer
+
+
+
+
+
+altgraph==0.17.2
+cloudpickle==3.1.1
+future==0.18.2
+graphviz==0.20.3
+gym==0.25.2
+gym-notices==0.1.0
+importlib_metadata==8.7.0
+macholib==1.15.2
+numpy==1.23.5
+pip==25.2
+PyQt5==5.15.10
+PyQt5-Qt5==5.15.17
+PyQt5_sip==12.17.0
+pyqtgraph==0.13.7
+setuptools==80.9.0
+six==1.15.0
+wheel==0.45.1
+zipp==3.23.0
+torch==1.13.1
+pygame==2.1.2
+charset_normalizer
+matplotlib

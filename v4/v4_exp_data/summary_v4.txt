@@ -1,0 +1,12 @@
+==== Summary (v4 new track) ====
+episodes: 21449
+successes: 100
+success_rate: 0.005
+avg_score: 2606.45
+std_score: 1267.96
+avg_loss: 60.554
+avg_epsilon: 0.055
+avg_tries: 214.49
+tries_std: 1425.00
+time_min: 280.87
+episodes_per_min: 76.4

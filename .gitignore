@@ -1,0 +1,45 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+.venv/
+.conda/
+env/
+
+# VS Code
+.vscode/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Build artifacts
+dist/
+build/
+*.egg-info/
+
+# Logs
+*.log
+
+# Checkpoints and experiment artifacts (very large)
+**/exp_data/
+**/v5_exp_data/
+**/checkpoints/
+
+# Model weights and binaries (exclude from Git; upload elsewhere or use LFS selectively)
+*.pt
+*.pth
+*.onnx
+*.ckpt
+
+# Caches
+.cache/
+.mypy_cache/
+.pytest_cache/

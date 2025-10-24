@@ -1,0 +1,102 @@
+
+==== Summary (batch=4) ====
+episodes: 139
+successes: 100
+success_rate: 0.719
+avg_score: 7357.37
+std_score: 3501.96
+avg_loss: 27.521
+avg_epsilon: 0.171
+avg_tries: 1.39
+tries_std: 2.16
+time_min: 0.17
+episodes_per_min: 822.8
+
+==== Summary (batch=64) ====
+episodes: 130
+successes: 100
+success_rate: 0.769
+avg_score: 7716.42
+std_score: 3251.62
+avg_loss: 25.155
+avg_epsilon: 0.222
+avg_tries: 1.30
+tries_std: 2.71
+time_min: 0.23
+episodes_per_min: 567.7
+
+==== Summary (batch=128) ====
+episodes: 122
+successes: 100
+success_rate: 0.820
+avg_score: 8166.15
+std_score: 2823.23
+avg_loss: 24.753
+avg_epsilon: 0.211
+avg_tries: 1.22
+tries_std: 1.23
+time_min: 0.28
+episodes_per_min: 440.9
+
+==== Summary (batch=1280) ====
+episodes: 118
+successes: 100
+success_rate: 0.847
+avg_score: 8501.09
+std_score: 2367.69
+avg_loss: 22.185
+avg_epsilon: 0.188
+avg_tries: 1.18
+tries_std: 1.45
+time_min: 0.94
+episodes_per_min: 126.0
+
+==== Final Summary (all batch sizes) ====
+==== Summary (batch=4) ====
+episodes: 139
+successes: 100
+success_rate: 0.719
+avg_score: 7357.37
+std_score: 3501.96
+avg_loss: 27.521
+avg_epsilon: 0.171
+avg_tries: 1.39
+tries_std: 2.16
+time_min: 0.17
+episodes_per_min: 822.8
+==== Summary (batch=64) ====
+episodes: 130
+successes: 100
+success_rate: 0.769
+avg_score: 7716.42
+std_score: 3251.62
+avg_loss: 25.155
+avg_epsilon: 0.222
+avg_tries: 1.30
+tries_std: 2.71
+time_min: 0.23
+episodes_per_min: 567.7
+==== Summary (batch=128) ====
+episodes: 122
+successes: 100
+success_rate: 0.820
+avg_score: 8166.15
+std_score: 2823.23
+avg_loss: 24.753
+avg_epsilon: 0.211
+avg_tries: 1.22
+tries_std: 1.23
+time_min: 0.28
+episodes_per_min: 440.9
+==== Summary (batch=1280) ====
+episodes: 118
+successes: 100
+success_rate: 0.847
+avg_score: 8501.09
+std_score: 2367.69
+avg_loss: 22.185
+avg_epsilon: 0.188
+avg_tries: 1.18
+tries_std: 1.45
+time_min: 0.94
+episodes_per_min: 126.0

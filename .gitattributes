@@ -1,0 +1,9 @@
+# Large files policy
+# If you decide to use Git LFS (note: default GitHub LFS free quota is ~1GB storage + 1GB bandwidth/month),
+# you can uncomment the lines below to track model artifacts. Given this repo's size, ignoring *.pt is safer.
+#
+# *.pt filter=lfs diff=lfs merge=lfs -text
+# *.pth filter=lfs diff=lfs merge=lfs -text
+# *.onnx filter=lfs diff=lfs merge=lfs -text
+# *.ckpt filter=lfs diff=lfs merge=lfs -text
+

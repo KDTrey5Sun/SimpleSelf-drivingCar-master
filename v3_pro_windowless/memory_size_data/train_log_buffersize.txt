@@ -1,0 +1,558 @@
+
+==== Start experiment: replay capacity (max_mem_size)=1000, batch_size=128 ====
+[buffer 1000] >>> SUCCESS #1 | ep 0 | score 9401.53 | last_reward 3000.0 | loss 0.000 | eps 0.900 | steps 99 | mem 99/1000 | tries_since_last=0 | 31 ms
+[buffer 1000] ep     0 | SUCCESS | score   9401.53 | last_reward 3000.0 | loss   0.000 | eps 0.900 | steps   99 | mem 99/1000 | tries_since_last=0 | 31 ms
+[buffer 1000] ep     1 | fail    | score    488.36 | last_reward -500.0 | loss   0.000 | eps 0.900 | steps   40 | mem 139/1000 | tries=1 | 1 ms
+[buffer 1000] ep     2 | fail    | score   2792.14 | last_reward -500.0 | loss   0.000 | eps 0.900 | steps   59 | mem 198/1000 | tries=2 | 1 ms
+[buffer 1000] >>> SUCCESS #2 | ep 3 | score 9466.28 | last_reward 3000.0 | loss 0.000 | eps 0.900 | steps 101 | mem 299/1000 | tries_since_last=2 | 2 ms
+[buffer 1000] ep     3 | SUCCESS | score   9466.28 | last_reward 3000.0 | loss   0.000 | eps 0.900 | steps  101 | mem 299/1000 | tries_since_last=2 | 2 ms
+[buffer 1000] ep     4 | fail    | score   2511.91 | last_reward -500.0 | loss   0.000 | eps 0.900 | steps   57 | mem 356/1000 | tries=1 | 1 ms
+[buffer 1000] ep     5 | fail    | score   4264.01 | last_reward -500.0 | loss   0.000 | eps 0.900 | steps   80 | mem 436/1000 | tries=2 | 2 ms
+[buffer 1000] ep     6 | fail    | score   2494.21 | last_reward -500.0 | loss   0.000 | eps 0.900 | steps   56 | mem 492/1000 | tries=3 | 1 ms
+[buffer 1000] ep     7 | fail    | score   3701.09 | last_reward -500.0 | loss   0.000 | eps 0.900 | steps   77 | mem 569/1000 | tries=4 | 2 ms
+[buffer 1000] ep     8 | fail    | score   1346.64 | last_reward -500.0 | loss   0.000 | eps 0.900 | steps   46 | mem 615/1000 | tries=5 | 1 ms
+[buffer 1000] >>> SUCCESS #3 | ep 9 | score 9406.81 | last_reward 3000.0 | loss 0.000 | eps 0.900 | steps 92 | mem 707/1000 | tries_since_last=5 | 2 ms
+[buffer 1000] ep     9 | SUCCESS | score   9406.81 | last_reward 3000.0 | loss   0.000 | eps 0.900 | steps   92 | mem 707/1000 | tries_since_last=5 | 2 ms
+[buffer 1000] ep    10 | fail    | score   5440.67 | last_reward -500.0 | loss   0.000 | eps 0.900 | steps   92 | mem 799/1000 | tries=1 | 2 ms
+[buffer 1000] ep    11 | fail    | score   1158.17 | last_reward -500.0 | loss   0.000 | eps 0.900 | steps   34 | mem 833/1000 | tries=2 | 1 ms
+[buffer 1000] ep    12 | fail    | score    649.37 | last_reward -500.0 | loss   0.000 | eps 0.900 | steps   25 | mem 858/1000 | tries=3 | 1 ms
+[buffer 1000] ep    13 | fail    | score   2268.37 | last_reward -500.0 | loss   0.000 | eps 0.900 | steps   51 | mem 909/1000 | tries=4 | 1 ms
+[buffer 1000] ep    14 | fail    | score    930.84 | last_reward -500.0 | loss   0.000 | eps 0.900 | steps   30 | mem 939/1000 | tries=5 | 1 ms
+[buffer 1000] ep    15 | fail    | score   3890.47 | last_reward -500.0 | loss  66.359 | eps 0.882 | steps   78 | mem 1017/1000 | tries=6 | 92 ms
+[buffer 1000] ep    16 | fail    | score   1295.55 | last_reward -500.0 | loss  73.663 | eps 0.847 | steps   35 | mem 1052/1000 | tries=7 | 82 ms
+[buffer 1000] ep    17 | fail    | score   2101.50 | last_reward -500.0 | loss  69.000 | eps 0.799 | steps   48 | mem 1100/1000 | tries=8 | 101 ms
+[buffer 1000] ep    18 | fail    | score    838.25 | last_reward -500.0 | loss  61.559 | eps 0.771 | steps   28 | mem 1128/1000 | tries=9 | 64 ms
+[buffer 1000] ep    19 | fail    | score   1551.02 | last_reward -500.0 | loss  57.894 | eps 0.733 | steps   38 | mem 1166/1000 | tries=10 | 124 ms
+[buffer 1000] ep    20 | fail    | score   1023.56 | last_reward -500.0 | loss  53.297 | eps 0.688 | steps   45 | mem 1211/1000 | tries=11 | 85 ms
+[buffer 1000] ep    21 | fail    | score    452.93 | last_reward -500.0 | loss  44.904 | eps 0.663 | steps   25 | mem 1236/1000 | tries=12 | 44 ms
+[buffer 1000] ep    22 | fail    | score   1338.97 | last_reward -500.0 | loss  41.480 | eps 0.627 | steps   36 | mem 1272/1000 | tries=13 | 75 ms
+[buffer 1000] ep    23 | fail    | score   1393.98 | last_reward -500.0 | loss  27.224 | eps 0.589 | steps   38 | mem 1310/1000 | tries=14 | 76 ms
+[buffer 1000] ep    24 | fail    | score   3004.45 | last_reward -500.0 | loss  19.957 | eps 0.529 | steps   60 | mem 1370/1000 | tries=15 | 104 ms
+[buffer 1000] ep    25 | fail    | score    765.80 | last_reward -500.0 | loss  20.822 | eps 0.498 | steps   31 | mem 1401/1000 | tries=16 | 68 ms
+[buffer 1000] ep    26 | fail    | score   2518.80 | last_reward -500.0 | loss  17.036 | eps 0.449 | steps   49 | mem 1450/1000 | tries=17 | 101 ms
+[buffer 1000] ep    27 | fail    | score   2553.60 | last_reward -500.0 | loss  17.557 | eps 0.396 | steps   53 | mem 1503/1000 | tries=18 | 142 ms
+[buffer 1000] ep    28 | fail    | score   1540.63 | last_reward -500.0 | loss  18.183 | eps 0.358 | steps   38 | mem 1541/1000 | tries=19 | 107 ms
+[buffer 1000] >>> SUCCESS #4 | ep 29 | score 9421.70 | last_reward 3000.0 | loss 17.539 | eps 0.268 | steps 90 | mem 1631/1000 | tries_since_last=19 | 263 ms
+[buffer 1000] ep    29 | SUCCESS | score   9421.70 | last_reward 3000.0 | loss  17.539 | eps 0.268 | steps   90 | mem 1631/1000 | tries_since_last=19 | 263 ms
+[buffer 1000] >>> SUCCESS #5 | ep 30 | score 9469.11 | last_reward 3000.0 | loss 17.538 | eps 0.175 | steps 93 | mem 1724/1000 | tries_since_last=0 | 203 ms
+[buffer 1000] ep    30 | SUCCESS | score   9469.11 | last_reward 3000.0 | loss  17.538 | eps 0.175 | steps   93 | mem 1724/1000 | tries_since_last=0 | 203 ms
+[buffer 1000] >>> SUCCESS #6 | ep 31 | score 9470.10 | last_reward 3000.0 | loss 18.585 | eps 0.085 | steps 90 | mem 1814/1000 | tries_since_last=0 | 205 ms
+[buffer 1000] ep    31 | SUCCESS | score   9470.10 | last_reward 3000.0 | loss  18.585 | eps 0.085 | steps   90 | mem 1814/1000 | tries_since_last=0 | 205 ms
+[buffer 1000] >>> SUCCESS #7 | ep 32 | score 9479.57 | last_reward 3000.0 | loss 16.816 | eps 0.050 | steps 89 | mem 1903/1000 | tries_since_last=0 | 210 ms
+[buffer 1000] ep    32 | SUCCESS | score   9479.57 | last_reward 3000.0 | loss  16.816 | eps 0.050 | steps   89 | mem 1903/1000 | tries_since_last=0 | 210 ms
+[buffer 1000] >>> SUCCESS #8 | ep 33 | score 9443.81 | last_reward 3000.0 | loss 18.967 | eps 0.050 | steps 89 | mem 1992/1000 | tries_since_last=0 | 181 ms
+[buffer 1000] ep    33 | SUCCESS | score   9443.81 | last_reward 3000.0 | loss  18.967 | eps 0.050 | steps   89 | mem 1992/1000 | tries_since_last=0 | 181 ms
+[buffer 1000] >>> SUCCESS #9 | ep 34 | score 9442.62 | last_reward 3000.0 | loss 20.644 | eps 0.050 | steps 89 | mem 2081/1000 | tries_since_last=0 | 168 ms
+[buffer 1000] ep    34 | SUCCESS | score   9442.62 | last_reward 3000.0 | loss  20.644 | eps 0.050 | steps   89 | mem 2081/1000 | tries_since_last=0 | 168 ms
+[buffer 1000] >>> SUCCESS #10 | ep 35 | score 9505.52 | last_reward 3000.0 | loss 21.818 | eps 0.050 | steps 89 | mem 2170/1000 | tries_since_last=0 | 180 ms
+[buffer 1000] ep    35 | SUCCESS | score   9505.52 | last_reward 3000.0 | loss  21.818 | eps 0.050 | steps   89 | mem 2170/1000 | tries_since_last=0 | 180 ms
+[buffer 1000] >>> SUCCESS #11 | ep 36 | score 9487.11 | last_reward 3000.0 | loss 25.267 | eps 0.050 | steps 89 | mem 2259/1000 | tries_since_last=0 | 184 ms
+[buffer 1000] ep    36 | SUCCESS | score   9487.11 | last_reward 3000.0 | loss  25.267 | eps 0.050 | steps   89 | mem 2259/1000 | tries_since_last=0 | 184 ms
+[buffer 1000] >>> SUCCESS #12 | ep 37 | score 9484.66 | last_reward 3000.0 | loss 28.768 | eps 0.050 | steps 89 | mem 2348/1000 | tries_since_last=0 | 179 ms
+[buffer 1000] ep    37 | SUCCESS | score   9484.66 | last_reward 3000.0 | loss  28.768 | eps 0.050 | steps   89 | mem 2348/1000 | tries_since_last=0 | 179 ms
+[buffer 1000] >>> SUCCESS #13 | ep 38 | score 9429.98 | last_reward 3000.0 | loss 30.660 | eps 0.050 | steps 88 | mem 2436/1000 | tries_since_last=0 | 167 ms
+[buffer 1000] ep    38 | SUCCESS | score   9429.98 | last_reward 3000.0 | loss  30.660 | eps 0.050 | steps   88 | mem 2436/1000 | tries_since_last=0 | 167 ms
+[buffer 1000] >>> SUCCESS #14 | ep 39 | score 9446.46 | last_reward 3000.0 | loss 31.509 | eps 0.050 | steps 88 | mem 2524/1000 | tries_since_last=0 | 187 ms
+[buffer 1000] ep    39 | SUCCESS | score   9446.46 | last_reward 3000.0 | loss  31.509 | eps 0.050 | steps   88 | mem 2524/1000 | tries_since_last=0 | 187 ms
+[buffer 1000] >>> SUCCESS #15 | ep 40 | score 9442.72 | last_reward 3000.0 | loss 28.713 | eps 0.050 | steps 88 | mem 2612/1000 | tries_since_last=0 | 155 ms
+[buffer 1000] ep    40 | SUCCESS | score   9442.72 | last_reward 3000.0 | loss  28.713 | eps 0.050 | steps   88 | mem 2612/1000 | tries_since_last=0 | 155 ms
+[buffer 1000] >>> SUCCESS #16 | ep 41 | score 9440.66 | last_reward 3000.0 | loss 33.158 | eps 0.050 | steps 88 | mem 2700/1000 | tries_since_last=0 | 157 ms
+[buffer 1000] ep    41 | SUCCESS | score   9440.66 | last_reward 3000.0 | loss  33.158 | eps 0.050 | steps   88 | mem 2700/1000 | tries_since_last=0 | 157 ms
+[buffer 1000] >>> SUCCESS #17 | ep 42 | score 9455.21 | last_reward 3000.0 | loss 34.424 | eps 0.050 | steps 88 | mem 2788/1000 | tries_since_last=0 | 145 ms
+[buffer 1000] ep    42 | SUCCESS | score   9455.21 | last_reward 3000.0 | loss  34.424 | eps 0.050 | steps   88 | mem 2788/1000 | tries_since_last=0 | 145 ms
+[buffer 1000] >>> SUCCESS #18 | ep 43 | score 9453.88 | last_reward 3000.0 | loss 34.399 | eps 0.050 | steps 88 | mem 2876/1000 | tries_since_last=0 | 160 ms
+[buffer 1000] ep    43 | SUCCESS | score   9453.88 | last_reward 3000.0 | loss  34.399 | eps 0.050 | steps   88 | mem 2876/1000 | tries_since_last=0 | 160 ms
+[buffer 1000] >>> SUCCESS #19 | ep 44 | score 9500.12 | last_reward 3000.0 | loss 35.543 | eps 0.050 | steps 89 | mem 2965/1000 | tries_since_last=0 | 171 ms
+[buffer 1000] ep    44 | SUCCESS | score   9500.12 | last_reward 3000.0 | loss  35.543 | eps 0.050 | steps   89 | mem 2965/1000 | tries_since_last=0 | 171 ms
+[buffer 1000] >>> SUCCESS #20 | ep 45 | score 9442.70 | last_reward 3000.0 | loss 37.224 | eps 0.050 | steps 88 | mem 3053/1000 | tries_since_last=0 | 156 ms
+[buffer 1000] ep    45 | SUCCESS | score   9442.70 | last_reward 3000.0 | loss  37.224 | eps 0.050 | steps   88 | mem 3053/1000 | tries_since_last=0 | 156 ms
+[buffer 1000] >>> SUCCESS #21 | ep 46 | score 9430.69 | last_reward 3000.0 | loss 36.939 | eps 0.050 | steps 88 | mem 3141/1000 | tries_since_last=0 | 153 ms
+[buffer 1000] ep    46 | SUCCESS | score   9430.69 | last_reward 3000.0 | loss  36.939 | eps 0.050 | steps   88 | mem 3141/1000 | tries_since_last=0 | 153 ms
+[buffer 1000] >>> SUCCESS #22 | ep 47 | score 9447.91 | last_reward 3000.0 | loss 33.821 | eps 0.050 | steps 88 | mem 3229/1000 | tries_since_last=0 | 166 ms
+[buffer 1000] ep    47 | SUCCESS | score   9447.91 | last_reward 3000.0 | loss  33.821 | eps 0.050 | steps   88 | mem 3229/1000 | tries_since_last=0 | 166 ms
+[buffer 1000] >>> SUCCESS #23 | ep 48 | score 9454.52 | last_reward 3000.0 | loss 35.102 | eps 0.050 | steps 88 | mem 3317/1000 | tries_since_last=0 | 149 ms
+[buffer 1000] ep    48 | SUCCESS | score   9454.52 | last_reward 3000.0 | loss  35.102 | eps 0.050 | steps   88 | mem 3317/1000 | tries_since_last=0 | 149 ms
+[buffer 1000] >>> SUCCESS #24 | ep 49 | score 9449.19 | last_reward 3000.0 | loss 30.945 | eps 0.050 | steps 88 | mem 3405/1000 | tries_since_last=0 | 166 ms
+[buffer 1000] ep    49 | SUCCESS | score   9449.19 | last_reward 3000.0 | loss  30.945 | eps 0.050 | steps   88 | mem 3405/1000 | tries_since_last=0 | 166 ms
+[buffer 1000] >>> SUCCESS #25 | ep 50 | score 9436.77 | last_reward 3000.0 | loss 35.342 | eps 0.050 | steps 88 | mem 3493/1000 | tries_since_last=0 | 152 ms
+[buffer 1000] ep    50 | SUCCESS | score   9436.77 | last_reward 3000.0 | loss  35.342 | eps 0.050 | steps   88 | mem 3493/1000 | tries_since_last=0 | 152 ms
+[buffer 1000] >>> SUCCESS #26 | ep 51 | score 9440.18 | last_reward 3000.0 | loss 34.303 | eps 0.050 | steps 88 | mem 3581/1000 | tries_since_last=0 | 155 ms
+[buffer 1000] ep    51 | SUCCESS | score   9440.18 | last_reward 3000.0 | loss  34.303 | eps 0.050 | steps   88 | mem 3581/1000 | tries_since_last=0 | 155 ms
+[buffer 1000] >>> SUCCESS #27 | ep 52 | score 9457.34 | last_reward 3000.0 | loss 30.943 | eps 0.050 | steps 88 | mem 3669/1000 | tries_since_last=0 | 155 ms
+[buffer 1000] ep    52 | SUCCESS | score   9457.34 | last_reward 3000.0 | loss  30.943 | eps 0.050 | steps   88 | mem 3669/1000 | tries_since_last=0 | 155 ms
+[buffer 1000] >>> SUCCESS #28 | ep 53 | score 9453.60 | last_reward 3000.0 | loss 36.124 | eps 0.050 | steps 88 | mem 3757/1000 | tries_since_last=0 | 141 ms
+[buffer 1000] ep    53 | SUCCESS | score   9453.60 | last_reward 3000.0 | loss  36.124 | eps 0.050 | steps   88 | mem 3757/1000 | tries_since_last=0 | 141 ms
+[buffer 1000] >>> SUCCESS #29 | ep 54 | score 9456.49 | last_reward 3000.0 | loss 31.195 | eps 0.050 | steps 88 | mem 3845/1000 | tries_since_last=0 | 158 ms
+[buffer 1000] ep    54 | SUCCESS | score   9456.49 | last_reward 3000.0 | loss  31.195 | eps 0.050 | steps   88 | mem 3845/1000 | tries_since_last=0 | 158 ms
+[buffer 1000] >>> SUCCESS #30 | ep 55 | score 9444.45 | last_reward 3000.0 | loss 31.981 | eps 0.050 | steps 88 | mem 3933/1000 | tries_since_last=0 | 158 ms
+[buffer 1000] ep    55 | SUCCESS | score   9444.45 | last_reward 3000.0 | loss  31.981 | eps 0.050 | steps   88 | mem 3933/1000 | tries_since_last=0 | 158 ms
+[buffer 1000] >>> SUCCESS #31 | ep 56 | score 9454.41 | last_reward 3000.0 | loss 48.229 | eps 0.050 | steps 88 | mem 4021/1000 | tries_since_last=0 | 165 ms
+[buffer 1000] ep    56 | SUCCESS | score   9454.41 | last_reward 3000.0 | loss  48.229 | eps 0.050 | steps   88 | mem 4021/1000 | tries_since_last=0 | 165 ms
+[buffer 1000] >>> SUCCESS #32 | ep 57 | score 9462.78 | last_reward 3000.0 | loss 57.881 | eps 0.050 | steps 89 | mem 4110/1000 | tries_since_last=0 | 168 ms
+[buffer 1000] ep    57 | SUCCESS | score   9462.78 | last_reward 3000.0 | loss  57.881 | eps 0.050 | steps   89 | mem 4110/1000 | tries_since_last=0 | 168 ms
+[buffer 1000] >>> SUCCESS #33 | ep 58 | score 9456.62 | last_reward 3000.0 | loss 34.918 | eps 0.050 | steps 88 | mem 4198/1000 | tries_since_last=0 | 163 ms
+[buffer 1000] ep    58 | SUCCESS | score   9456.62 | last_reward 3000.0 | loss  34.918 | eps 0.050 | steps   88 | mem 4198/1000 | tries_since_last=0 | 163 ms
+[buffer 1000] >>> SUCCESS #34 | ep 59 | score 9499.14 | last_reward 3000.0 | loss 30.975 | eps 0.050 | steps 89 | mem 4287/1000 | tries_since_last=0 | 163 ms
+[buffer 1000] ep    59 | SUCCESS | score   9499.14 | last_reward 3000.0 | loss  30.975 | eps 0.050 | steps   89 | mem 4287/1000 | tries_since_last=0 | 163 ms
+[buffer 1000] >>> SUCCESS #35 | ep 60 | score 9490.04 | last_reward 3000.0 | loss 28.139 | eps 0.050 | steps 89 | mem 4376/1000 | tries_since_last=0 | 171 ms
+[buffer 1000] ep    60 | SUCCESS | score   9490.04 | last_reward 3000.0 | loss  28.139 | eps 0.050 | steps   89 | mem 4376/1000 | tries_since_last=0 | 171 ms
+[buffer 1000] >>> SUCCESS #36 | ep 61 | score 9442.84 | last_reward 3000.0 | loss 32.397 | eps 0.050 | steps 88 | mem 4464/1000 | tries_since_last=0 | 155 ms
+[buffer 1000] ep    61 | SUCCESS | score   9442.84 | last_reward 3000.0 | loss  32.397 | eps 0.050 | steps   88 | mem 4464/1000 | tries_since_last=0 | 155 ms
+[buffer 1000] >>> SUCCESS #37 | ep 62 | score 9509.03 | last_reward 3000.0 | loss 29.736 | eps 0.050 | steps 89 | mem 4553/1000 | tries_since_last=0 | 163 ms
+[buffer 1000] ep    62 | SUCCESS | score   9509.03 | last_reward 3000.0 | loss  29.736 | eps 0.050 | steps   89 | mem 4553/1000 | tries_since_last=0 | 163 ms
+[buffer 1000] >>> SUCCESS #38 | ep 63 | score 9501.01 | last_reward 3000.0 | loss 33.993 | eps 0.050 | steps 89 | mem 4642/1000 | tries_since_last=0 | 150 ms
+[buffer 1000] ep    63 | SUCCESS | score   9501.01 | last_reward 3000.0 | loss  33.993 | eps 0.050 | steps   89 | mem 4642/1000 | tries_since_last=0 | 150 ms
+[buffer 1000] >>> SUCCESS #39 | ep 64 | score 9437.65 | last_reward 3000.0 | loss 33.823 | eps 0.050 | steps 88 | mem 4730/1000 | tries_since_last=0 | 162 ms
+[buffer 1000] ep    64 | SUCCESS | score   9437.65 | last_reward 3000.0 | loss  33.823 | eps 0.050 | steps   88 | mem 4730/1000 | tries_since_last=0 | 162 ms
+[buffer 1000] >>> SUCCESS #40 | ep 65 | score 9443.05 | last_reward 3000.0 | loss 33.557 | eps 0.050 | steps 88 | mem 4818/1000 | tries_since_last=0 | 149 ms
+[buffer 1000] ep    65 | SUCCESS | score   9443.05 | last_reward 3000.0 | loss  33.557 | eps 0.050 | steps   88 | mem 4818/1000 | tries_since_last=0 | 149 ms
+[buffer 1000] >>> SUCCESS #41 | ep 66 | score 9425.57 | last_reward 3000.0 | loss 34.079 | eps 0.050 | steps 88 | mem 4906/1000 | tries_since_last=0 | 157 ms
+[buffer 1000] ep    66 | SUCCESS | score   9425.57 | last_reward 3000.0 | loss  34.079 | eps 0.050 | steps   88 | mem 4906/1000 | tries_since_last=0 | 157 ms
+[buffer 1000] >>> SUCCESS #42 | ep 67 | score 9441.29 | last_reward 3000.0 | loss 31.814 | eps 0.050 | steps 88 | mem 4994/1000 | tries_since_last=0 | 156 ms
+[buffer 1000] ep    67 | SUCCESS | score   9441.29 | last_reward 3000.0 | loss  31.814 | eps 0.050 | steps   88 | mem 4994/1000 | tries_since_last=0 | 156 ms
+[buffer 1000] >>> SUCCESS #43 | ep 68 | score 9476.92 | last_reward 3000.0 | loss 30.381 | eps 0.050 | steps 90 | mem 5084/1000 | tries_since_last=0 | 156 ms
+[buffer 1000] ep    68 | SUCCESS | score   9476.92 | last_reward 3000.0 | loss  30.381 | eps 0.050 | steps   90 | mem 5084/1000 | tries_since_last=0 | 156 ms
+[buffer 1000] >>> SUCCESS #44 | ep 69 | score 9495.18 | last_reward 3000.0 | loss 33.361 | eps 0.050 | steps 90 | mem 5174/1000 | tries_since_last=0 | 156 ms
+[buffer 1000] ep    69 | SUCCESS | score   9495.18 | last_reward 3000.0 | loss  33.361 | eps 0.050 | steps   90 | mem 5174/1000 | tries_since_last=0 | 156 ms
+[buffer 1000] >>> SUCCESS #45 | ep 70 | score 9497.54 | last_reward 3000.0 | loss 34.484 | eps 0.050 | steps 89 | mem 5263/1000 | tries_since_last=0 | 156 ms
+[buffer 1000] ep    70 | SUCCESS | score   9497.54 | last_reward 3000.0 | loss  34.484 | eps 0.050 | steps   89 | mem 5263/1000 | tries_since_last=0 | 156 ms
+[buffer 1000] >>> SUCCESS #46 | ep 71 | score 9507.22 | last_reward 3000.0 | loss 33.707 | eps 0.050 | steps 89 | mem 5352/1000 | tries_since_last=0 | 154 ms
+[buffer 1000] ep    71 | SUCCESS | score   9507.22 | last_reward 3000.0 | loss  33.707 | eps 0.050 | steps   89 | mem 5352/1000 | tries_since_last=0 | 154 ms
+[buffer 1000] >>> SUCCESS #47 | ep 72 | score 9436.30 | last_reward 3000.0 | loss 33.079 | eps 0.050 | steps 88 | mem 5440/1000 | tries_since_last=0 | 147 ms
+[buffer 1000] ep    72 | SUCCESS | score   9436.30 | last_reward 3000.0 | loss  33.079 | eps 0.050 | steps   88 | mem 5440/1000 | tries_since_last=0 | 147 ms
+[buffer 1000] >>> SUCCESS #48 | ep 73 | score 9490.55 | last_reward 3000.0 | loss 34.208 | eps 0.050 | steps 89 | mem 5529/1000 | tries_since_last=0 | 152 ms
+[buffer 1000] ep    73 | SUCCESS | score   9490.55 | last_reward 3000.0 | loss  34.208 | eps 0.050 | steps   89 | mem 5529/1000 | tries_since_last=0 | 152 ms
+[buffer 1000] >>> SUCCESS #49 | ep 74 | score 9495.31 | last_reward 3000.0 | loss 33.459 | eps 0.050 | steps 89 | mem 5618/1000 | tries_since_last=0 | 162 ms
+[buffer 1000] ep    74 | SUCCESS | score   9495.31 | last_reward 3000.0 | loss  33.459 | eps 0.050 | steps   89 | mem 5618/1000 | tries_since_last=0 | 162 ms
+[buffer 1000] >>> SUCCESS #50 | ep 75 | score 9478.80 | last_reward 3000.0 | loss 30.214 | eps 0.050 | steps 89 | mem 5707/1000 | tries_since_last=0 | 162 ms
+[buffer 1000] ep    75 | SUCCESS | score   9478.80 | last_reward 3000.0 | loss  30.214 | eps 0.050 | steps   89 | mem 5707/1000 | tries_since_last=0 | 162 ms
+
+==== Summary (capacity=1000) ====
+episodes: 76
+successes: 50
+success_rate: 0.658
+avg_score: 6912.08
+std_score: 3632.16
+avg_loss: 27.232
+avg_epsilon: 0.330
+avg_tries: 0.52
+tries_std: 2.77
+time_min: 0.15
+episodes_per_min: 499.3
+
+
+
+==== Start experiment: replay capacity (max_mem_size)=5000, batch_size=128 ====
+[buffer 5000] ep     0 | fail    | score   3936.25 | last_reward -500.0 | loss   0.000 | eps 0.900 | steps   79 | mem 79/5000 | tries=1 | 2 ms
+[buffer 5000] ep     1 | fail    | score   3961.53 | last_reward -500.0 | loss   0.000 | eps 0.900 | steps   82 | mem 161/5000 | tries=2 | 2 ms
+[buffer 5000] ep     2 | fail    | score   1157.25 | last_reward -500.0 | loss   0.000 | eps 0.900 | steps  101 | mem 262/5000 | tries=3 | 3 ms
+[buffer 5000] ep     3 | fail    | score   1982.69 | last_reward -500.0 | loss   0.000 | eps 0.900 | steps   75 | mem 337/5000 | tries=4 | 2 ms
+[buffer 5000] >>> SUCCESS #1 | ep 4 | score 9450.58 | last_reward 3000.0 | loss 0.000 | eps 0.900 | steps 100 | mem 437/5000 | tries_since_last=4 | 2 ms
+[buffer 5000] ep     4 | SUCCESS | score   9450.58 | last_reward 3000.0 | loss   0.000 | eps 0.900 | steps  100 | mem 437/5000 | tries_since_last=4 | 2 ms
+[buffer 5000] ep     5 | fail    | score   4373.15 | last_reward -500.0 | loss   0.000 | eps 0.900 | steps   82 | mem 519/5000 | tries=1 | 2 ms
+[buffer 5000] ep     6 | fail    | score   3474.21 | last_reward -500.0 | loss   0.000 | eps 0.900 | steps   72 | mem 591/5000 | tries=2 | 3 ms
+[buffer 5000] >>> SUCCESS #2 | ep 7 | score 9417.82 | last_reward 3000.0 | loss 0.000 | eps 0.900 | steps 116 | mem 707/5000 | tries_since_last=2 | 3 ms
+[buffer 5000] ep     7 | SUCCESS | score   9417.82 | last_reward 3000.0 | loss   0.000 | eps 0.900 | steps  116 | mem 707/5000 | tries_since_last=2 | 3 ms
+[buffer 5000] ep     8 | fail    | score   1911.80 | last_reward -500.0 | loss   0.000 | eps 0.900 | steps   52 | mem 759/5000 | tries=1 | 1 ms
+[buffer 5000] ep     9 | fail    | score   2415.48 | last_reward -500.0 | loss   0.000 | eps 0.900 | steps   66 | mem 825/5000 | tries=2 | 2 ms
+[buffer 5000] ep    10 | fail    | score   2251.68 | last_reward -500.0 | loss   0.000 | eps 0.900 | steps   87 | mem 912/5000 | tries=3 | 2 ms
+[buffer 5000] ep    11 | fail    | score   2326.55 | last_reward -500.0 | loss  52.595 | eps 0.867 | steps  120 | mem 1032/5000 | tries=4 | 79 ms
+[buffer 5000] ep    12 | fail    | score   3591.91 | last_reward -500.0 | loss  51.538 | eps 0.797 | steps   70 | mem 1102/5000 | tries=5 | 114 ms
+[buffer 5000] ep    13 | fail    | score   4468.99 | last_reward -500.0 | loss  36.724 | eps 0.667 | steps  130 | mem 1232/5000 | tries=6 | 222 ms
+[buffer 5000] ep    14 | fail    | score    299.89 | last_reward -500.0 | loss  25.355 | eps 0.642 | steps   25 | mem 1257/5000 | tries=7 | 48 ms
+[buffer 5000] ep    15 | fail    | score    584.54 | last_reward -500.0 | loss  20.608 | eps 0.614 | steps   28 | mem 1285/5000 | tries=8 | 48 ms
+[buffer 5000] >>> SUCCESS #3 | ep 16 | score 9405.70 | last_reward 3000.0 | loss 19.668 | eps 0.518 | steps 96 | mem 1381/5000 | tries_since_last=8 | 171 ms
+[buffer 5000] ep    16 | SUCCESS | score   9405.70 | last_reward 3000.0 | loss  19.668 | eps 0.518 | steps   96 | mem 1381/5000 | tries_since_last=8 | 171 ms
+[buffer 5000] ep    17 | fail    | score   4411.51 | last_reward -500.0 | loss  15.553 | eps 0.438 | steps   80 | mem 1461/5000 | tries=1 | 161 ms
+[buffer 5000] >>> SUCCESS #4 | ep 18 | score 9431.28 | last_reward 3000.0 | loss 13.299 | eps 0.348 | steps 90 | mem 1551/5000 | tries_since_last=1 | 179 ms
+[buffer 5000] ep    18 | SUCCESS | score   9431.28 | last_reward 3000.0 | loss  13.299 | eps 0.348 | steps   90 | mem 1551/5000 | tries_since_last=1 | 179 ms
+[buffer 5000] >>> SUCCESS #5 | ep 19 | score 9426.76 | last_reward 3000.0 | loss 13.265 | eps 0.256 | steps 92 | mem 1643/5000 | tries_since_last=0 | 160 ms
+[buffer 5000] ep    19 | SUCCESS | score   9426.76 | last_reward 3000.0 | loss  13.265 | eps 0.256 | steps   92 | mem 1643/5000 | tries_since_last=0 | 160 ms
+[buffer 5000] >>> SUCCESS #6 | ep 20 | score 9399.17 | last_reward 3000.0 | loss 13.742 | eps 0.165 | steps 91 | mem 1734/5000 | tries_since_last=0 | 154 ms
+[buffer 5000] ep    20 | SUCCESS | score   9399.17 | last_reward 3000.0 | loss  13.742 | eps 0.165 | steps   91 | mem 1734/5000 | tries_since_last=0 | 154 ms
+[buffer 5000] >>> SUCCESS #7 | ep 21 | score 9435.70 | last_reward 3000.0 | loss 14.451 | eps 0.075 | steps 90 | mem 1824/5000 | tries_since_last=0 | 175 ms
+[buffer 5000] ep    21 | SUCCESS | score   9435.70 | last_reward 3000.0 | loss  14.451 | eps 0.075 | steps   90 | mem 1824/5000 | tries_since_last=0 | 175 ms
+[buffer 5000] >>> SUCCESS #8 | ep 22 | score 9403.03 | last_reward 3000.0 | loss 15.074 | eps 0.050 | steps 89 | mem 1913/5000 | tries_since_last=0 | 150 ms
+[buffer 5000] ep    22 | SUCCESS | score   9403.03 | last_reward 3000.0 | loss  15.074 | eps 0.050 | steps   89 | mem 1913/5000 | tries_since_last=0 | 150 ms
+[buffer 5000] >>> SUCCESS #9 | ep 23 | score 9470.10 | last_reward 3000.0 | loss 15.065 | eps 0.050 | steps 89 | mem 2002/5000 | tries_since_last=0 | 153 ms
+[buffer 5000] ep    23 | SUCCESS | score   9470.10 | last_reward 3000.0 | loss  15.065 | eps 0.050 | steps   89 | mem 2002/5000 | tries_since_last=0 | 153 ms
+[buffer 5000] >>> SUCCESS #10 | ep 24 | score 9479.01 | last_reward 3000.0 | loss 20.131 | eps 0.050 | steps 89 | mem 2091/5000 | tries_since_last=0 | 167 ms
+[buffer 5000] ep    24 | SUCCESS | score   9479.01 | last_reward 3000.0 | loss  20.131 | eps 0.050 | steps   89 | mem 2091/5000 | tries_since_last=0 | 167 ms
+[buffer 5000] >>> SUCCESS #11 | ep 25 | score 9439.31 | last_reward 3000.0 | loss 18.428 | eps 0.050 | steps 89 | mem 2180/5000 | tries_since_last=0 | 162 ms
+[buffer 5000] ep    25 | SUCCESS | score   9439.31 | last_reward 3000.0 | loss  18.428 | eps 0.050 | steps   89 | mem 2180/5000 | tries_since_last=0 | 162 ms
+[buffer 5000] >>> SUCCESS #12 | ep 26 | score 9434.69 | last_reward 3000.0 | loss 19.000 | eps 0.050 | steps 88 | mem 2268/5000 | tries_since_last=0 | 149 ms
+[buffer 5000] ep    26 | SUCCESS | score   9434.69 | last_reward 3000.0 | loss  19.000 | eps 0.050 | steps   88 | mem 2268/5000 | tries_since_last=0 | 149 ms
+[buffer 5000] >>> SUCCESS #13 | ep 27 | score 9498.91 | last_reward 3000.0 | loss 21.906 | eps 0.050 | steps 89 | mem 2357/5000 | tries_since_last=0 | 159 ms
+[buffer 5000] ep    27 | SUCCESS | score   9498.91 | last_reward 3000.0 | loss  21.906 | eps 0.050 | steps   89 | mem 2357/5000 | tries_since_last=0 | 159 ms
+[buffer 5000] >>> SUCCESS #14 | ep 28 | score 9450.32 | last_reward 3000.0 | loss 20.938 | eps 0.050 | steps 88 | mem 2445/5000 | tries_since_last=0 | 146 ms
+[buffer 5000] ep    28 | SUCCESS | score   9450.32 | last_reward 3000.0 | loss  20.938 | eps 0.050 | steps   88 | mem 2445/5000 | tries_since_last=0 | 146 ms
+[buffer 5000] >>> SUCCESS #15 | ep 29 | score 9501.00 | last_reward 3000.0 | loss 16.703 | eps 0.050 | steps 89 | mem 2534/5000 | tries_since_last=0 | 155 ms
+[buffer 5000] ep    29 | SUCCESS | score   9501.00 | last_reward 3000.0 | loss  16.703 | eps 0.050 | steps   89 | mem 2534/5000 | tries_since_last=0 | 155 ms
+[buffer 5000] >>> SUCCESS #16 | ep 30 | score 9447.50 | last_reward 3000.0 | loss 17.336 | eps 0.050 | steps 88 | mem 2622/5000 | tries_since_last=0 | 148 ms
+[buffer 5000] ep    30 | SUCCESS | score   9447.50 | last_reward 3000.0 | loss  17.336 | eps 0.050 | steps   88 | mem 2622/5000 | tries_since_last=0 | 148 ms
+[buffer 5000] >>> SUCCESS #17 | ep 31 | score 9435.83 | last_reward 3000.0 | loss 20.784 | eps 0.050 | steps 88 | mem 2710/5000 | tries_since_last=0 | 151 ms
+[buffer 5000] ep    31 | SUCCESS | score   9435.83 | last_reward 3000.0 | loss  20.784 | eps 0.050 | steps   88 | mem 2710/5000 | tries_since_last=0 | 151 ms
+[buffer 5000] >>> SUCCESS #18 | ep 32 | score 9436.24 | last_reward 3000.0 | loss 26.125 | eps 0.050 | steps 88 | mem 2798/5000 | tries_since_last=0 | 142 ms
+[buffer 5000] ep    32 | SUCCESS | score   9436.24 | last_reward 3000.0 | loss  26.125 | eps 0.050 | steps   88 | mem 2798/5000 | tries_since_last=0 | 142 ms
+[buffer 5000] >>> SUCCESS #19 | ep 33 | score 9440.92 | last_reward 3000.0 | loss 21.781 | eps 0.050 | steps 88 | mem 2886/5000 | tries_since_last=0 | 160 ms
+[buffer 5000] ep    33 | SUCCESS | score   9440.92 | last_reward 3000.0 | loss  21.781 | eps 0.050 | steps   88 | mem 2886/5000 | tries_since_last=0 | 160 ms
+[buffer 5000] >>> SUCCESS #20 | ep 34 | score 9507.72 | last_reward 3000.0 | loss 24.059 | eps 0.050 | steps 89 | mem 2975/5000 | tries_since_last=0 | 145 ms
+[buffer 5000] ep    34 | SUCCESS | score   9507.72 | last_reward 3000.0 | loss  24.059 | eps 0.050 | steps   89 | mem 2975/5000 | tries_since_last=0 | 145 ms
+[buffer 5000] >>> SUCCESS #21 | ep 35 | score 9508.99 | last_reward 3000.0 | loss 26.895 | eps 0.050 | steps 90 | mem 3065/5000 | tries_since_last=0 | 154 ms
+[buffer 5000] ep    35 | SUCCESS | score   9508.99 | last_reward 3000.0 | loss  26.895 | eps 0.050 | steps   90 | mem 3065/5000 | tries_since_last=0 | 154 ms
+[buffer 5000] >>> SUCCESS #22 | ep 36 | score 9433.52 | last_reward 3000.0 | loss 23.993 | eps 0.050 | steps 88 | mem 3153/5000 | tries_since_last=0 | 145 ms
+[buffer 5000] ep    36 | SUCCESS | score   9433.52 | last_reward 3000.0 | loss  23.993 | eps 0.050 | steps   88 | mem 3153/5000 | tries_since_last=0 | 145 ms
+[buffer 5000] >>> SUCCESS #23 | ep 37 | score 9508.60 | last_reward 3000.0 | loss 20.127 | eps 0.050 | steps 89 | mem 3242/5000 | tries_since_last=0 | 160 ms
+[buffer 5000] ep    37 | SUCCESS | score   9508.60 | last_reward 3000.0 | loss  20.127 | eps 0.050 | steps   89 | mem 3242/5000 | tries_since_last=0 | 160 ms
+[buffer 5000] >>> SUCCESS #24 | ep 38 | score 9450.93 | last_reward 3000.0 | loss 22.470 | eps 0.050 | steps 88 | mem 3330/5000 | tries_since_last=0 | 155 ms
+[buffer 5000] ep    38 | SUCCESS | score   9450.93 | last_reward 3000.0 | loss  22.470 | eps 0.050 | steps   88 | mem 3330/5000 | tries_since_last=0 | 155 ms
+[buffer 5000] >>> SUCCESS #25 | ep 39 | score 9446.97 | last_reward 3000.0 | loss 23.073 | eps 0.050 | steps 88 | mem 3418/5000 | tries_since_last=0 | 153 ms
+[buffer 5000] ep    39 | SUCCESS | score   9446.97 | last_reward 3000.0 | loss  23.073 | eps 0.050 | steps   88 | mem 3418/5000 | tries_since_last=0 | 153 ms
+[buffer 5000] >>> SUCCESS #26 | ep 40 | score 9444.21 | last_reward 3000.0 | loss 25.738 | eps 0.050 | steps 88 | mem 3506/5000 | tries_since_last=0 | 145 ms
+[buffer 5000] ep    40 | SUCCESS | score   9444.21 | last_reward 3000.0 | loss  25.738 | eps 0.050 | steps   88 | mem 3506/5000 | tries_since_last=0 | 145 ms
+[buffer 5000] >>> SUCCESS #27 | ep 41 | score 9467.09 | last_reward 3000.0 | loss 22.395 | eps 0.050 | steps 90 | mem 3596/5000 | tries_since_last=0 | 151 ms
+[buffer 5000] ep    41 | SUCCESS | score   9467.09 | last_reward 3000.0 | loss  22.395 | eps 0.050 | steps   90 | mem 3596/5000 | tries_since_last=0 | 151 ms
+[buffer 5000] >>> SUCCESS #28 | ep 42 | score 9443.97 | last_reward 3000.0 | loss 21.798 | eps 0.050 | steps 88 | mem 3684/5000 | tries_since_last=0 | 148 ms
+[buffer 5000] ep    42 | SUCCESS | score   9443.97 | last_reward 3000.0 | loss  21.798 | eps 0.050 | steps   88 | mem 3684/5000 | tries_since_last=0 | 148 ms
+[buffer 5000] >>> SUCCESS #29 | ep 43 | score 9454.90 | last_reward 3000.0 | loss 25.602 | eps 0.050 | steps 88 | mem 3772/5000 | tries_since_last=0 | 199 ms
+[buffer 5000] ep    43 | SUCCESS | score   9454.90 | last_reward 3000.0 | loss  25.602 | eps 0.050 | steps   88 | mem 3772/5000 | tries_since_last=0 | 199 ms
+[buffer 5000] >>> SUCCESS #30 | ep 44 | score 9491.28 | last_reward 3000.0 | loss 26.284 | eps 0.050 | steps 90 | mem 3862/5000 | tries_since_last=0 | 193 ms
+[buffer 5000] ep    44 | SUCCESS | score   9491.28 | last_reward 3000.0 | loss  26.284 | eps 0.050 | steps   90 | mem 3862/5000 | tries_since_last=0 | 193 ms
+[buffer 5000] >>> SUCCESS #31 | ep 45 | score 9456.72 | last_reward 3000.0 | loss 22.128 | eps 0.050 | steps 88 | mem 3950/5000 | tries_since_last=0 | 159 ms
+[buffer 5000] ep    45 | SUCCESS | score   9456.72 | last_reward 3000.0 | loss  22.128 | eps 0.050 | steps   88 | mem 3950/5000 | tries_since_last=0 | 159 ms
+[buffer 5000] >>> SUCCESS #32 | ep 46 | score 9478.04 | last_reward 3000.0 | loss 48.562 | eps 0.050 | steps 90 | mem 4040/5000 | tries_since_last=0 | 170 ms
+[buffer 5000] ep    46 | SUCCESS | score   9478.04 | last_reward 3000.0 | loss  48.562 | eps 0.050 | steps   90 | mem 4040/5000 | tries_since_last=0 | 170 ms
+[buffer 5000] >>> SUCCESS #33 | ep 47 | score 9417.49 | last_reward 3000.0 | loss 37.639 | eps 0.050 | steps 88 | mem 4128/5000 | tries_since_last=0 | 159 ms
+[buffer 5000] ep    47 | SUCCESS | score   9417.49 | last_reward 3000.0 | loss  37.639 | eps 0.050 | steps   88 | mem 4128/5000 | tries_since_last=0 | 159 ms
+[buffer 5000] >>> SUCCESS #34 | ep 48 | score 9420.52 | last_reward 3000.0 | loss 31.847 | eps 0.050 | steps 88 | mem 4216/5000 | tries_since_last=0 | 161 ms
+[buffer 5000] ep    48 | SUCCESS | score   9420.52 | last_reward 3000.0 | loss  31.847 | eps 0.050 | steps   88 | mem 4216/5000 | tries_since_last=0 | 161 ms
+[buffer 5000] >>> SUCCESS #35 | ep 49 | score 9433.03 | last_reward 3000.0 | loss 24.074 | eps 0.050 | steps 88 | mem 4304/5000 | tries_since_last=0 | 165 ms
+[buffer 5000] ep    49 | SUCCESS | score   9433.03 | last_reward 3000.0 | loss  24.074 | eps 0.050 | steps   88 | mem 4304/5000 | tries_since_last=0 | 165 ms
+[buffer 5000] >>> SUCCESS #36 | ep 50 | score 9429.84 | last_reward 3000.0 | loss 24.350 | eps 0.050 | steps 88 | mem 4392/5000 | tries_since_last=0 | 160 ms
+[buffer 5000] ep    50 | SUCCESS | score   9429.84 | last_reward 3000.0 | loss  24.350 | eps 0.050 | steps   88 | mem 4392/5000 | tries_since_last=0 | 160 ms
+[buffer 5000] >>> SUCCESS #37 | ep 51 | score 9475.70 | last_reward 3000.0 | loss 28.880 | eps 0.050 | steps 90 | mem 4482/5000 | tries_since_last=0 | 152 ms
+[buffer 5000] ep    51 | SUCCESS | score   9475.70 | last_reward 3000.0 | loss  28.880 | eps 0.050 | steps   90 | mem 4482/5000 | tries_since_last=0 | 152 ms
+[buffer 5000] >>> SUCCESS #38 | ep 52 | score 9447.37 | last_reward 3000.0 | loss 24.604 | eps 0.050 | steps 88 | mem 4570/5000 | tries_since_last=0 | 160 ms
+[buffer 5000] ep    52 | SUCCESS | score   9447.37 | last_reward 3000.0 | loss  24.604 | eps 0.050 | steps   88 | mem 4570/5000 | tries_since_last=0 | 160 ms
+[buffer 5000] >>> SUCCESS #39 | ep 53 | score 9459.79 | last_reward 3000.0 | loss 27.213 | eps 0.050 | steps 88 | mem 4658/5000 | tries_since_last=0 | 149 ms
+[buffer 5000] ep    53 | SUCCESS | score   9459.79 | last_reward 3000.0 | loss  27.213 | eps 0.050 | steps   88 | mem 4658/5000 | tries_since_last=0 | 149 ms
+[buffer 5000] >>> SUCCESS #40 | ep 54 | score 9447.49 | last_reward 3000.0 | loss 30.032 | eps 0.050 | steps 88 | mem 4746/5000 | tries_since_last=0 | 156 ms
+[buffer 5000] ep    54 | SUCCESS | score   9447.49 | last_reward 3000.0 | loss  30.032 | eps 0.050 | steps   88 | mem 4746/5000 | tries_since_last=0 | 156 ms
+[buffer 5000] >>> SUCCESS #41 | ep 55 | score 9443.32 | last_reward 3000.0 | loss 26.270 | eps 0.050 | steps 88 | mem 4834/5000 | tries_since_last=0 | 179 ms
+[buffer 5000] ep    55 | SUCCESS | score   9443.32 | last_reward 3000.0 | loss  26.270 | eps 0.050 | steps   88 | mem 4834/5000 | tries_since_last=0 | 179 ms
+[buffer 5000] >>> SUCCESS #42 | ep 56 | score 9480.69 | last_reward 3000.0 | loss 26.452 | eps 0.050 | steps 90 | mem 4924/5000 | tries_since_last=0 | 188 ms
+[buffer 5000] ep    56 | SUCCESS | score   9480.69 | last_reward 3000.0 | loss  26.452 | eps 0.050 | steps   90 | mem 4924/5000 | tries_since_last=0 | 188 ms
+[buffer 5000] >>> SUCCESS #43 | ep 57 | score 9453.50 | last_reward 3000.0 | loss 26.657 | eps 0.050 | steps 88 | mem 5012/5000 | tries_since_last=0 | 173 ms
+[buffer 5000] ep    57 | SUCCESS | score   9453.50 | last_reward 3000.0 | loss  26.657 | eps 0.050 | steps   88 | mem 5012/5000 | tries_since_last=0 | 173 ms
+[buffer 5000] >>> SUCCESS #44 | ep 58 | score 9446.01 | last_reward 3000.0 | loss 33.736 | eps 0.050 | steps 88 | mem 5100/5000 | tries_since_last=0 | 173 ms
+[buffer 5000] ep    58 | SUCCESS | score   9446.01 | last_reward 3000.0 | loss  33.736 | eps 0.050 | steps   88 | mem 5100/5000 | tries_since_last=0 | 173 ms
+[buffer 5000] >>> SUCCESS #45 | ep 59 | score 9501.75 | last_reward 3000.0 | loss 29.139 | eps 0.050 | steps 89 | mem 5189/5000 | tries_since_last=0 | 196 ms
+[buffer 5000] ep    59 | SUCCESS | score   9501.75 | last_reward 3000.0 | loss  29.139 | eps 0.050 | steps   89 | mem 5189/5000 | tries_since_last=0 | 196 ms
+[buffer 5000] >>> SUCCESS #46 | ep 60 | score 9501.91 | last_reward 3000.0 | loss 28.465 | eps 0.050 | steps 89 | mem 5278/5000 | tries_since_last=0 | 187 ms
+[buffer 5000] ep    60 | SUCCESS | score   9501.91 | last_reward 3000.0 | loss  28.465 | eps 0.050 | steps   89 | mem 5278/5000 | tries_since_last=0 | 187 ms
+[buffer 5000] >>> SUCCESS #47 | ep 61 | score 9499.11 | last_reward 3000.0 | loss 32.598 | eps 0.050 | steps 89 | mem 5367/5000 | tries_since_last=0 | 201 ms
+[buffer 5000] ep    61 | SUCCESS | score   9499.11 | last_reward 3000.0 | loss  32.598 | eps 0.050 | steps   89 | mem 5367/5000 | tries_since_last=0 | 201 ms
+[buffer 5000] >>> SUCCESS #48 | ep 62 | score 9459.00 | last_reward 3000.0 | loss 30.628 | eps 0.050 | steps 88 | mem 5455/5000 | tries_since_last=0 | 193 ms
+[buffer 5000] ep    62 | SUCCESS | score   9459.00 | last_reward 3000.0 | loss  30.628 | eps 0.050 | steps   88 | mem 5455/5000 | tries_since_last=0 | 193 ms
+[buffer 5000] >>> SUCCESS #49 | ep 63 | score 9449.53 | last_reward 3000.0 | loss 30.714 | eps 0.050 | steps 88 | mem 5543/5000 | tries_since_last=0 | 187 ms
+[buffer 5000] ep    63 | SUCCESS | score   9449.53 | last_reward 3000.0 | loss  30.714 | eps 0.050 | steps   88 | mem 5543/5000 | tries_since_last=0 | 187 ms
+[buffer 5000] >>> SUCCESS #50 | ep 64 | score 9444.63 | last_reward 3000.0 | loss 22.486 | eps 0.050 | steps 88 | mem 5631/5000 | tries_since_last=0 | 171 ms
+[buffer 5000] ep    64 | SUCCESS | score   9444.63 | last_reward 3000.0 | loss  22.486 | eps 0.050 | steps   88 | mem 5631/5000 | tries_since_last=0 | 171 ms
+
+==== Summary (capacity=5000) ====
+episodes: 65
+successes: 50
+success_rate: 0.769
+avg_score: 7905.46
+std_score: 2924.09
+avg_loss: 20.907
+avg_epsilon: 0.268
+avg_tries: 0.30
+tries_std: 1.28
+time_min: 0.14
+episodes_per_min: 455.1
+
+
+
+==== Start experiment: replay capacity (max_mem_size)=20000, batch_size=128 ====
+[buffer 20000] ep     0 | fail    | score   1508.14 | last_reward -500.0 | loss   0.000 | eps 0.900 | steps   42 | mem 42/20000 | tries=1 | 1 ms
+[buffer 20000] ep     1 | fail    | score   2939.64 | last_reward -500.0 | loss   0.000 | eps 0.900 | steps   62 | mem 104/20000 | tries=2 | 2 ms
+[buffer 20000] >>> SUCCESS #1 | ep 2 | score 9375.27 | last_reward 3000.0 | loss 0.000 | eps 0.900 | steps 111 | mem 215/20000 | tries_since_last=2 | 3 ms
+[buffer 20000] ep     2 | SUCCESS | score   9375.27 | last_reward 3000.0 | loss   0.000 | eps 0.900 | steps  111 | mem 215/20000 | tries_since_last=2 | 3 ms
+[buffer 20000] ep     3 | fail    | score   2007.56 | last_reward -500.0 | loss   0.000 | eps 0.900 | steps   47 | mem 262/20000 | tries=1 | 1 ms
+[buffer 20000] >>> SUCCESS #2 | ep 4 | score 9399.54 | last_reward 3000.0 | loss 0.000 | eps 0.900 | steps 107 | mem 369/20000 | tries_since_last=1 | 2 ms
+[buffer 20000] ep     4 | SUCCESS | score   9399.54 | last_reward 3000.0 | loss   0.000 | eps 0.900 | steps  107 | mem 369/20000 | tries_since_last=1 | 2 ms
+[buffer 20000] ep     5 | fail    | score   3540.84 | last_reward -500.0 | loss   0.000 | eps 0.900 | steps   66 | mem 435/20000 | tries=1 | 2 ms
+[buffer 20000] ep     6 | fail    | score   2412.02 | last_reward -500.0 | loss   0.000 | eps 0.900 | steps   53 | mem 488/20000 | tries=2 | 1 ms
+[buffer 20000] ep     7 | fail    | score    889.46 | last_reward -500.0 | loss   0.000 | eps 0.900 | steps   34 | mem 522/20000 | tries=3 | 1 ms
+[buffer 20000] ep     8 | fail    | score   1620.25 | last_reward -500.0 | loss   0.000 | eps 0.900 | steps   40 | mem 562/20000 | tries=4 | 1 ms
+[buffer 20000] ep     9 | fail    | score   4186.39 | last_reward -500.0 | loss   0.000 | eps 0.900 | steps   78 | mem 640/20000 | tries=5 | 2 ms
+[buffer 20000] ep    10 | fail    | score   1258.15 | last_reward -500.0 | loss   0.000 | eps 0.900 | steps   35 | mem 675/20000 | tries=6 | 1 ms
+[buffer 20000] ep    11 | fail    | score   2194.96 | last_reward -500.0 | loss   0.000 | eps 0.900 | steps   49 | mem 724/20000 | tries=7 | 1 ms
+[buffer 20000] ep    12 | fail    | score   1354.68 | last_reward -500.0 | loss   0.000 | eps 0.900 | steps   39 | mem 763/20000 | tries=8 | 3 ms
+[buffer 20000] ep    13 | fail    | score   1369.20 | last_reward -500.0 | loss   0.000 | eps 0.900 | steps   48 | mem 811/20000 | tries=9 | 2 ms
+[buffer 20000] ep    14 | fail    | score   2749.96 | last_reward -500.0 | loss   0.000 | eps 0.900 | steps   63 | mem 874/20000 | tries=10 | 1 ms
+[buffer 20000] ep    15 | fail    | score   5553.23 | last_reward -500.0 | loss   0.000 | eps 0.900 | steps  100 | mem 974/20000 | tries=11 | 3 ms
+[buffer 20000] ep    16 | fail    | score   5308.74 | last_reward -500.0 | loss  67.954 | eps 0.839 | steps   86 | mem 1060/20000 | tries=12 | 137 ms
+[buffer 20000] ep    17 | fail    | score   4813.73 | last_reward -500.0 | loss  59.699 | eps 0.758 | steps   81 | mem 1141/20000 | tries=13 | 158 ms
+[buffer 20000] ep    18 | fail    | score    648.76 | last_reward -500.0 | loss  51.822 | eps 0.726 | steps   32 | mem 1173/20000 | tries=14 | 64 ms
+[buffer 20000] ep    19 | fail    | score   2703.83 | last_reward -500.0 | loss  43.096 | eps 0.673 | steps   53 | mem 1226/20000 | tries=15 | 101 ms
+[buffer 20000] ep    20 | fail    | score   2918.37 | last_reward -500.0 | loss  31.584 | eps 0.616 | steps   57 | mem 1283/20000 | tries=16 | 93 ms
+[buffer 20000] ep    21 | fail    | score    742.40 | last_reward -500.0 | loss  21.410 | eps 0.586 | steps   30 | mem 1313/20000 | tries=17 | 52 ms
+[buffer 20000] ep    22 | fail    | score   2400.25 | last_reward -500.0 | loss  20.024 | eps 0.538 | steps   48 | mem 1361/20000 | tries=18 | 103 ms
+[buffer 20000] ep    23 | fail    | score   1057.31 | last_reward -500.0 | loss  20.419 | eps 0.505 | steps   33 | mem 1394/20000 | tries=19 | 79 ms
+[buffer 20000] ep    24 | fail    | score    327.51 | last_reward -500.0 | loss  16.478 | eps 0.474 | steps   31 | mem 1425/20000 | tries=20 | 63 ms
+[buffer 20000] ep    25 | fail    | score    771.00 | last_reward -500.0 | loss  16.202 | eps 0.439 | steps   35 | mem 1460/20000 | tries=21 | 71 ms
+[buffer 20000] ep    26 | fail    | score    605.52 | last_reward -500.0 | loss  14.357 | eps 0.412 | steps   27 | mem 1487/20000 | tries=22 | 53 ms
+[buffer 20000] ep    27 | fail    | score   2533.01 | last_reward -500.0 | loss  18.432 | eps 0.364 | steps   48 | mem 1535/20000 | tries=23 | 83 ms
+[buffer 20000] >>> SUCCESS #3 | ep 28 | score 9465.74 | last_reward 3000.0 | loss 13.360 | eps 0.271 | steps 93 | mem 1628/20000 | tries_since_last=23 | 168 ms
+[buffer 20000] ep    28 | SUCCESS | score   9465.74 | last_reward 3000.0 | loss  13.360 | eps 0.271 | steps   93 | mem 1628/20000 | tries_since_last=23 | 168 ms
+[buffer 20000] >>> SUCCESS #4 | ep 29 | score 9432.68 | last_reward 3000.0 | loss 13.230 | eps 0.181 | steps 90 | mem 1718/20000 | tries_since_last=0 | 192 ms
+[buffer 20000] ep    29 | SUCCESS | score   9432.68 | last_reward 3000.0 | loss  13.230 | eps 0.181 | steps   90 | mem 1718/20000 | tries_since_last=0 | 192 ms
+[buffer 20000] >>> SUCCESS #5 | ep 30 | score 9438.99 | last_reward 3000.0 | loss 15.627 | eps 0.092 | steps 89 | mem 1807/20000 | tries_since_last=0 | 153 ms
+[buffer 20000] ep    30 | SUCCESS | score   9438.99 | last_reward 3000.0 | loss  15.627 | eps 0.092 | steps   89 | mem 1807/20000 | tries_since_last=0 | 153 ms
+[buffer 20000] >>> SUCCESS #6 | ep 31 | score 9422.49 | last_reward 3000.0 | loss 17.261 | eps 0.050 | steps 89 | mem 1896/20000 | tries_since_last=0 | 150 ms
+[buffer 20000] ep    31 | SUCCESS | score   9422.49 | last_reward 3000.0 | loss  17.261 | eps 0.050 | steps   89 | mem 1896/20000 | tries_since_last=0 | 150 ms
+[buffer 20000] >>> SUCCESS #7 | ep 32 | score 9483.65 | last_reward 3000.0 | loss 15.733 | eps 0.050 | steps 89 | mem 1985/20000 | tries_since_last=0 | 156 ms
+[buffer 20000] ep    32 | SUCCESS | score   9483.65 | last_reward 3000.0 | loss  15.733 | eps 0.050 | steps   89 | mem 1985/20000 | tries_since_last=0 | 156 ms
+[buffer 20000] >>> SUCCESS #8 | ep 33 | score 9505.40 | last_reward 3000.0 | loss 16.872 | eps 0.050 | steps 89 | mem 2074/20000 | tries_since_last=0 | 160 ms
+[buffer 20000] ep    33 | SUCCESS | score   9505.40 | last_reward 3000.0 | loss  16.872 | eps 0.050 | steps   89 | mem 2074/20000 | tries_since_last=0 | 160 ms
+[buffer 20000] >>> SUCCESS #9 | ep 34 | score 9444.38 | last_reward 3000.0 | loss 20.779 | eps 0.050 | steps 88 | mem 2162/20000 | tries_since_last=0 | 155 ms
+[buffer 20000] ep    34 | SUCCESS | score   9444.38 | last_reward 3000.0 | loss  20.779 | eps 0.050 | steps   88 | mem 2162/20000 | tries_since_last=0 | 155 ms
+[buffer 20000] >>> SUCCESS #10 | ep 35 | score 9457.65 | last_reward 3000.0 | loss 18.872 | eps 0.050 | steps 92 | mem 2254/20000 | tries_since_last=0 | 205 ms
+[buffer 20000] ep    35 | SUCCESS | score   9457.65 | last_reward 3000.0 | loss  18.872 | eps 0.050 | steps   92 | mem 2254/20000 | tries_since_last=0 | 205 ms
+[buffer 20000] >>> SUCCESS #11 | ep 36 | score 9439.51 | last_reward 3000.0 | loss 23.465 | eps 0.050 | steps 88 | mem 2342/20000 | tries_since_last=0 | 180 ms
+[buffer 20000] ep    36 | SUCCESS | score   9439.51 | last_reward 3000.0 | loss  23.465 | eps 0.050 | steps   88 | mem 2342/20000 | tries_since_last=0 | 180 ms
+[buffer 20000] >>> SUCCESS #12 | ep 37 | score 9436.59 | last_reward 3000.0 | loss 20.532 | eps 0.050 | steps 88 | mem 2430/20000 | tries_since_last=0 | 150 ms
+[buffer 20000] ep    37 | SUCCESS | score   9436.59 | last_reward 3000.0 | loss  20.532 | eps 0.050 | steps   88 | mem 2430/20000 | tries_since_last=0 | 150 ms
+[buffer 20000] >>> SUCCESS #13 | ep 38 | score 9447.08 | last_reward 3000.0 | loss 25.273 | eps 0.050 | steps 88 | mem 2518/20000 | tries_since_last=0 | 177 ms
+[buffer 20000] ep    38 | SUCCESS | score   9447.08 | last_reward 3000.0 | loss  25.273 | eps 0.050 | steps   88 | mem 2518/20000 | tries_since_last=0 | 177 ms
+[buffer 20000] >>> SUCCESS #14 | ep 39 | score 9449.94 | last_reward 3000.0 | loss 20.864 | eps 0.050 | steps 89 | mem 2607/20000 | tries_since_last=0 | 213 ms
+[buffer 20000] ep    39 | SUCCESS | score   9449.94 | last_reward 3000.0 | loss  20.864 | eps 0.050 | steps   89 | mem 2607/20000 | tries_since_last=0 | 213 ms
+[buffer 20000] >>> SUCCESS #15 | ep 40 | score 9433.56 | last_reward 3000.0 | loss 24.183 | eps 0.050 | steps 88 | mem 2695/20000 | tries_since_last=0 | 214 ms
+[buffer 20000] ep    40 | SUCCESS | score   9433.56 | last_reward 3000.0 | loss  24.183 | eps 0.050 | steps   88 | mem 2695/20000 | tries_since_last=0 | 214 ms
+[buffer 20000] >>> SUCCESS #16 | ep 41 | score 9443.71 | last_reward 3000.0 | loss 25.757 | eps 0.050 | steps 88 | mem 2783/20000 | tries_since_last=0 | 215 ms
+[buffer 20000] ep    41 | SUCCESS | score   9443.71 | last_reward 3000.0 | loss  25.757 | eps 0.050 | steps   88 | mem 2783/20000 | tries_since_last=0 | 215 ms
+[buffer 20000] >>> SUCCESS #17 | ep 42 | score 9498.01 | last_reward 3000.0 | loss 23.449 | eps 0.050 | steps 89 | mem 2872/20000 | tries_since_last=0 | 178 ms
+[buffer 20000] ep    42 | SUCCESS | score   9498.01 | last_reward 3000.0 | loss  23.449 | eps 0.050 | steps   89 | mem 2872/20000 | tries_since_last=0 | 178 ms
+[buffer 20000] >>> SUCCESS #18 | ep 43 | score 9511.46 | last_reward 3000.0 | loss 25.588 | eps 0.050 | steps 89 | mem 2961/20000 | tries_since_last=0 | 184 ms
+[buffer 20000] ep    43 | SUCCESS | score   9511.46 | last_reward 3000.0 | loss  25.588 | eps 0.050 | steps   89 | mem 2961/20000 | tries_since_last=0 | 184 ms
+[buffer 20000] >>> SUCCESS #19 | ep 44 | score 9453.45 | last_reward 3000.0 | loss 26.135 | eps 0.050 | steps 88 | mem 3049/20000 | tries_since_last=0 | 171 ms
+[buffer 20000] ep    44 | SUCCESS | score   9453.45 | last_reward 3000.0 | loss  26.135 | eps 0.050 | steps   88 | mem 3049/20000 | tries_since_last=0 | 171 ms
+[buffer 20000] >>> SUCCESS #20 | ep 45 | score 9445.02 | last_reward 3000.0 | loss 21.676 | eps 0.050 | steps 88 | mem 3137/20000 | tries_since_last=0 | 161 ms
+[buffer 20000] ep    45 | SUCCESS | score   9445.02 | last_reward 3000.0 | loss  21.676 | eps 0.050 | steps   88 | mem 3137/20000 | tries_since_last=0 | 161 ms
+[buffer 20000] >>> SUCCESS #21 | ep 46 | score 9449.68 | last_reward 3000.0 | loss 22.234 | eps 0.050 | steps 88 | mem 3225/20000 | tries_since_last=0 | 161 ms
+[buffer 20000] ep    46 | SUCCESS | score   9449.68 | last_reward 3000.0 | loss  22.234 | eps 0.050 | steps   88 | mem 3225/20000 | tries_since_last=0 | 161 ms
+[buffer 20000] >>> SUCCESS #22 | ep 47 | score 9445.16 | last_reward 3000.0 | loss 24.508 | eps 0.050 | steps 88 | mem 3313/20000 | tries_since_last=0 | 161 ms
+[buffer 20000] ep    47 | SUCCESS | score   9445.16 | last_reward 3000.0 | loss  24.508 | eps 0.050 | steps   88 | mem 3313/20000 | tries_since_last=0 | 161 ms
+[buffer 20000] >>> SUCCESS #23 | ep 48 | score 9455.05 | last_reward 3000.0 | loss 22.371 | eps 0.050 | steps 88 | mem 3401/20000 | tries_since_last=0 | 153 ms
+[buffer 20000] ep    48 | SUCCESS | score   9455.05 | last_reward 3000.0 | loss  22.371 | eps 0.050 | steps   88 | mem 3401/20000 | tries_since_last=0 | 153 ms
+[buffer 20000] >>> SUCCESS #24 | ep 49 | score 9463.29 | last_reward 3000.0 | loss 19.150 | eps 0.050 | steps 88 | mem 3489/20000 | tries_since_last=0 | 163 ms
+[buffer 20000] ep    49 | SUCCESS | score   9463.29 | last_reward 3000.0 | loss  19.150 | eps 0.050 | steps   88 | mem 3489/20000 | tries_since_last=0 | 163 ms
+[buffer 20000] >>> SUCCESS #25 | ep 50 | score 9508.17 | last_reward 3000.0 | loss 23.704 | eps 0.050 | steps 89 | mem 3578/20000 | tries_since_last=0 | 153 ms
+[buffer 20000] ep    50 | SUCCESS | score   9508.17 | last_reward 3000.0 | loss  23.704 | eps 0.050 | steps   89 | mem 3578/20000 | tries_since_last=0 | 153 ms
+[buffer 20000] >>> SUCCESS #26 | ep 51 | score 9507.31 | last_reward 3000.0 | loss 23.732 | eps 0.050 | steps 89 | mem 3667/20000 | tries_since_last=0 | 155 ms
+[buffer 20000] ep    51 | SUCCESS | score   9507.31 | last_reward 3000.0 | loss  23.732 | eps 0.050 | steps   89 | mem 3667/20000 | tries_since_last=0 | 155 ms
+[buffer 20000] >>> SUCCESS #27 | ep 52 | score 9511.36 | last_reward 3000.0 | loss 22.340 | eps 0.050 | steps 89 | mem 3756/20000 | tries_since_last=0 | 163 ms
+[buffer 20000] ep    52 | SUCCESS | score   9511.36 | last_reward 3000.0 | loss  22.340 | eps 0.050 | steps   89 | mem 3756/20000 | tries_since_last=0 | 163 ms
+[buffer 20000] >>> SUCCESS #28 | ep 53 | score 9453.31 | last_reward 3000.0 | loss 22.888 | eps 0.050 | steps 88 | mem 3844/20000 | tries_since_last=0 | 156 ms
+[buffer 20000] ep    53 | SUCCESS | score   9453.31 | last_reward 3000.0 | loss  22.888 | eps 0.050 | steps   88 | mem 3844/20000 | tries_since_last=0 | 156 ms
+[buffer 20000] >>> SUCCESS #29 | ep 54 | score 9436.79 | last_reward 3000.0 | loss 24.770 | eps 0.050 | steps 88 | mem 3932/20000 | tries_since_last=0 | 162 ms
+[buffer 20000] ep    54 | SUCCESS | score   9436.79 | last_reward 3000.0 | loss  24.770 | eps 0.050 | steps   88 | mem 3932/20000 | tries_since_last=0 | 162 ms
+[buffer 20000] >>> SUCCESS #30 | ep 55 | score 9449.99 | last_reward 3000.0 | loss 44.193 | eps 0.050 | steps 88 | mem 4020/20000 | tries_since_last=0 | 158 ms
+[buffer 20000] ep    55 | SUCCESS | score   9449.99 | last_reward 3000.0 | loss  44.193 | eps 0.050 | steps   88 | mem 4020/20000 | tries_since_last=0 | 158 ms
+[buffer 20000] >>> SUCCESS #31 | ep 56 | score 9468.73 | last_reward 3000.0 | loss 44.195 | eps 0.050 | steps 89 | mem 4109/20000 | tries_since_last=0 | 158 ms
+[buffer 20000] ep    56 | SUCCESS | score   9468.73 | last_reward 3000.0 | loss  44.195 | eps 0.050 | steps   89 | mem 4109/20000 | tries_since_last=0 | 158 ms
+[buffer 20000] >>> SUCCESS #32 | ep 57 | score 9506.00 | last_reward 3000.0 | loss 29.945 | eps 0.050 | steps 89 | mem 4198/20000 | tries_since_last=0 | 162 ms
+[buffer 20000] ep    57 | SUCCESS | score   9506.00 | last_reward 3000.0 | loss  29.945 | eps 0.050 | steps   89 | mem 4198/20000 | tries_since_last=0 | 162 ms
+[buffer 20000] >>> SUCCESS #33 | ep 58 | score 9437.06 | last_reward 3000.0 | loss 24.734 | eps 0.050 | steps 88 | mem 4286/20000 | tries_since_last=0 | 160 ms
+[buffer 20000] ep    58 | SUCCESS | score   9437.06 | last_reward 3000.0 | loss  24.734 | eps 0.050 | steps   88 | mem 4286/20000 | tries_since_last=0 | 160 ms
+[buffer 20000] >>> SUCCESS #34 | ep 59 | score 9452.21 | last_reward 3000.0 | loss 25.962 | eps 0.050 | steps 88 | mem 4374/20000 | tries_since_last=0 | 162 ms
+[buffer 20000] ep    59 | SUCCESS | score   9452.21 | last_reward 3000.0 | loss  25.962 | eps 0.050 | steps   88 | mem 4374/20000 | tries_since_last=0 | 162 ms
+[buffer 20000] >>> SUCCESS #35 | ep 60 | score 9448.25 | last_reward 3000.0 | loss 22.206 | eps 0.050 | steps 88 | mem 4462/20000 | tries_since_last=0 | 146 ms
+[buffer 20000] ep    60 | SUCCESS | score   9448.25 | last_reward 3000.0 | loss  22.206 | eps 0.050 | steps   88 | mem 4462/20000 | tries_since_last=0 | 146 ms
+[buffer 20000] >>> SUCCESS #36 | ep 61 | score 9445.53 | last_reward 3000.0 | loss 29.378 | eps 0.050 | steps 88 | mem 4550/20000 | tries_since_last=0 | 167 ms
+[buffer 20000] ep    61 | SUCCESS | score   9445.53 | last_reward 3000.0 | loss  29.378 | eps 0.050 | steps   88 | mem 4550/20000 | tries_since_last=0 | 167 ms
+[buffer 20000] >>> SUCCESS #37 | ep 62 | score 9453.97 | last_reward 3000.0 | loss 28.314 | eps 0.050 | steps 88 | mem 4638/20000 | tries_since_last=0 | 157 ms
+[buffer 20000] ep    62 | SUCCESS | score   9453.97 | last_reward 3000.0 | loss  28.314 | eps 0.050 | steps   88 | mem 4638/20000 | tries_since_last=0 | 157 ms
+[buffer 20000] >>> SUCCESS #38 | ep 63 | score 9442.36 | last_reward 3000.0 | loss 25.999 | eps 0.050 | steps 88 | mem 4726/20000 | tries_since_last=0 | 160 ms
+[buffer 20000] ep    63 | SUCCESS | score   9442.36 | last_reward 3000.0 | loss  25.999 | eps 0.050 | steps   88 | mem 4726/20000 | tries_since_last=0 | 160 ms
+[buffer 20000] >>> SUCCESS #39 | ep 64 | score 9437.26 | last_reward 3000.0 | loss 22.249 | eps 0.050 | steps 88 | mem 4814/20000 | tries_since_last=0 | 152 ms
+[buffer 20000] ep    64 | SUCCESS | score   9437.26 | last_reward 3000.0 | loss  22.249 | eps 0.050 | steps   88 | mem 4814/20000 | tries_since_last=0 | 152 ms
+[buffer 20000] >>> SUCCESS #40 | ep 65 | score 9434.60 | last_reward 3000.0 | loss 26.618 | eps 0.050 | steps 88 | mem 4902/20000 | tries_since_last=0 | 158 ms
+[buffer 20000] ep    65 | SUCCESS | score   9434.60 | last_reward 3000.0 | loss  26.618 | eps 0.050 | steps   88 | mem 4902/20000 | tries_since_last=0 | 158 ms
+[buffer 20000] >>> SUCCESS #41 | ep 66 | score 9451.67 | last_reward 3000.0 | loss 24.868 | eps 0.050 | steps 88 | mem 4990/20000 | tries_since_last=0 | 156 ms
+[buffer 20000] ep    66 | SUCCESS | score   9451.67 | last_reward 3000.0 | loss  24.868 | eps 0.050 | steps   88 | mem 4990/20000 | tries_since_last=0 | 156 ms
+[buffer 20000] >>> SUCCESS #42 | ep 67 | score 9454.89 | last_reward 3000.0 | loss 29.068 | eps 0.050 | steps 88 | mem 5078/20000 | tries_since_last=0 | 152 ms
+[buffer 20000] ep    67 | SUCCESS | score   9454.89 | last_reward 3000.0 | loss  29.068 | eps 0.050 | steps   88 | mem 5078/20000 | tries_since_last=0 | 152 ms
+[buffer 20000] >>> SUCCESS #43 | ep 68 | score 9443.89 | last_reward 3000.0 | loss 31.245 | eps 0.050 | steps 88 | mem 5166/20000 | tries_since_last=0 | 155 ms
+[buffer 20000] ep    68 | SUCCESS | score   9443.89 | last_reward 3000.0 | loss  31.245 | eps 0.050 | steps   88 | mem 5166/20000 | tries_since_last=0 | 155 ms
+[buffer 20000] >>> SUCCESS #44 | ep 69 | score 9448.55 | last_reward 3000.0 | loss 27.477 | eps 0.050 | steps 88 | mem 5254/20000 | tries_since_last=0 | 144 ms
+[buffer 20000] ep    69 | SUCCESS | score   9448.55 | last_reward 3000.0 | loss  27.477 | eps 0.050 | steps   88 | mem 5254/20000 | tries_since_last=0 | 144 ms
+[buffer 20000] >>> SUCCESS #45 | ep 70 | score 9441.56 | last_reward 3000.0 | loss 26.694 | eps 0.050 | steps 88 | mem 5342/20000 | tries_since_last=0 | 156 ms
+[buffer 20000] ep    70 | SUCCESS | score   9441.56 | last_reward 3000.0 | loss  26.694 | eps 0.050 | steps   88 | mem 5342/20000 | tries_since_last=0 | 156 ms
+[buffer 20000] >>> SUCCESS #46 | ep 71 | score 9439.91 | last_reward 3000.0 | loss 25.601 | eps 0.050 | steps 88 | mem 5430/20000 | tries_since_last=0 | 148 ms
+[buffer 20000] ep    71 | SUCCESS | score   9439.91 | last_reward 3000.0 | loss  25.601 | eps 0.050 | steps   88 | mem 5430/20000 | tries_since_last=0 | 148 ms
+[buffer 20000] >>> SUCCESS #47 | ep 72 | score 9449.70 | last_reward 3000.0 | loss 28.588 | eps 0.050 | steps 89 | mem 5519/20000 | tries_since_last=0 | 165 ms
+[buffer 20000] ep    72 | SUCCESS | score   9449.70 | last_reward 3000.0 | loss  28.588 | eps 0.050 | steps   89 | mem 5519/20000 | tries_since_last=0 | 165 ms
+[buffer 20000] >>> SUCCESS #48 | ep 73 | score 9487.04 | last_reward 3000.0 | loss 29.034 | eps 0.050 | steps 89 | mem 5608/20000 | tries_since_last=0 | 157 ms
+[buffer 20000] ep    73 | SUCCESS | score   9487.04 | last_reward 3000.0 | loss  29.034 | eps 0.050 | steps   89 | mem 5608/20000 | tries_since_last=0 | 157 ms
+[buffer 20000] >>> SUCCESS #49 | ep 74 | score 9486.81 | last_reward 3000.0 | loss 24.674 | eps 0.050 | steps 89 | mem 5697/20000 | tries_since_last=0 | 154 ms
+[buffer 20000] ep    74 | SUCCESS | score   9486.81 | last_reward 3000.0 | loss  24.674 | eps 0.050 | steps   89 | mem 5697/20000 | tries_since_last=0 | 154 ms
+[buffer 20000] >>> SUCCESS #50 | ep 75 | score 9472.11 | last_reward 3000.0 | loss 25.390 | eps 0.050 | steps 90 | mem 5787/20000 | tries_since_last=0 | 165 ms
+[buffer 20000] ep    75 | SUCCESS | score   9472.11 | last_reward 3000.0 | loss  25.390 | eps 0.050 | steps   90 | mem 5787/20000 | tries_since_last=0 | 165 ms
+
+==== Summary (capacity=20000) ====
+episodes: 76
+successes: 50
+success_rate: 0.658
+avg_score: 6989.23
+std_score: 3545.75
+avg_loss: 20.424
+avg_epsilon: 0.317
+avg_tries: 0.52
+tries_std: 3.26
+time_min: 0.15
+episodes_per_min: 507.1
+
+
+
+==== Start experiment: replay capacity (max_mem_size)=100000, batch_size=128 ====
+[buffer 100000] ep     0 | fail    | score   1936.13 | last_reward -500.0 | loss   0.000 | eps 0.900 | steps   43 | mem 43/100000 | tries=1 | 1 ms
+[buffer 100000] ep     1 | fail    | score   1244.78 | last_reward -500.0 | loss   0.000 | eps 0.900 | steps   36 | mem 79/100000 | tries=2 | 1 ms
+[buffer 100000] ep     2 | fail    | score   2734.84 | last_reward -500.0 | loss   0.000 | eps 0.900 | steps   70 | mem 149/100000 | tries=3 | 2 ms
+[buffer 100000] ep     3 | fail    | score   2418.76 | last_reward -500.0 | loss   0.000 | eps 0.900 | steps   49 | mem 198/100000 | tries=4 | 1 ms
+[buffer 100000] ep     4 | fail    | score   2543.24 | last_reward -500.0 | loss   0.000 | eps 0.900 | steps   58 | mem 256/100000 | tries=5 | 2 ms
+[buffer 100000] ep     5 | fail    | score   1584.09 | last_reward -500.0 | loss   0.000 | eps 0.900 | steps   41 | mem 297/100000 | tries=6 | 1 ms
+[buffer 100000] ep     6 | fail    | score   4813.67 | last_reward -500.0 | loss   0.000 | eps 0.900 | steps   89 | mem 386/100000 | tries=7 | 2 ms
+[buffer 100000] ep     7 | fail    | score   2042.71 | last_reward -500.0 | loss   0.000 | eps 0.900 | steps   44 | mem 430/100000 | tries=8 | 1 ms
+[buffer 100000] >>> SUCCESS #1 | ep 8 | score 9403.66 | last_reward 3000.0 | loss 0.000 | eps 0.900 | steps 102 | mem 532/100000 | tries_since_last=8 | 3 ms
+[buffer 100000] ep     8 | SUCCESS | score   9403.66 | last_reward 3000.0 | loss   0.000 | eps 0.900 | steps  102 | mem 532/100000 | tries_since_last=8 | 3 ms
+[buffer 100000] ep     9 | fail    | score   2970.78 | last_reward -500.0 | loss   0.000 | eps 0.900 | steps   66 | mem 598/100000 | tries=1 | 2 ms
+[buffer 100000] ep    10 | fail    | score   2962.43 | last_reward -500.0 | loss   0.000 | eps 0.900 | steps   57 | mem 655/100000 | tries=2 | 3 ms
+[buffer 100000] >>> SUCCESS #2 | ep 11 | score 9493.81 | last_reward 3000.0 | loss 0.000 | eps 0.900 | steps 106 | mem 761/100000 | tries_since_last=2 | 3 ms
+[buffer 100000] ep    11 | SUCCESS | score   9493.81 | last_reward 3000.0 | loss   0.000 | eps 0.900 | steps  106 | mem 761/100000 | tries_since_last=2 | 3 ms
+[buffer 100000] ep    12 | fail    | score    960.61 | last_reward -500.0 | loss   0.000 | eps 0.900 | steps   36 | mem 797/100000 | tries=1 | 2 ms
+[buffer 100000] ep    13 | fail    | score   1010.10 | last_reward -500.0 | loss   0.000 | eps 0.900 | steps   46 | mem 843/100000 | tries=2 | 1 ms
+[buffer 100000] ep    14 | fail    | score   3886.29 | last_reward -500.0 | loss   0.000 | eps 0.900 | steps   84 | mem 927/100000 | tries=3 | 2 ms
+[buffer 100000] ep    15 | fail    | score   2095.81 | last_reward -500.0 | loss   0.000 | eps 0.900 | steps   48 | mem 975/100000 | tries=4 | 2 ms
+[buffer 100000] ep    16 | fail    | score   4161.80 | last_reward -500.0 | loss  63.395 | eps 0.844 | steps   80 | mem 1055/100000 | tries=5 | 101 ms
+[buffer 100000] >>> SUCCESS #3 | ep 17 | score 9435.29 | last_reward 3000.0 | loss 60.645 | eps 0.746 | steps 98 | mem 1153/100000 | tries_since_last=5 | 162 ms
+[buffer 100000] ep    17 | SUCCESS | score   9435.29 | last_reward 3000.0 | loss  60.645 | eps 0.746 | steps   98 | mem 1153/100000 | tries_since_last=5 | 162 ms
+[buffer 100000] ep    18 | fail    | score    830.03 | last_reward -500.0 | loss  46.673 | eps 0.717 | steps   29 | mem 1182/100000 | tries=1 | 50 ms
+[buffer 100000] ep    19 | fail    | score    838.36 | last_reward -500.0 | loss  47.742 | eps 0.687 | steps   30 | mem 1212/100000 | tries=2 | 55 ms
+[buffer 100000] ep    20 | fail    | score   1066.47 | last_reward -500.0 | loss  41.475 | eps 0.657 | steps   30 | mem 1242/100000 | tries=3 | 57 ms
+[buffer 100000] ep    21 | fail    | score    874.55 | last_reward -500.0 | loss  34.754 | eps 0.626 | steps   31 | mem 1273/100000 | tries=4 | 57 ms
+[buffer 100000] ep    22 | fail    | score    856.27 | last_reward -500.0 | loss  28.355 | eps 0.590 | steps   36 | mem 1309/100000 | tries=5 | 66 ms
+[buffer 100000] ep    23 | fail    | score   2060.19 | last_reward -500.0 | loss  25.148 | eps 0.543 | steps   47 | mem 1356/100000 | tries=6 | 83 ms
+[buffer 100000] ep    24 | fail    | score   1092.82 | last_reward -500.0 | loss  20.924 | eps 0.502 | steps   41 | mem 1397/100000 | tries=7 | 80 ms
+[buffer 100000] ep    25 | fail    | score   2881.01 | last_reward -500.0 | loss  20.690 | eps 0.445 | steps   57 | mem 1454/100000 | tries=8 | 121 ms
+[buffer 100000] >>> SUCCESS #4 | ep 26 | score 9428.82 | last_reward 3000.0 | loss 17.420 | eps 0.353 | steps 92 | mem 1546/100000 | tries_since_last=8 | 188 ms
+[buffer 100000] ep    26 | SUCCESS | score   9428.82 | last_reward 3000.0 | loss  17.420 | eps 0.353 | steps   92 | mem 1546/100000 | tries_since_last=8 | 188 ms
+[buffer 100000] >>> SUCCESS #5 | ep 27 | score 9451.78 | last_reward 3000.0 | loss 18.100 | eps 0.261 | steps 92 | mem 1638/100000 | tries_since_last=0 | 177 ms
+[buffer 100000] ep    27 | SUCCESS | score   9451.78 | last_reward 3000.0 | loss  18.100 | eps 0.261 | steps   92 | mem 1638/100000 | tries_since_last=0 | 177 ms
+[buffer 100000] >>> SUCCESS #6 | ep 28 | score 9442.64 | last_reward 3000.0 | loss 19.162 | eps 0.170 | steps 91 | mem 1729/100000 | tries_since_last=0 | 178 ms
+[buffer 100000] ep    28 | SUCCESS | score   9442.64 | last_reward 3000.0 | loss  19.162 | eps 0.170 | steps   91 | mem 1729/100000 | tries_since_last=0 | 178 ms
+[buffer 100000] >>> SUCCESS #7 | ep 29 | score 9492.14 | last_reward 3000.0 | loss 19.100 | eps 0.081 | steps 89 | mem 1818/100000 | tries_since_last=0 | 193 ms
+[buffer 100000] ep    29 | SUCCESS | score   9492.14 | last_reward 3000.0 | loss  19.100 | eps 0.081 | steps   89 | mem 1818/100000 | tries_since_last=0 | 193 ms
+[buffer 100000] >>> SUCCESS #8 | ep 30 | score 9502.32 | last_reward 3000.0 | loss 21.073 | eps 0.050 | steps 89 | mem 1907/100000 | tries_since_last=0 | 178 ms
+[buffer 100000] ep    30 | SUCCESS | score   9502.32 | last_reward 3000.0 | loss  21.073 | eps 0.050 | steps   89 | mem 1907/100000 | tries_since_last=0 | 178 ms
+[buffer 100000] >>> SUCCESS #9 | ep 31 | score 9495.46 | last_reward 3000.0 | loss 15.565 | eps 0.050 | steps 89 | mem 1996/100000 | tries_since_last=0 | 203 ms
+[buffer 100000] ep    31 | SUCCESS | score   9495.46 | last_reward 3000.0 | loss  15.565 | eps 0.050 | steps   89 | mem 1996/100000 | tries_since_last=0 | 203 ms
+[buffer 100000] >>> SUCCESS #10 | ep 32 | score 9495.26 | last_reward 3000.0 | loss 21.116 | eps 0.050 | steps 89 | mem 2085/100000 | tries_since_last=0 | 161 ms
+[buffer 100000] ep    32 | SUCCESS | score   9495.26 | last_reward 3000.0 | loss  21.116 | eps 0.050 | steps   89 | mem 2085/100000 | tries_since_last=0 | 161 ms
+[buffer 100000] >>> SUCCESS #11 | ep 33 | score 9513.57 | last_reward 3000.0 | loss 19.832 | eps 0.050 | steps 89 | mem 2174/100000 | tries_since_last=0 | 170 ms
+[buffer 100000] ep    33 | SUCCESS | score   9513.57 | last_reward 3000.0 | loss  19.832 | eps 0.050 | steps   89 | mem 2174/100000 | tries_since_last=0 | 170 ms
+[buffer 100000] >>> SUCCESS #12 | ep 34 | score 9456.37 | last_reward 3000.0 | loss 23.862 | eps 0.050 | steps 88 | mem 2262/100000 | tries_since_last=0 | 190 ms
+[buffer 100000] ep    34 | SUCCESS | score   9456.37 | last_reward 3000.0 | loss  23.862 | eps 0.050 | steps   88 | mem 2262/100000 | tries_since_last=0 | 190 ms
+[buffer 100000] >>> SUCCESS #13 | ep 35 | score 9514.22 | last_reward 3000.0 | loss 22.419 | eps 0.050 | steps 89 | mem 2351/100000 | tries_since_last=0 | 175 ms
+[buffer 100000] ep    35 | SUCCESS | score   9514.22 | last_reward 3000.0 | loss  22.419 | eps 0.050 | steps   89 | mem 2351/100000 | tries_since_last=0 | 175 ms
+[buffer 100000] >>> SUCCESS #14 | ep 36 | score 9452.69 | last_reward 3000.0 | loss 19.034 | eps 0.050 | steps 88 | mem 2439/100000 | tries_since_last=0 | 166 ms
+[buffer 100000] ep    36 | SUCCESS | score   9452.69 | last_reward 3000.0 | loss  19.034 | eps 0.050 | steps   88 | mem 2439/100000 | tries_since_last=0 | 166 ms
+[buffer 100000] >>> SUCCESS #15 | ep 37 | score 9454.82 | last_reward 3000.0 | loss 21.527 | eps 0.050 | steps 88 | mem 2527/100000 | tries_since_last=0 | 175 ms
+[buffer 100000] ep    37 | SUCCESS | score   9454.82 | last_reward 3000.0 | loss  21.527 | eps 0.050 | steps   88 | mem 2527/100000 | tries_since_last=0 | 175 ms
+[buffer 100000] >>> SUCCESS #16 | ep 38 | score 9452.02 | last_reward 3000.0 | loss 24.255 | eps 0.050 | steps 88 | mem 2615/100000 | tries_since_last=0 | 163 ms
+[buffer 100000] ep    38 | SUCCESS | score   9452.02 | last_reward 3000.0 | loss  24.255 | eps 0.050 | steps   88 | mem 2615/100000 | tries_since_last=0 | 163 ms
+[buffer 100000] >>> SUCCESS #17 | ep 39 | score 9450.95 | last_reward 3000.0 | loss 23.839 | eps 0.050 | steps 88 | mem 2703/100000 | tries_since_last=0 | 174 ms
+[buffer 100000] ep    39 | SUCCESS | score   9450.95 | last_reward 3000.0 | loss  23.839 | eps 0.050 | steps   88 | mem 2703/100000 | tries_since_last=0 | 174 ms
+[buffer 100000] >>> SUCCESS #18 | ep 40 | score 9447.56 | last_reward 3000.0 | loss 27.805 | eps 0.050 | steps 88 | mem 2791/100000 | tries_since_last=0 | 173 ms
+[buffer 100000] ep    40 | SUCCESS | score   9447.56 | last_reward 3000.0 | loss  27.805 | eps 0.050 | steps   88 | mem 2791/100000 | tries_since_last=0 | 173 ms
+[buffer 100000] >>> SUCCESS #19 | ep 41 | score 9455.16 | last_reward 3000.0 | loss 21.049 | eps 0.050 | steps 88 | mem 2879/100000 | tries_since_last=0 | 167 ms
+[buffer 100000] ep    41 | SUCCESS | score   9455.16 | last_reward 3000.0 | loss  21.049 | eps 0.050 | steps   88 | mem 2879/100000 | tries_since_last=0 | 167 ms
+[buffer 100000] >>> SUCCESS #20 | ep 42 | score 9453.73 | last_reward 3000.0 | loss 24.803 | eps 0.050 | steps 88 | mem 2967/100000 | tries_since_last=0 | 164 ms
+[buffer 100000] ep    42 | SUCCESS | score   9453.73 | last_reward 3000.0 | loss  24.803 | eps 0.050 | steps   88 | mem 2967/100000 | tries_since_last=0 | 164 ms
+[buffer 100000] >>> SUCCESS #21 | ep 43 | score 9442.29 | last_reward 3000.0 | loss 24.315 | eps 0.050 | steps 88 | mem 3055/100000 | tries_since_last=0 | 160 ms
+[buffer 100000] ep    43 | SUCCESS | score   9442.29 | last_reward 3000.0 | loss  24.315 | eps 0.050 | steps   88 | mem 3055/100000 | tries_since_last=0 | 160 ms
+[buffer 100000] >>> SUCCESS #22 | ep 44 | score 9472.09 | last_reward 3000.0 | loss 22.575 | eps 0.050 | steps 92 | mem 3147/100000 | tries_since_last=0 | 155 ms
+[buffer 100000] ep    44 | SUCCESS | score   9472.09 | last_reward 3000.0 | loss  22.575 | eps 0.050 | steps   92 | mem 3147/100000 | tries_since_last=0 | 155 ms
+[buffer 100000] >>> SUCCESS #23 | ep 45 | score 9445.97 | last_reward 3000.0 | loss 24.082 | eps 0.050 | steps 88 | mem 3235/100000 | tries_since_last=0 | 186 ms
+[buffer 100000] ep    45 | SUCCESS | score   9445.97 | last_reward 3000.0 | loss  24.082 | eps 0.050 | steps   88 | mem 3235/100000 | tries_since_last=0 | 186 ms
+[buffer 100000] >>> SUCCESS #24 | ep 46 | score 9441.62 | last_reward 3000.0 | loss 29.373 | eps 0.050 | steps 88 | mem 3323/100000 | tries_since_last=0 | 164 ms
+[buffer 100000] ep    46 | SUCCESS | score   9441.62 | last_reward 3000.0 | loss  29.373 | eps 0.050 | steps   88 | mem 3323/100000 | tries_since_last=0 | 164 ms
+[buffer 100000] >>> SUCCESS #25 | ep 47 | score 9455.47 | last_reward 3000.0 | loss 23.710 | eps 0.050 | steps 88 | mem 3411/100000 | tries_since_last=0 | 165 ms
+[buffer 100000] ep    47 | SUCCESS | score   9455.47 | last_reward 3000.0 | loss  23.710 | eps 0.050 | steps   88 | mem 3411/100000 | tries_since_last=0 | 165 ms
+[buffer 100000] >>> SUCCESS #26 | ep 48 | score 9507.53 | last_reward 3000.0 | loss 23.225 | eps 0.050 | steps 91 | mem 3502/100000 | tries_since_last=0 | 181 ms
+[buffer 100000] ep    48 | SUCCESS | score   9507.53 | last_reward 3000.0 | loss  23.225 | eps 0.050 | steps   91 | mem 3502/100000 | tries_since_last=0 | 181 ms
+[buffer 100000] >>> SUCCESS #27 | ep 49 | score 9444.23 | last_reward 3000.0 | loss 27.059 | eps 0.050 | steps 88 | mem 3590/100000 | tries_since_last=0 | 194 ms
+[buffer 100000] ep    49 | SUCCESS | score   9444.23 | last_reward 3000.0 | loss  27.059 | eps 0.050 | steps   88 | mem 3590/100000 | tries_since_last=0 | 194 ms
+[buffer 100000] >>> SUCCESS #28 | ep 50 | score 9441.53 | last_reward 3000.0 | loss 24.287 | eps 0.050 | steps 88 | mem 3678/100000 | tries_since_last=0 | 175 ms
+[buffer 100000] ep    50 | SUCCESS | score   9441.53 | last_reward 3000.0 | loss  24.287 | eps 0.050 | steps   88 | mem 3678/100000 | tries_since_last=0 | 175 ms
+[buffer 100000] >>> SUCCESS #29 | ep 51 | score 9438.46 | last_reward 3000.0 | loss 28.454 | eps 0.050 | steps 88 | mem 3766/100000 | tries_since_last=0 | 170 ms
+[buffer 100000] ep    51 | SUCCESS | score   9438.46 | last_reward 3000.0 | loss  28.454 | eps 0.050 | steps   88 | mem 3766/100000 | tries_since_last=0 | 170 ms
+[buffer 100000] >>> SUCCESS #30 | ep 52 | score 9447.25 | last_reward 3000.0 | loss 22.134 | eps 0.050 | steps 88 | mem 3854/100000 | tries_since_last=0 | 198 ms
+[buffer 100000] ep    52 | SUCCESS | score   9447.25 | last_reward 3000.0 | loss  22.134 | eps 0.050 | steps   88 | mem 3854/100000 | tries_since_last=0 | 198 ms
+[buffer 100000] >>> SUCCESS #31 | ep 53 | score 9456.89 | last_reward 3000.0 | loss 21.061 | eps 0.050 | steps 88 | mem 3942/100000 | tries_since_last=0 | 166 ms
+[buffer 100000] ep    53 | SUCCESS | score   9456.89 | last_reward 3000.0 | loss  21.061 | eps 0.050 | steps   88 | mem 3942/100000 | tries_since_last=0 | 166 ms
+[buffer 100000] >>> SUCCESS #32 | ep 54 | score 9507.16 | last_reward 3000.0 | loss 50.585 | eps 0.050 | steps 89 | mem 4031/100000 | tries_since_last=0 | 162 ms
+[buffer 100000] ep    54 | SUCCESS | score   9507.16 | last_reward 3000.0 | loss  50.585 | eps 0.050 | steps   89 | mem 4031/100000 | tries_since_last=0 | 162 ms
+[buffer 100000] >>> SUCCESS #33 | ep 55 | score 9438.19 | last_reward 3000.0 | loss 47.180 | eps 0.050 | steps 88 | mem 4119/100000 | tries_since_last=0 | 157 ms
+[buffer 100000] ep    55 | SUCCESS | score   9438.19 | last_reward 3000.0 | loss  47.180 | eps 0.050 | steps   88 | mem 4119/100000 | tries_since_last=0 | 157 ms
+[buffer 100000] >>> SUCCESS #34 | ep 56 | score 9437.93 | last_reward 3000.0 | loss 26.622 | eps 0.050 | steps 88 | mem 4207/100000 | tries_since_last=0 | 163 ms
+[buffer 100000] ep    56 | SUCCESS | score   9437.93 | last_reward 3000.0 | loss  26.622 | eps 0.050 | steps   88 | mem 4207/100000 | tries_since_last=0 | 163 ms
+[buffer 100000] >>> SUCCESS #35 | ep 57 | score 9429.18 | last_reward 3000.0 | loss 23.721 | eps 0.050 | steps 89 | mem 4296/100000 | tries_since_last=0 | 156 ms
+[buffer 100000] ep    57 | SUCCESS | score   9429.18 | last_reward 3000.0 | loss  23.721 | eps 0.050 | steps   89 | mem 4296/100000 | tries_since_last=0 | 156 ms
+[buffer 100000] >>> SUCCESS #36 | ep 58 | score 9509.50 | last_reward 3000.0 | loss 25.187 | eps 0.050 | steps 89 | mem 4385/100000 | tries_since_last=0 | 164 ms
+[buffer 100000] ep    58 | SUCCESS | score   9509.50 | last_reward 3000.0 | loss  25.187 | eps 0.050 | steps   89 | mem 4385/100000 | tries_since_last=0 | 164 ms
+[buffer 100000] >>> SUCCESS #37 | ep 59 | score 9492.08 | last_reward 3000.0 | loss 26.824 | eps 0.050 | steps 89 | mem 4474/100000 | tries_since_last=0 | 156 ms
+[buffer 100000] ep    59 | SUCCESS | score   9492.08 | last_reward 3000.0 | loss  26.824 | eps 0.050 | steps   89 | mem 4474/100000 | tries_since_last=0 | 156 ms
+[buffer 100000] >>> SUCCESS #38 | ep 60 | score 9445.11 | last_reward 3000.0 | loss 27.916 | eps 0.050 | steps 89 | mem 4563/100000 | tries_since_last=0 | 159 ms
+[buffer 100000] ep    60 | SUCCESS | score   9445.11 | last_reward 3000.0 | loss  27.916 | eps 0.050 | steps   89 | mem 4563/100000 | tries_since_last=0 | 159 ms
+[buffer 100000] >>> SUCCESS #39 | ep 61 | score 9502.95 | last_reward 3000.0 | loss 27.527 | eps 0.050 | steps 89 | mem 4652/100000 | tries_since_last=0 | 149 ms
+[buffer 100000] ep    61 | SUCCESS | score   9502.95 | last_reward 3000.0 | loss  27.527 | eps 0.050 | steps   89 | mem 4652/100000 | tries_since_last=0 | 149 ms
+[buffer 100000] >>> SUCCESS #40 | ep 62 | score 9447.13 | last_reward 3000.0 | loss 27.491 | eps 0.050 | steps 88 | mem 4740/100000 | tries_since_last=0 | 150 ms
+[buffer 100000] ep    62 | SUCCESS | score   9447.13 | last_reward 3000.0 | loss  27.491 | eps 0.050 | steps   88 | mem 4740/100000 | tries_since_last=0 | 150 ms
+[buffer 100000] >>> SUCCESS #41 | ep 63 | score 9482.65 | last_reward 3000.0 | loss 29.856 | eps 0.050 | steps 92 | mem 4832/100000 | tries_since_last=0 | 168 ms
+[buffer 100000] ep    63 | SUCCESS | score   9482.65 | last_reward 3000.0 | loss  29.856 | eps 0.050 | steps   92 | mem 4832/100000 | tries_since_last=0 | 168 ms
+[buffer 100000] >>> SUCCESS #42 | ep 64 | score 9446.13 | last_reward 3000.0 | loss 28.720 | eps 0.050 | steps 88 | mem 4920/100000 | tries_since_last=0 | 155 ms
+[buffer 100000] ep    64 | SUCCESS | score   9446.13 | last_reward 3000.0 | loss  28.720 | eps 0.050 | steps   88 | mem 4920/100000 | tries_since_last=0 | 155 ms
+[buffer 100000] >>> SUCCESS #43 | ep 65 | score 9460.43 | last_reward 3000.0 | loss 26.868 | eps 0.050 | steps 88 | mem 5008/100000 | tries_since_last=0 | 157 ms
+[buffer 100000] ep    65 | SUCCESS | score   9460.43 | last_reward 3000.0 | loss  26.868 | eps 0.050 | steps   88 | mem 5008/100000 | tries_since_last=0 | 157 ms
+[buffer 100000] >>> SUCCESS #44 | ep 66 | score 9458.75 | last_reward 3000.0 | loss 27.262 | eps 0.050 | steps 88 | mem 5096/100000 | tries_since_last=0 | 159 ms
+[buffer 100000] ep    66 | SUCCESS | score   9458.75 | last_reward 3000.0 | loss  27.262 | eps 0.050 | steps   88 | mem 5096/100000 | tries_since_last=0 | 159 ms
+[buffer 100000] >>> SUCCESS #45 | ep 67 | score 9460.84 | last_reward 3000.0 | loss 28.542 | eps 0.050 | steps 88 | mem 5184/100000 | tries_since_last=0 | 161 ms
+[buffer 100000] ep    67 | SUCCESS | score   9460.84 | last_reward 3000.0 | loss  28.542 | eps 0.050 | steps   88 | mem 5184/100000 | tries_since_last=0 | 161 ms
+[buffer 100000] >>> SUCCESS #46 | ep 68 | score 9450.80 | last_reward 3000.0 | loss 28.541 | eps 0.050 | steps 88 | mem 5272/100000 | tries_since_last=0 | 157 ms
+[buffer 100000] ep    68 | SUCCESS | score   9450.80 | last_reward 3000.0 | loss  28.541 | eps 0.050 | steps   88 | mem 5272/100000 | tries_since_last=0 | 157 ms
+[buffer 100000] >>> SUCCESS #47 | ep 69 | score 9461.71 | last_reward 3000.0 | loss 28.035 | eps 0.050 | steps 88 | mem 5360/100000 | tries_since_last=0 | 155 ms
+[buffer 100000] ep    69 | SUCCESS | score   9461.71 | last_reward 3000.0 | loss  28.035 | eps 0.050 | steps   88 | mem 5360/100000 | tries_since_last=0 | 155 ms
+[buffer 100000] >>> SUCCESS #48 | ep 70 | score 9437.44 | last_reward 3000.0 | loss 34.019 | eps 0.050 | steps 88 | mem 5448/100000 | tries_since_last=0 | 142 ms
+[buffer 100000] ep    70 | SUCCESS | score   9437.44 | last_reward 3000.0 | loss  34.019 | eps 0.050 | steps   88 | mem 5448/100000 | tries_since_last=0 | 142 ms
+[buffer 100000] >>> SUCCESS #49 | ep 71 | score 9461.48 | last_reward 3000.0 | loss 27.354 | eps 0.050 | steps 88 | mem 5536/100000 | tries_since_last=0 | 157 ms
+[buffer 100000] ep    71 | SUCCESS | score   9461.48 | last_reward 3000.0 | loss  27.354 | eps 0.050 | steps   88 | mem 5536/100000 | tries_since_last=0 | 157 ms
+[buffer 100000] >>> SUCCESS #50 | ep 72 | score 9439.49 | last_reward 3000.0 | loss 27.539 | eps 0.050 | steps 88 | mem 5624/100000 | tries_since_last=0 | 157 ms
+[buffer 100000] ep    72 | SUCCESS | score   9439.49 | last_reward 3000.0 | loss  27.539 | eps 0.050 | steps   88 | mem 5624/100000 | tries_since_last=0 | 157 ms
+
+==== Summary (capacity=100000) ====
+episodes: 73
+successes: 50
+success_rate: 0.685
+avg_score: 7135.89
+std_score: 3510.88
+avg_loss: 21.778
+avg_epsilon: 0.326
+avg_tries: 0.46
+tries_std: 1.73
+time_min: 0.15
+episodes_per_min: 499.9
+
+

@@ -1,0 +1,106 @@
+==== Summary (capacity=1000) ====
+episodes: 76
+successes: 50
+success_rate: 0.658
+avg_score: 6912.08
+std_score: 3632.16
+avg_loss: 27.232
+avg_epsilon: 0.330
+avg_tries: 0.52
+tries_std: 2.77
+time_min: 0.15
+episodes_per_min: 499.3
+
+==== Summary (capacity=5000) ====
+episodes: 65
+successes: 50
+success_rate: 0.769
+avg_score: 7905.46
+std_score: 2924.09
+avg_loss: 20.907
+avg_epsilon: 0.268
+avg_tries: 0.30
+tries_std: 1.28
+time_min: 0.14
+episodes_per_min: 455.1
+
+==== Summary (capacity=20000) ====
+episodes: 76
+successes: 50
+success_rate: 0.658
+avg_score: 6989.23
+std_score: 3545.75
+avg_loss: 20.424
+avg_epsilon: 0.317
+avg_tries: 0.52
+tries_std: 3.26
+time_min: 0.15
+episodes_per_min: 507.1
+
+==== Summary (capacity=100000) ====
+episodes: 73
+successes: 50
+success_rate: 0.685
+avg_score: 7135.89
+std_score: 3510.88
+avg_loss: 21.778
+avg_epsilon: 0.326
+avg_tries: 0.46
+tries_std: 1.73
+time_min: 0.15
+episodes_per_min: 499.9
+
+==== Final Summary (all buffer sizes) ====
+
+==== Summary (capacity=1000) ====
+episodes: 76
+successes: 50
+success_rate: 0.658
+avg_score: 6912.08
+std_score: 3632.16
+avg_loss: 27.232
+avg_epsilon: 0.330
+avg_tries: 0.52
+tries_std: 2.77
+time_min: 0.15
+episodes_per_min: 499.3
+
+==== Summary (capacity=5000) ====
+episodes: 65
+successes: 50
+success_rate: 0.769
+avg_score: 7905.46
+std_score: 2924.09
+avg_loss: 20.907
+avg_epsilon: 0.268
+avg_tries: 0.30
+tries_std: 1.28
+time_min: 0.14
+episodes_per_min: 455.1
+
+==== Summary (capacity=20000) ====
+episodes: 76
+successes: 50
+success_rate: 0.658
+avg_score: 6989.23
+std_score: 3545.75
+avg_loss: 20.424
+avg_epsilon: 0.317
+avg_tries: 0.52
+tries_std: 3.26
+time_min: 0.15
+episodes_per_min: 507.1
+
+==== Summary (capacity=100000) ====
+episodes: 73
+successes: 50
+success_rate: 0.685
+avg_score: 7135.89
+std_score: 3510.88
+avg_loss: 21.778
+avg_epsilon: 0.326
+avg_tries: 0.46
+tries_std: 1.73
+time_min: 0.15
+episodes_per_min: 499.9
+

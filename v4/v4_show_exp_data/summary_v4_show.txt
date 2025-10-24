@@ -1,0 +1,12 @@
+==== Summary (v4_show) ====
+episodes: 105
+successes: 0
+success_rate: 0.000
+avg_score: 1826.32
+std_score: 801.89
+avg_loss: 10.438
+avg_epsilon: 0.201
+avg_tries: 0.00
+tries_std: 0.00
+time_min: 3.37
+episodes_per_min: 31.2
