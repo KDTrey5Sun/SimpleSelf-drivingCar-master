@@ -3,11 +3,6 @@ numpy==1.23.5  # 兼容版本
 pygame==2.1.2  # 兼容版本
 turtle
 charset_normalizer
-
-
-
-
-
 altgraph==0.17.2
 cloudpickle==3.1.1
 future==0.18.2
