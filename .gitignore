@@ -28,6 +28,10 @@ build/
 # Logs
 *.log
 
+# Large log files in specific directories
+v5_faster/logs/
+v5_faster copy/logs/
+
 # Checkpoints and experiment artifacts (very large)
 **/exp_data/
 **/v5_exp_data/
