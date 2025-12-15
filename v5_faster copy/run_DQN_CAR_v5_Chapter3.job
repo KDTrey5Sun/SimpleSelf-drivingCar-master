@@ -1,0 +1,63 @@
+#!/bin/bash -e
+# 轻量快速排队版本：缩小资源块 & 缩短时间窗口，提高 backfill / 优先调度概率
+# 如果需要长时间/大规模 sweep，再改回较大资源。
+#SBATCH --job-name=dqn_car_v5
+#SBATCH --account=uoa04575
+#SBATCH --time=24:00:00         # 调回 24 小时，适合长时间/大规模 sweep
+#SBATCH --mem=32G               # 原 32G → 16G
+#SBATCH --cpus-per-task=32      # 原 32 → 8，降低整块节点需求
+# 可选：作业数组拆分不同 size（示例：5 个 size）
+# #SBATCH --array=0-4
+# 如不需要 GPU，请不要申请，排队更快；若必须保留 GPU，请确保下方 FORCE_CPU=1
+# #SBATCH --gpus=0
+#SBATCH --output=/nesi/project/uoa04575/SimpleSelf-drivingCar-master/v5_faster/logs/%x_%j.out
+#SBATCH --error=/nesi/project/uoa04575/SimpleSelf-drivingCar-master/v5_faster/logs/%x_%j.err
+
+module --force purge
+export SDL_VIDEODRIVER=dummy
+export SDL_AUDIODRIVER=dummy
+export PYTHONUNBUFFERED=1
+# 限制单进程数值库线程，避免过度竞争
+export OMP_NUM_THREADS=1
+export MKL_NUM_THREADS=1
+export OPENBLAS_NUM_THREADS=1
+export NUMEXPR_NUM_THREADS=1
+export PYTHONWARNINGS="ignore:pkg_resources::"
+
+###########################
+# 并发与快速模式控制
+###########################
+# 默认并发 = 分配 CPU 数
+export SWEEP_WORKERS="${SLURM_CPUS_PER_TASK:-8}"
+# 快速模式：提交时可加 QUICK_MODE=1 进一步减少并发与加速排队
+if [ "${QUICK_MODE:-0}" = "1" ]; then
+  echo "[QuickMode] Enabled: reducing workers to 4, forcing short run."
+  export SWEEP_WORKERS=4
+fi
+# 多进程统一用 CPU，避免 GPU 争抢
+export FORCE_CPU=1
+
+# 如果使用数组（--array），这里可根据索引拆分 BUFFER_SIZES（需在 Python 中支持环境变量）
+# export SWEEP_INDEX="${SLURM_ARRAY_TASK_ID:-}"   # 传递给 Python 以选择单个 size
+
+cd /nesi/project/uoa04575/SimpleSelf-drivingCar-master/v5_faster
+mkdir -p logs v5_exp_data
+
+# 激活 venv
+if [ -f ../venv/bin/activate ]; then
+  source ../venv/bin/activate
+  PYTHON=../venv/bin/python
+else
+  echo "[FATAL] venv 不存在：/nesi/project/uoa04575/SimpleSelf-drivingCar-master/venv"
+  exit 1
+fi
+
+echo "===== Job started at $(date) ====="
+echo "Workers: ${SWEEP_WORKERS} (QuickMode=${QUICK_MODE:-0})" 
+echo "Node: $(hostname) | CPUs=$SLURM_CPUS_PER_TASK Mem=$SLURM_MEM_PER_NODE TimeLimit=$SLURM_TIMELIMIT"
+
+# 运行训练（当前 Python 脚本内 REPEATS 固定，如需更小重复需改脚本或在后续版本支持 ENV 覆盖）
+$PYTHON -u DQN_CAR_v5_Chapter3.py
+
+echo "===== Job finished at $(date) ====="
+echo "提示：如仍排队久，可再降 --cpus-per-task / --mem 或使用 --array 拆分。"

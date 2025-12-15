@@ -1,0 +1,57 @@
+#!/bin/bash -e
+#SBATCH --job-name=plot_replay
+#SBATCH --account=uoa04575
+#SBATCH --time=01:00:00
+#SBATCH --mem=8G
+#SBATCH --cpus-per-task=2
+#SBATCH --output=/nesi/project/uoa04575/SimpleSelf-drivingCar-master/v5_faster/logs/%x_%j.out
+#SBATCH --error=/nesi/project/uoa04575/SimpleSelf-drivingCar-master/v5_faster/logs/%x_%j.err
+
+# 用法: sbatch run_plot_replay_sweep.job <TAG> [MAX_EP] [SMOOTH]
+# 例如: sbatch run_plot_replay_sweep.job rb122k 10000 5
+# 若不传参数, 使用默认 TAG=rb122k, MAX_EP(全部), SMOOTH=5
+
+module --force purge
+export PYTHONUNBUFFERED=1
+export MPLBACKEND=Agg
+
+TAG=${1:-rb122k}
+MAX_EP=${2:-}
+SMOOTH=${3:-5}
+
+CODE_DIR=/nesi/project/uoa04575/SimpleSelf-drivingCar-master/v5_faster
+
+BASE_DIR=$CODE_DIR/v5_faster/v5_exp_data/replay_sweep
+LOG_DIR=$CODE_DIR/logs
+mkdir -p "$LOG_DIR"
+
+# 激活 venv
+if [ -f $CODE_DIR/../venv/bin/activate ]; then
+  source $CODE_DIR/../venv/bin/activate
+  PYTHON=$CODE_DIR/../venv/bin/python
+else
+  echo "[FATAL] venv 不存在：$CODE_DIR/../venv" >&2
+  exit 1
+fi
+
+echo "===== Plot Job started at $(date) ====="
+echo "TAG=$TAG MAX_EP=${MAX_EP:-ALL} SMOOTH=$SMOOTH"
+cd $CODE_DIR
+
+CMD=("$PYTHON" -u plot_replay_sweep.py --base_dir "$BASE_DIR" --tag "$TAG" --smooth "$SMOOTH")
+if [ -n "$MAX_EP" ]; then
+  CMD+=(--max_ep "$MAX_EP")
+fi
+
+printf 'Running: %q ' "${CMD[@]}"; echo
+"${CMD[@]}"
+
+RET=$?
+if [ $RET -eq 0 ]; then
+  echo "[OK] Plotting finished. 输出目录: $BASE_DIR/$TAG/plots"
+else
+  echo "[FAIL] Plotting failed with code $RET" >&2
+fi
+
+echo "===== Plot Job finished at $(date) ====="
+exit $RET

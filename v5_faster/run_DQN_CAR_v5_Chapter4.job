@@ -1,0 +1,83 @@
+#!/bin/bash -e
+# Chapter 4 训练脚本 - Grid Sweep (Buffer × Batch)
+#SBATCH --job-name=dqn_car_v5_ch4
+#SBATCH --account=uoa04575
+#SBATCH --time=24:00:00         # 24小时，适合 grid sweep
+#SBATCH --mem=32G               # 32GB内存
+#SBATCH --cpus-per-task=32      # 32个CPU核心用于并行
+#SBATCH --output=/nesi/project/uoa04575/SimpleSelf-drivingCar-master/v5_faster/logs/%x_%j.out
+#SBATCH --error=/nesi/project/uoa04575/SimpleSelf-drivingCar-master/v5_faster/logs/%x_%j.err
+
+module --force purge
+export SDL_VIDEODRIVER=dummy
+export SDL_AUDIODRIVER=dummy
+export PYTHONUNBUFFERED=1
+# 限制单进程数值库线程，避免过度竞争
+export OMP_NUM_THREADS=1
+export MKL_NUM_THREADS=1
+export OPENBLAS_NUM_THREADS=1
+export NUMEXPR_NUM_THREADS=1
+export PYTHONWARNINGS="ignore:pkg_resources::"
+
+###########################
+# 并发控制
+###########################
+# 默认并发 = 分配 CPU 数
+export SWEEP_WORKERS="${SLURM_CPUS_PER_TASK:-32}"
+# 多进程统一用 CPU，避免 GPU 争抢
+export FORCE_CPU=1
+
+cd /nesi/project/uoa04575/SimpleSelf-drivingCar-master/v5_faster
+mkdir -p logs v5_exp_data
+
+# 激活 venv
+if [ -f ../venv/bin/activate ]; then
+  source ../venv/bin/activate
+  PYTHON=../venv/bin/python
+else
+  echo "[FATAL] venv 不存在：/nesi/project/uoa04575/SimpleSelf-drivingCar-master/venv"
+  exit 1
+fi
+
+echo "===== Job started at $(date) ====="
+echo "Workers: ${SWEEP_WORKERS}" 
+echo "Node: $(hostname) | CPUs=$SLURM_CPUS_PER_TASK Mem=$SLURM_MEM_PER_NODE TimeLimit=$SLURM_TIMELIMIT"
+echo ""
+echo "=========================================================================="
+echo "RQ2: 批量大小敏感性分析 - Grid Sweep (Buffer × Batch)"
+echo "=========================================================================="
+echo "研究问题: 批量大小如何调节缓冲区大小对 DQN 性能的影响？"
+echo ""
+echo "实验配置:"
+echo "  BUFFER_SIZES: [100000, 50000, 10000, 5000, 1000] (5 个水平)"
+echo "  BATCH_SIZES:  [512, 128, 64, 32, 4] (5 个水平)"
+echo "  REPEATS:      3"
+echo "  TAG:          rb133k"
+echo "  总运行次数:   5 × 5 × 3 = 75"
+echo ""
+echo "关键数据收集:"
+echo "  - success_rate: 成功率"
+echo "  - episodes_to_convergence: 收敛速度"
+echo "  - samples_to_convergence: 样本效率"
+echo "  - loss_variance_last100: 训练稳定性"
+echo ""
+echo "分析目标:"
+echo "  SRQ2.1: 缓冲区排名在不同批量下是否一致? (Spearman ρ)"
+echo "  SRQ2.2: 批量与缓冲区是否弱交互? (ANOVA η²)"
+echo "=========================================================================="
+echo ""
+
+# 运行 Chapter 4 训练
+$PYTHON -u DQN_CAR_v5_Chapter4.py
+
+echo ""
+echo "===== Job finished at $(date) ====="
+echo ""
+echo "输出文件位置:"
+echo "  - 原始数据: v5_faster/v5_exp_data/replay_grid/rb133k/grid_summary.csv"
+echo "  - 分析结果: v5_faster/v5_exp_data/replay_grid/rb133k/rq2_analysis/rq2_analysis_results.csv"
+echo ""
+echo "下一步: 检查数据完整性"
+echo "  python validate_rq2_data.py v5_faster/v5_exp_data/replay_grid/rb133k/grid_summary.csv"
+echo ""
+echo "提示：如仍排队久，可再降 --cpus-per-task / --mem 或使用 --array 拆分。"

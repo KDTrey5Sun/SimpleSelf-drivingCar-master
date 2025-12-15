@@ -1,0 +1,88 @@
+#!/bin/bash -e
+# RQ2 结果可视化脚本
+#SBATCH --job-name=plot_rq2
+#SBATCH --account=uoa04575
+#SBATCH --time=00:30:00         # 30分钟足够
+#SBATCH --mem=8G                # 8GB内存
+#SBATCH --cpus-per-task=1       # 单核即可
+#SBATCH --output=/nesi/project/uoa04575/SimpleSelf-drivingCar-master/v5_faster/logs/%x_%j.out
+#SBATCH --error=/nesi/project/uoa04575/SimpleSelf-drivingCar-master/v5_faster/logs/%x_%j.err
+
+module --force purge
+export PYTHONUNBUFFERED=1
+
+cd /nesi/project/uoa04575/SimpleSelf-drivingCar-master/v5_faster
+mkdir -p logs
+
+# 激活 venv
+if [ -f ../venv/bin/activate ]; then
+  source ../venv/bin/activate
+  PYTHON=../venv/bin/python
+else
+  echo "[FATAL] venv 不存在：/nesi/project/uoa04575/SimpleSelf-drivingCar-master/venv"
+  exit 1
+fi
+
+echo "===== Plot RQ2 Results started at $(date) ====="
+echo "Node: $(hostname) | CPUs=$SLURM_CPUS_PER_TASK Mem=$SLURM_MEM_PER_NODE"
+echo ""
+echo "=========================================================================="
+echo "RQ2 结果可视化"
+echo "=========================================================================="
+echo "生成图表:"
+echo "  1. 性能热图 (Buffer Size × Batch Size)"
+echo "  2. 排名一致性图 (SRQ2.1)"
+echo "  3. 排名相关性矩阵 (SRQ2.1)"
+echo "  4. 交互效应图 (SRQ2.2)"
+echo "  5. ANOVA 效应大小汇总 (SRQ2.2)"
+echo "  6. 假设支持度汇总"
+echo "  7. 文本摘要报告"
+echo "=========================================================================="
+echo ""
+
+# 设置数据路径（可通过环境变量覆盖）
+CSV_PATH="${RQ2_CSV_PATH:-v5_faster/v5_exp_data/replay_grid/rb133k/grid_summary.csv}"
+OUTPUT_DIR="${RQ2_OUTPUT_DIR:-v5_faster/v5_exp_data/replay_grid/rb133k/rq2_plots}"
+
+echo "数据文件: $CSV_PATH"
+echo "输出目录: $OUTPUT_DIR"
+echo ""
+
+# 检查数据文件是否存在
+if [ ! -f "$CSV_PATH" ]; then
+  echo "[ERROR] 数据文件不存在: $CSV_PATH"
+  echo "请确保已运行 DQN_CAR_v5_Chapter4.py 生成数据"
+  exit 1
+fi
+
+# 运行可视化脚本
+$PYTHON -u plot_rq2_results.py "$CSV_PATH" "$OUTPUT_DIR"
+
+EXIT_CODE=$?
+
+echo ""
+echo "===== Plot RQ2 Results finished at $(date) ====="
+echo ""
+
+if [ $EXIT_CODE -eq 0 ]; then
+  echo "✓ 可视化完成"
+  echo ""
+  echo "生成的文件位置: $OUTPUT_DIR"
+  echo ""
+  echo "主要输出:"
+  echo "  - heatmap_*.png: 性能热图（5个指标）"
+  echo "  - ranking_*.png: 排名一致性图（5个指标）"
+  echo "  - correlation_*.png: 排名相关性矩阵（5个指标）"
+  echo "  - interaction_*.png: 交互效应图（5个指标）"
+  echo "  - anova_summary.png: ANOVA 效应大小汇总"
+  echo "  - hypothesis_support.png: H2.1 和 H2.2 支持度"
+  echo "  - summary_report.txt: 文本摘要报告"
+  echo ""
+  echo "下一步: 查看报告和图表"
+  echo "  cat $OUTPUT_DIR/summary_report.txt"
+else
+  echo "✗ 可视化失败，退出码: $EXIT_CODE"
+  echo "请检查日志文件: logs/plot_rq2_*.err"
+fi
+
+exit $EXIT_CODE

@@ -44,13 +44,12 @@ class OnlineVariance:
 # 在这里直接写入要对比的 replay buffer size 列表
 # 留空列表 [] 时将执行单次训练（使用下方 TRAIN_KWARGS 中的默认 max_mem_size）
 BUFFER_SIZES = [100000, 50000, 10000, 5000, 1000]
-# BUFFER_SIZES = [40000, 30000, 20000]
 
 # 每个 size 重复次数
 REPEATS = 50
 
 # Sweep 标签（会作为输出子目录名的一部分），可设为 None
-TAG = 'rb123k'
+TAG = 'rb122k'
 
 # 基础随机种子（不同重复会在此基础上依次递增）
 SHARED_SEED = 123
@@ -77,7 +76,7 @@ TRAIN_KWARGS = {
     'convergence_threshold': 0.7,
     'convergence_patience': 15,
     'convergence_min_episodes': 200,
-    'enable_early_stop': True,  # 成功后提前停止，避免无效训练
+    'enable_early_stop': True,
 }
 
 def run_v5_training(
@@ -179,7 +178,7 @@ def run_v5_training(
     update_loss_history = []            # 每次 learn() 调用的即时 loss
     td_mean_history = []                # 每次 learn() 的 |TD error| 均值
     td_std_history = []                 # 每次 learn() 的 |TD error| 标准差
-    all_curve_data = []  # 收集曲线数据用于可视化
+    # all_curve_data = []  # 注释：不再收集/写入曲线数据文件
     success_count = 0
     tries_since_last_success = 0
     attempts_list = []
@@ -395,14 +394,14 @@ def run_v5_training(
             recent_window = success_history[-100:]
             recent_success_rate = (sum(recent_window) / len(recent_window)) if recent_window else 0.0
 
-            # 向曲线数据缓冲追加本episode的记录
-            all_curve_data.append(f"v5,reward,{episode_idx},{score}\n")
-            all_curve_data.append(f"v5,loss,{episode_idx},{loss_mean}\n")
-            all_curve_data.append(f"v5,epsilon,{episode_idx},{eps_value}\n")
-            if td_mean_history:
-                all_curve_data.append(f"v5,td_mean,{episode_idx},{td_mean_history[-1]}\n")
-            if td_std_history:
-                all_curve_data.append(f"v5,td_std,{episode_idx},{td_std_history[-1]}\n")
+            # 注释：不再向曲线数据缓冲追加记录
+            # all_curve_data.append(f"v5,reward,{episode_idx},{score}\n")
+            # all_curve_data.append(f"v5,loss,{episode_idx},{loss_mean}\n")
+            # all_curve_data.append(f"v5,epsilon,{episode_idx},{eps_value}\n")
+            # if td_mean_history:
+            #     all_curve_data.append(f"v5,td_mean,{episode_idx},{td_mean_history[-1]}\n")
+            # if td_std_history:
+            #     all_curve_data.append(f"v5,td_std,{episode_idx},{td_std_history[-1]}\n")
             episode_idx += 1
             # 记录本回合结束时累计采样数
             cumulative_samples.append(total_samples_collected)
@@ -421,7 +420,7 @@ def run_v5_training(
         rate = (sum(window) / denom) if denom > 0 else 0.0
         success_rate_series.append(rate)
         success_rate_stats.update(rate)
-        all_curve_data.append(f"v5,success_rate,{idx},{rate}\n")  # 写入曲线成功率
+        # all_curve_data.append(f"v5,success_rate,{idx},{rate}\n")  # 注释：不再写曲线成功率
 
     # ===== 收敛指标：首次窗口成功率 >= 0.7 =====
     episodes_to_convergence = None
@@ -526,16 +525,16 @@ def run_v5_training(
         f"convergence_min_episodes: {convergence_min_episodes}\n"
     )
 
-    # 生成和写入 curve_data.txt
-    ensure_parent_dir(output_curve)
-    with open(output_curve, 'w') as f:
-        f.writelines(all_curve_data)
+    # 注释：不再生成和写入 curve_data.txt
+    # ensure_parent_dir(output_curve)
+    # with open(output_curve, 'w') as f:
+    #     f.writelines(all_curve_data)
     ensure_parent_dir(output_summary)
     with open(output_summary, 'w') as f:
         f.write(summary_block)
 
     print("\n" + summary_block)
-    print(f"Curve data saved to {output_curve}")
+    # print(f"Curve data saved to {output_curve}")  # 注释：不再提示曲线数据保存
     print(f"Summary saved to {output_summary}")
     pygame.quit()
 

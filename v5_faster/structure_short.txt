@@ -1,0 +1,181 @@
+极简版研究结构：Replay Buffer 与 Batch Size 对 DQN 的核心影响
+════════════════════════════════════════════════════
+
+主RQ(最终精简版):
+  How do replay buffer capacity and mini-batch size jointly affect 
+  sample efficiency and training stability in DQN for a dense-reward racing task?
+  How do replay buffer capacity and mini-batch size jointly affect 
+  sample efficiency, training stability, and computational throughput 
+  in Deep Q-Learning for continuous control with dense reward shaping?
+
+核心目标:
+  只回答两个问题：谁更快收敛？谁更稳定？
+  以最少实验与最少指标产出可复现、可解释结论。
+
+────────────────────────────────────────────────────
+一、实验设计(精简)
+────────────────────────────────────────────────────
+Phase A: Buffer 单维扫描 (sizes={1K,5K,10K,50K,100K}, 每个≥10 seeds)
+  目的: 找到样本效率与稳定性较优的容量区间(中值 vs 极端)
+Phase B: 二维 Grid (Buffer={5K,10K,50K}, Batch={16,64,128}, 每格3 seeds)
+  目的: 验证联合效应 + 主效应方向 + 交互是否显著
+
+总运行数量示例:
+  Phase A: 5 × 10 = 50 runs
+  Phase B: 3 × 3 × 3 = 27 runs
+  合计 77 runs (可根据资源再降: 如 Phase A 降至 5×6=30)
+
+────────────────────────────────────────────────────
+二、采集指标(极简集合)
+────────────────────────────────────────────────────
+必须(Must):
+  1. steps_to_target          首次达到 "success_count=100" 时的总环境步数
+  2. episodes_to_target       同上对应的 episode 序号
+  3. final_success_rate       最后窗口(最近100 ep)成功率
+  4. final_avg_score          最后窗口平均得分
+  5. success_curve            每 episode: success_rate_100
+  6. td_loss_curve            每学习步或每N学习步平均 loss
+
+可选(Optional, 若已实现):
+  7. cv_success_rate          同配置跨种子 final_success_rate 的变异系数
+  8. time_to_target_min       达到目标的 wall-clock 时间(分钟)
+  9. episodes_per_min         吞吐量(整体速度侧描述性补充)
+
+删除的内容:
+  - 里程碑 25/50/75/90% 全集 → 不再记录
+  - 斜率拟合(early/late) → 不再计算
+  - Q值漂移 / 重用率 / 相关性机制 → 作为未来工作不实现
+  - DTW 聚类 / 多稳态分析 → 移除
+
+success_curve CSV 格式(单 run):
+  episode,success_rate_100,avg_score_100
+  1,0.00,123.4
+  ...
+  250,0.42,2310.7
+
+run_summary CSV(聚合):
+  buffer_size,batch_size,seed,steps_to_target,episodes_to_target,final_success_rate,final_avg_score,time_to_target_min
+
+────────────────────────────────────────────────────
+三、统计与判定(最小统计单元)
+────────────────────────────────────────────────────
+核心检验:
+  Two-way ANOVA (Phase B 数据):
+    因子: Buffer(3 levels), Batch(3 levels)
+    因变量: steps_to_target
+  若交互项 p<0.05 → 报告“交互显著”
+  否则 → 报告“主效应显著,交互微弱”并给推荐组合
+
+稳定性度量:
+  对每个 buffer_size 计算:
+    cv_success = std(final_success_rate_seeds)/mean(final_success_rate_seeds)
+  目标: 中等容量(cv < 0.30) vs 极端容量(cv > 0.40)
+
+不做的统计:
+  - 多重比较校正(只关注最优 vs 次优即可)
+  - 复杂回归/效应量/聚类
+
+────────────────────────────────────────────────────
+四、可视化输出(仅 5 张图 + 1 表)
+────────────────────────────────────────────────────
+Figure 1: 单维 Buffer 学习曲线  
+  5 条线 (buffer sizes), x=episodes, y=success_rate_100(平滑)
+Figure 2: 单维 Buffer 箱线图(稳定性)  
+  x=buffer_size, y=final_success_rate, 显示离散与散点
+Figure 3: 二维 Heatmap (Phase B)  
+  行=buffer(5K/10K/50K), 列=batch(16/64/128), 值=steps_to_target
+Figure 4: 二维 Interaction Plot  
+  x=buffer_size, y=mean steps_to_target；三条线对应 batch=16/64/128
+Figure 5: Loss 曲线对比 (三种代表配置)  
+  A: 小buffer+小batch, B: 中中, C: 大buffer+大batch
+Table 1: Top 配置排序 (steps_to_target, final_success_rate, time_to_target_min)
+
+可删除的图:
+  - Q值监控、重用率散点、DTW 聚类、回归拟合全部删去
+
+文件命名规范:
+  figs/
+    fig1_buffer_curves.png
+    fig2_buffer_box.png
+    fig3_heatmap_steps.png
+    fig4_interaction.png
+    fig5_loss_compare.png
+  tables/
+    table1_top_configs.csv
+
+────────────────────────────────────────────────────
+五、代码最小改动
+────────────────────────────────────────────────────
+DQN_CAR_v5_Chapter3.py:
+  • 增加 steps_to_target 与 episodes_to_target 记录逻辑
+  • success_curve 每 episode 写入 CSV
+DQN_CAR_v5_Chapter4.py:
+  • Grid 配置精简：只保留 3×3 组合
+plot_replay_sweep.py:
+  • 新增 plot_heatmap_steps(binary_data) 函数
+  • 新增 plot_interaction(buffer_means)
+
+不再需要:
+  reward_scale / epsilon_env_step / soft target 消融若已完成可保留为稳定性提升手段；报告中只展示最终“改进后的”统一配置即可。
+
+────────────────────────────────────────────────────
+六、论文结构(极简映射)
+────────────────────────────────────────────────────
+1. Introduction
+   - 问题: Buffer与Batch超参常被经验设定, 缺少系统对比
+   - 贡献: 最小实验量揭示主效应 + 是否存在交互
+2. Method
+   - 环境 / Agent / 超参空间(删复杂解释)
+   - 指标: 6 必须 + 3 可选
+   - 协议: Phase A 单维 + Phase B 二维
+3. Results
+   3.1 Buffer 主效应(Fig1, Fig2)
+   3.2 联合优化(Fig3, Fig4, Table1)
+   3.3 Loss 对比与稳定性(Fig5)
+4. Discussion
+   - 中等容量与中等批次最优
+   - 高容量/过小批次的失效特征
+   - 实用推荐(两个场景：资源受限 / 追求稳定)
+5. Limitations
+   - 未分析机制与多稳态
+   - 单环境单奖励结构
+6. Conclusion
+   - 回答主RQ
+   - 推荐默认配置: buffer=10K~50K, batch=64
+
+────────────────────────────────────────────────────
+七、默认推荐配置(直接给出终稿可用)
+────────────────────────────────────────────────────
+快速起步:
+  buffer_size = 10000
+  batch_size  = 64
+  epsilon_decay_mode = env_step
+  learning_rate = 3e-4
+  target_update: soft τ=0.005
+  stop_condition: success_count >= 100 或 episodes >= 1000
+
+表述模板 (写入论文):
+  “Across 50 runs, a replay buffer capacity of 10K with batch size 64 achieved the lowest average steps-to-target (≈45K) and the smallest variability (CV ≈ 0.22), outperforming both very small (1K) and very large (100K) buffers.”
+
+────────────────────────────────────────────────────
+八、最小执行顺序
+────────────────────────────────────────────────────
+Day 1–2: 跑 Phase A (5×10)
+Day 3: 汇总 + 生成 Fig1, Fig2
+Day 4–5: 跑 Phase B (3×3×3)
+Day 6: 生成 Fig3, Fig4, Table1
+Day 7: 跑 3 个代表配置 Loss 曲线 → Fig5
+Day 8–9: 写 Results 初稿
+Day 10: 校对 + 导师反馈
+
+────────────────────────────────────────────────────
+九、成功判定(极简版)
+────────────────────────────────────────────────────
+最低标准:
+  • 得到清晰 U 型 / 倒 U 型主效应趋势
+  • 交互 p<0.05 或声明“不显著”
+  • 推荐配置表格(Table1)包含 top-5
+
+完成即可收尾，不再扩展机制分析。
+
+END

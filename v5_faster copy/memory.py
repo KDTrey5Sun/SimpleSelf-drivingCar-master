@@ -12,8 +12,6 @@ class ReplayMemory:
         self.batch_size = batch_size
         self.mem_cntr = 0 # 记录当前存储的经验数量
         self.combined = combined # 是否使用combined
-        # 新增：覆盖计数（超过容量后被新经验覆盖的次数）
-        self.overwritten_count = 0
 
         # 初始化存储经验的数组
         # state_memory：存储状态
@@ -51,9 +49,6 @@ class ReplayMemory:
 
     def store_transition(self, state, action, reward, state_, terminal):
         index = self.mem_cntr % self.mem_size
-        # 如果已经填满且发生覆盖，计数 +1
-        if self.mem_cntr >= self.mem_size:
-            self.overwritten_count += 1
         self.state_memory[index] = state
         self.action_memory[index] = action
         self.reward_memory[index] = reward
@@ -101,9 +96,6 @@ class ReplayMemory:
     # 判断是否有足够的经验进行训练
     def is_sufficient(self):
         return self.mem_cntr >= self.batch_size
-
-    def get_overwritten(self):
-        return int(self.overwritten_count)
     
 
 

@@ -12,31 +12,10 @@ from pathlib import Path
 from DQN import Agent
 from concurrent.futures import ProcessPoolExecutor, as_completed  # 并行
 
-
-class OnlineVariance:
-    """单通道增量方差统计，用于减少多次遍历大数组的开销。"""
-    __slots__ = ('count', 'mean', 'M2')
-
-    def __init__(self):
-        self.count = 0
-        self.mean = 0.0
-        self.M2 = 0.0
-
-    def update(self, value: float | int) -> None:
-        val = float(value)
-        self.count += 1
-        delta = val - self.mean
-        self.mean += delta / self.count
-        delta2 = val - self.mean
-        self.M2 += delta * delta2
-
-    def variance(self) -> float:
-        if self.count <= 1:
-            return 0.0
-        return self.M2 / self.count
-
-    def mean_value(self) -> float:
-        return self.mean if self.count > 0 else 0.0
+try:
+    import psutil
+except Exception:
+    psutil = None
 
 # ==========================
 # 在文件内配置实验参数（无需命令行）
@@ -44,13 +23,12 @@ class OnlineVariance:
 # 在这里直接写入要对比的 replay buffer size 列表
 # 留空列表 [] 时将执行单次训练（使用下方 TRAIN_KWARGS 中的默认 max_mem_size）
 BUFFER_SIZES = [100000, 50000, 10000, 5000, 1000]
-# BUFFER_SIZES = [40000, 30000, 20000]
 
 # 每个 size 重复次数
 REPEATS = 50
 
 # Sweep 标签（会作为输出子目录名的一部分），可设为 None
-TAG = 'rb123k'
+TAG = 'rb122k'
 
 # 基础随机种子（不同重复会在此基础上依次递增）
 SHARED_SEED = 123
@@ -74,10 +52,6 @@ TRAIN_KWARGS = {
     'windowless': True,
     'render': False,
     'print_every': 1,
-    'convergence_threshold': 0.7,
-    'convergence_patience': 15,
-    'convergence_min_episodes': 200,
-    'enable_early_stop': True,  # 成功后提前停止，避免无效训练
 }
 
 def run_v5_training(
@@ -105,11 +79,6 @@ def run_v5_training(
     # 运行标识（用于在 summary 开头显示）
     run_size: int | None = None,
     run_rep: int | None = None,
-    # 收敛相关（早停已移除，仅用于离线统计）
-    convergence_threshold: float = 0.7,
-    convergence_patience: int = 15,
-    convergence_min_episodes: int = 200,
-    enable_early_stop: bool = False,
 ):
     # 头less模式屏蔽窗口/音频
     if windowless and not render:
@@ -156,6 +125,32 @@ def run_v5_training(
         except Exception:
             pass
 
+    # 进程内存监控
+    process = psutil.Process(os.getpid()) if psutil else None
+    mem_start_bytes = None
+    mem_peak_bytes = None
+    if process:
+        try:
+            mem_start_bytes = process.memory_info().rss
+            mem_peak_bytes = mem_start_bytes
+        except Exception:
+            mem_start_bytes = None
+            mem_peak_bytes = None
+
+    def update_mem_peak() -> float | None:
+        nonlocal mem_peak_bytes
+        if not process:
+            return None
+        try:
+            rss = process.memory_info().rss
+        except Exception:
+            return None
+        if rss is None:
+            return None
+        if mem_peak_bytes is None or rss > mem_peak_bytes:
+            mem_peak_bytes = rss
+        return float(rss)
+
     # 代理
     agent = Agent(
         gamma=gamma,
@@ -176,38 +171,28 @@ def run_v5_training(
 
     # 统计
     scores, loss_history, epsilon_history, success_history = [], [], [], []
-    update_loss_history = []            # 每次 learn() 调用的即时 loss
-    td_mean_history = []                # 每次 learn() 的 |TD error| 均值
-    td_std_history = []                 # 每次 learn() 的 |TD error| 标准差
-    all_curve_data = []  # 收集曲线数据用于可视化
+    update_loss_history = []            # 逐次learn()的loss序列（用于方差分析）
+    td_mean_history = []                # 逐次learn()的 |TD error| 均值
+    td_std_history = []                 # 逐次learn()的 |TD error| 标准差
+    all_curve_data = []
     success_count = 0
     tries_since_last_success = 0
     attempts_list = []
     episode_idx = 0
     t0 = time.time()
     total_samples_collected = 0
-
     first_success_episode = None
     samples_at_first_success = None
-    # samples_at_first_success: 首次成功时的累计样本数
     samples_at_epsilon_min = None
-    learning_steps_to_first_success = None
-    # learning_steps_to_first_success: 首次成功前一共调用了多少次 learn()。
-    learn_steps_counter = 0
-    # 新增：每个 episode 结束时的累计样本计数，用于 samples_to_convergence 计算
-    cumulative_samples = []
+    learning_steps_to_first_success = None  # 第一次成功前的学习更新次数
+    learn_step_counter = 0
     # 动态 epsilon：记录基础 eps_dec，控制冻结/恢复
     base_eps_dec = getattr(agent, 'eps_dec', 0.0)
-    # 增量统计 & 早停控制
-    reward_stats = OnlineVariance()
-    loss_stats = OnlineVariance()
-    success_rate_stats = OnlineVariance()
-    # 早停相关变量移除
 
-    # ckpt_dir = os.path.join(os.path.dirname(os.path.abspath(output_log)), 'checkpoints')
-    # os.makedirs(ckpt_dir, exist_ok=True)
-    # last_ckpt_time = time.time()
-    # ckpt_interval_sec = 600
+    ckpt_dir = os.path.join(os.path.dirname(os.path.abspath(output_log)), 'checkpoints')
+    os.makedirs(ckpt_dir, exist_ok=True)
+    last_ckpt_time = time.time()
+    ckpt_interval_sec = 600
 
     with open(output_log, 'w') as log_f:
         log_print(log_f, f"==== Start v5 training | batch_size={batch_size}, replay={max_mem_size} | seed={seed} ====")
@@ -264,13 +249,13 @@ def run_v5_training(
                 if loss is not None:
                     episode_loss.append(loss)
                     update_loss_history.append(loss)
-                    loss_stats.update(loss)
+                    # 记录 TD 误差统计
                     td_mean, td_std = agent.get_last_td_stats()
                     if td_mean is not None:
                         td_mean_history.append(td_mean)
                     if td_std is not None:
                         td_std_history.append(td_std)
-                    learn_steps_counter += 1
+                    learn_step_counter += 1
                     if samples_at_epsilon_min is None and getattr(agent, 'epsilon', None) is not None:
                         try:
                             if agent.epsilon <= getattr(agent, 'eps_min', 0.0) + 1e-12:
@@ -322,7 +307,9 @@ def run_v5_training(
             epsilon_history.append(eps_value)
             loss_history.append(loss_mean)
             scores.append(score)
-            reward_stats.update(score)
+            current_mem_bytes = update_mem_peak()
+            current_mem_mb = (current_mem_bytes / (1024 * 1024)) if current_mem_bytes is not None else None
+            mem_mb_str = f"{current_mem_mb:.2f}" if current_mem_mb is not None else "N/A"
 
             succeeded = getattr(env, 'is_finished', False) or (last_reward >= success_reward - 1e-6)
             took = time.time() - ep_start
@@ -351,13 +338,13 @@ def run_v5_training(
                 if first_success_episode is None:
                     first_success_episode = episode_idx
                     samples_at_first_success = total_samples_collected
-                    learning_steps_to_first_success = learn_steps_counter
+                    learning_steps_to_first_success = learn_step_counter
                     # 保持默认线性衰减，无需在成功后重设 eps_dec
                 log_print(log_f,
                     f">>> SUCCESS #{success_count} | ep {episode_idx} | score {score:.2f} | "
                     f"last_reward {last_reward:.1f} | loss {loss_mean:.3f} | eps {eps_value:.3f} | "
                     f"steps {step_count} | term {term_reason} | crash_angle_deg {crash_ang_str} | "
-                    f"{tries_note} | {took*1000:.0f} ms"
+                    f"{tries_note} | {took*1000:.0f} ms | mem_mb {mem_mb_str}"
                 )
             else:
                 tries_since_last_success += 1
@@ -365,49 +352,38 @@ def run_v5_training(
                 status = "fail"
                 tries_note = f"fails_since_last={tries_since_last_success}"
 
-            # now = time.time()
-            # formatted_time = time.strftime("%Y%m%d%H%M%S", time.localtime(now))
-            # if now - last_ckpt_time >= ckpt_interval_sec:
-            #     ckpt_path = os.path.join(ckpt_dir, f"ckpt_time_{int(formatted_time)}.pt")
-            #     try:
-            #         os.makedirs(os.path.dirname(ckpt_path), exist_ok=True)
-            #         agent.save_model(ckpt_path)
-            #         log_print(log_f, f"[ckpt] saved periodic checkpoint -> {ckpt_path}")
-            #     except Exception as e:
-            #         log_print(log_f, f"[ckpt] save failed: {e}")
-            #     last_ckpt_time = now
-            # if succeeded:
-            #     ckpt_path = os.path.join(ckpt_dir, f"success_{success_count:03d}_ep_{episode_idx}.pt")
-            #     try:
-            #         os.makedirs(os.path.dirname(ckpt_path), exist_ok=True)
-            #         agent.save_model(ckpt_path)
-            #         log_print(log_f, f"[ckpt] saved success checkpoint -> {ckpt_path}")
-            #     except Exception as e:
-            #         log_print(log_f, f"[ckpt] save failed: {e}")
+            now = time.time()
+            formatted_time = time.strftime("%Y%m%d%H%M%S", time.localtime(now))
+            if now - last_ckpt_time >= ckpt_interval_sec:
+                ckpt_path = os.path.join(ckpt_dir, f"ckpt_time_{int(formatted_time)}.pt")
+                try:
+                    os.makedirs(os.path.dirname(ckpt_path), exist_ok=True)
+                    agent.save_model(ckpt_path)
+                    log_print(log_f, f"[ckpt] saved periodic checkpoint -> {ckpt_path}")
+                except Exception as e:
+                    log_print(log_f, f"[ckpt] save failed: {e}")
+                last_ckpt_time = now
+            if succeeded:
+                ckpt_path = os.path.join(ckpt_dir, f"success_{success_count:03d}_ep_{episode_idx}.pt")
+                try:
+                    os.makedirs(os.path.dirname(ckpt_path), exist_ok=True)
+                    agent.save_model(ckpt_path)
+                    log_print(log_f, f"[ckpt] saved success checkpoint -> {ckpt_path}")
+                except Exception as e:
+                    log_print(log_f, f"[ckpt] save failed: {e}")
 
             if (episode_idx % print_every) == 0:
                 log_print(log_f,
                     f"ep {episode_idx:5d} | {status:7s} | score {score:9.2f} | "
                     f"last_reward {last_reward:6.1f} | loss {loss_mean:7.3f} | epsilon {eps_value:5.3f} | "
                     f"steps {step_count:4d} | reason: {term_reason} | crash_angle_deg {crash_ang_str} | "
-                    f"{tries_note} | {took*1000:.0f} ms"
+                    f"{tries_note} | {took*1000:.0f} ms | mem_mb {mem_mb_str}"
                 )
-            recent_window = success_history[-100:]
-            recent_success_rate = (sum(recent_window) / len(recent_window)) if recent_window else 0.0
 
-            # 向曲线数据缓冲追加本episode的记录
             all_curve_data.append(f"v5,reward,{episode_idx},{score}\n")
             all_curve_data.append(f"v5,loss,{episode_idx},{loss_mean}\n")
             all_curve_data.append(f"v5,epsilon,{episode_idx},{eps_value}\n")
-            if td_mean_history:
-                all_curve_data.append(f"v5,td_mean,{episode_idx},{td_mean_history[-1]}\n")
-            if td_std_history:
-                all_curve_data.append(f"v5,td_std,{episode_idx},{td_std_history[-1]}\n")
             episode_idx += 1
-            # 记录本回合结束时累计采样数
-            cumulative_samples.append(total_samples_collected)
-
-            # 不再依据早停中断训练
 
     # success_rate 计算方式修改：
     #  - 若当前总回合数 <= 100：使用 [0 .. idx] 的累计成功率 (累计成功次数 / 当前回合数)
@@ -420,30 +396,21 @@ def run_v5_training(
         denom = len(window)
         rate = (sum(window) / denom) if denom > 0 else 0.0
         success_rate_series.append(rate)
-        success_rate_stats.update(rate)
-        all_curve_data.append(f"v5,success_rate,{idx},{rate}\n")  # 写入曲线成功率
-
-    # ===== 收敛指标：首次窗口成功率 >= 0.7 =====
-    episodes_to_convergence = None
-    samples_to_convergence = None
-    for i, r in enumerate(success_rate_series):
-        if r >= 0.7:
-            episodes_to_convergence = i
-            if i < len(cumulative_samples):
-                samples_to_convergence = cumulative_samples[i]
-            break
+        all_curve_data.append(f"v5,success_rate,{idx},{rate}\n")
 
     episodes = len(scores)
-    # ====== 稳定性附加指标 ======
-    def _var(arr):
-        return float(np.var(arr, ddof=0)) if len(arr) > 1 else 0.0
-    def _tail(arr, k=100):
-        if not arr: return []
-        return arr[-k:]
-    update_loss_variance = loss_stats.variance()
-    update_loss_variance_last100 = _var(_tail(update_loss_history))
-    td_mean_last100 = float(np.mean(_tail(td_mean_history))) if td_mean_history else 0.0
-    td_std_last100 = float(np.mean(_tail(td_std_history))) if td_std_history else 0.0
+    # ========= 稳定性附加指标计算 =========
+    def _tail_var(arr, k=100):
+        if not arr:
+            return 0.0
+        tail = arr[-k:]
+        if len(tail) < 2:
+            return 0.0
+        return float(np.var(tail, ddof=0))
+    update_loss_variance = float(np.var(update_loss_history, ddof=0)) if len(update_loss_history) > 1 else 0.0
+    update_loss_variance_last100 = _tail_var(update_loss_history, 100)
+    td_mean_last100 = float(np.mean(td_mean_history[-100:])) if td_mean_history else 0.0
+    td_std_last100 = float(np.mean(td_std_history[-100:])) if td_std_history else 0.0
     avg_score = sum(scores) / episodes if episodes else 0.0
     std_score = statistics.stdev(scores) if episodes > 1 else 0.0
     avg_loss = float(np.mean(loss_history)) if loss_history else 0.0
@@ -459,24 +426,33 @@ def run_v5_training(
     took_total = time.time() - t0
     epm = episodes / (took_total / 60.0) if took_total > 0 else 0.0
 
-    # ===== 额外稳定性方差指标 =====
-    reward_variance_full = reward_stats.variance()
-    reward_variance_last100 = _var(_tail(scores))
-    success_rate_variance_full = success_rate_stats.variance()
-    success_rate_variance_last100 = _var(_tail(success_rate_series))
-    loss_variance_full = update_loss_variance
-    loss_variance_last100 = update_loss_variance_last100
-
-    convergence_speed = (1.0 / episodes_to_convergence) if (episodes_to_convergence is not None and episodes_to_convergence > 0) else 0.0
-
     buffer_capacity = int(getattr(agent.memory, 'mem_size', max_mem_size))
     final_buffer_occupancy = int(min(getattr(agent.memory, 'mem_cntr', total_samples_collected), buffer_capacity))
     samples_dropped = int(max(0, total_samples_collected - buffer_capacity))
     effective_learn_starts = int(max(learn_starts, batch_size))
     avg_samples_per_episode = float(total_samples_collected / episodes) if episodes > 0 else 0.0
-    # 使用 memory 中的覆盖计数（若存在）
-    overwritten_count = int(getattr(agent.memory, 'overwritten_count', samples_dropped))
 
+    mem_end_bytes = None
+    if process:
+        try:
+            mem_end_bytes = process.memory_info().rss
+            if mem_end_bytes is not None:
+                if mem_peak_bytes is None or mem_end_bytes > mem_peak_bytes:
+                    mem_peak_bytes = mem_end_bytes
+        except Exception:
+            mem_end_bytes = mem_peak_bytes
+
+    def bytes_to_mb(val: int | float | None) -> float | None:
+        if val is None:
+            return None
+        return float(val) / (1024.0 * 1024.0)
+
+    mem_start_mb = bytes_to_mb(mem_start_bytes)
+    mem_end_mb = bytes_to_mb(mem_end_bytes)
+    mem_peak_mb = bytes_to_mb(mem_peak_bytes)
+    mem_start_str = f"{mem_start_mb:.2f}" if mem_start_mb is not None else "N/A"
+    mem_end_str = f"{mem_end_mb:.2f}" if mem_end_mb is not None else "N/A"
+    mem_peak_str = f"{mem_peak_mb:.2f}" if mem_peak_mb is not None else "N/A"
     time_sec = float(took_total)
 
     # 在 summary 开头显示 size / rep，未提供时回退为 max_mem_size / N/A
@@ -497,36 +473,24 @@ def run_v5_training(
         f"avg_samples_per_episode: {avg_samples_per_episode:.2f}\n"
         f"first_success_episode: {first_success_episode if first_success_episode is not None else 'N/A'}\n"
         f"samples_at_first_success: {samples_at_first_success if samples_at_first_success is not None else 'N/A'}\n"
-        f"episodes_to_convergence: {episodes_to_convergence if episodes_to_convergence is not None else 'N/A'}\n"
-        f"samples_to_convergence: {samples_to_convergence if samples_to_convergence is not None else 'N/A'}\n"
-        f"convergence_speed: {convergence_speed:.6f}\n"
         f"eps_min_reached_at_samples: {samples_at_epsilon_min if samples_at_epsilon_min is not None else 'N/A'}\n"
         f"buffer_capacity: {buffer_capacity}\n"
         f"final_buffer_occupancy: {final_buffer_occupancy}\n"
         f"samples_dropped_overwritten: {samples_dropped}\n"
-        f"overwritten_count: {overwritten_count}\n"
         f"effective_learn_starts: {effective_learn_starts}\n"
         f"time_min: {took_total/60:.2f}\n"
         f"episodes_per_min: {epm:.1f}\n"
         f"time_sec: {time_sec:.2f}\n"
+        f"mem_start_mb: {mem_start_str}\n"
+        f"mem_end_mb: {mem_end_str}\n"
+        f"mem_peak_mb: {mem_peak_str}\n"
         f"update_loss_variance: {update_loss_variance:.6f}\n"
         f"update_loss_variance_last100: {update_loss_variance_last100:.6f}\n"
         f"td_mean_last100: {td_mean_last100:.6f}\n"
         f"td_std_last100: {td_std_last100:.6f}\n"
         f"learning_steps_to_first_success: {learning_steps_to_first_success if learning_steps_to_first_success is not None else 'N/A'}\n"
-        f"reward_variance_full: {reward_variance_full:.6f}\n"
-        f"reward_variance_last100: {reward_variance_last100:.6f}\n"
-        f"success_rate_variance_full: {success_rate_variance_full:.6f}\n"
-        f"success_rate_variance_last100: {success_rate_variance_last100:.6f}\n"
-        f"loss_variance_full: {loss_variance_full:.6f}\n"
-        f"loss_variance_last100: {loss_variance_last100:.6f}\n"
-        # 早停信息移除
-        f"convergence_threshold: {convergence_threshold:.3f}\n"
-        f"convergence_patience: {convergence_patience}\n"
-        f"convergence_min_episodes: {convergence_min_episodes}\n"
     )
 
-    # 生成和写入 curve_data.txt
     ensure_parent_dir(output_curve)
     with open(output_curve, 'w') as f:
         f.writelines(all_curve_data)
@@ -556,30 +520,19 @@ def run_v5_training(
         'avg_samples_per_episode': float(avg_samples_per_episode),
         'first_success_episode': int(first_success_episode) if first_success_episode is not None else None,
         'samples_at_first_success': int(samples_at_first_success) if samples_at_first_success is not None else None,
-        'episodes_to_convergence': int(episodes_to_convergence) if episodes_to_convergence is not None else None,
-        'samples_to_convergence': int(samples_to_convergence) if samples_to_convergence is not None else None,
-        'convergence_speed': float(convergence_speed),
         'eps_min_reached_at_samples': int(samples_at_epsilon_min) if samples_at_epsilon_min is not None else None,
         'buffer_capacity': int(buffer_capacity),
         'final_buffer_occupancy': int(final_buffer_occupancy),
         'samples_dropped_overwritten': int(samples_dropped),
-        'overwritten_count': overwritten_count,
         'effective_learn_starts': int(effective_learn_starts),
-        'update_loss_variance': update_loss_variance,
-        'update_loss_variance_last100': update_loss_variance_last100,
-        'td_mean_last100': td_mean_last100,
-        'td_std_last100': td_std_last100,
-        'learning_steps_to_first_success': int(learning_steps_to_first_success) if learning_steps_to_first_success is not None else None,
-        'reward_variance_full': reward_variance_full,
-        'reward_variance_last100': reward_variance_last100,
-        'success_rate_variance_full': success_rate_variance_full,
-        'success_rate_variance_last100': success_rate_variance_last100,
-        'loss_variance_full': loss_variance_full,
-        'loss_variance_last100': loss_variance_last100,
-        # 早停相关键移除，仅保留阈值配置供外部参考
-        'convergence_threshold': float(convergence_threshold),
-        'convergence_patience': int(convergence_patience),
-        'convergence_min_episodes': int(convergence_min_episodes),
+        'mem_start_mb': float(mem_start_mb) if mem_start_mb is not None else None,
+        'mem_end_mb': float(mem_end_mb) if mem_end_mb is not None else None,
+        'mem_peak_mb': float(mem_peak_mb) if mem_peak_mb is not None else None,
+    'update_loss_variance': update_loss_variance,
+    'update_loss_variance_last100': update_loss_variance_last100,
+    'td_mean_last100': td_mean_last100,
+    'td_std_last100': td_std_last100,
+    'learning_steps_to_first_success': int(learning_steps_to_first_success) if learning_steps_to_first_success is not None else None,
         'max_mem_size': int(max_mem_size),
         'batch_size': int(batch_size),
         'gamma': float(gamma),
@@ -632,22 +585,15 @@ def sweep_worker(task: dict) -> dict:
         'avg_samples_per_episode': res['avg_samples_per_episode'],
         'first_success_episode': res['first_success_episode'],
         'samples_at_first_success': res['samples_at_first_success'],
-        'episodes_to_convergence': res['episodes_to_convergence'],
-        'samples_to_convergence': res['samples_to_convergence'],
-        'convergence_speed': res['convergence_speed'],
         'eps_min_reached_at_samples': res['eps_min_reached_at_samples'],
         'buffer_capacity': res['buffer_capacity'],
         'final_buffer_occupancy': res['final_buffer_occupancy'],
         'samples_dropped_overwritten': res['samples_dropped_overwritten'],
-        'overwritten_count': res['overwritten_count'],
         'effective_learn_starts': res['effective_learn_starts'],
+        'mem_start_mb': res['mem_start_mb'],
+        'mem_end_mb': res['mem_end_mb'],
+        'mem_peak_mb': res['mem_peak_mb'],
         'output_summary': res['output_summary'],
-        'reward_variance_full': res['reward_variance_full'],
-        'reward_variance_last100': res['reward_variance_last100'],
-        'success_rate_variance_full': res['success_rate_variance_full'],
-        'success_rate_variance_last100': res['success_rate_variance_last100'],
-        'loss_variance_full': res['loss_variance_full'],
-        'loss_variance_last100': res['loss_variance_last100'],
     }
     return row
 
@@ -670,11 +616,8 @@ def sweep_replay_buffer_sizes(
         'size', 'rep', 'episodes', 'successes', 'success_rate', 'avg_score', 'std_score',
         'avg_loss', 'avg_epsilon', 'avg_tries', 'tries_std', 'time_min', 'time_sec', 'episodes_per_min',
         'total_samples_collected', 'avg_samples_per_episode', 'first_success_episode', 'samples_at_first_success',
-        'episodes_to_convergence', 'samples_to_convergence', 'convergence_speed',
         'eps_min_reached_at_samples', 'buffer_capacity', 'final_buffer_occupancy', 'samples_dropped_overwritten',
-        'effective_learn_starts',
-        'reward_variance_full', 'reward_variance_last100', 'success_rate_variance_full', 'success_rate_variance_last100',
-        'loss_variance_full', 'loss_variance_last100', 'overwritten_count', 'output_summary'
+        'effective_learn_starts', 'mem_start_mb', 'mem_end_mb', 'mem_peak_mb', 'output_summary'
     ]
 
     # 构建任务列表
@@ -695,7 +638,7 @@ def sweep_replay_buffer_sizes(
                 run_kwargs['batch_size'] = int(size)
 
             seed = shared_seed + rep - 1
-            task = {
+            tasks.append({
                 'size': int(size),
                 'rep': rep,
                 'out_dir': str(out_dir),
@@ -704,8 +647,7 @@ def sweep_replay_buffer_sizes(
                 'log_path': log_path,
                 'seed': seed,
                 'run_kwargs': run_kwargs,
-            }
-            tasks.append(task)
+            })
 
     # 并行度：SWEEP_WORKERS > SLURM_CPUS_PER_TASK > os.cpu_count()
     def _auto_workers():
@@ -760,11 +702,9 @@ def sweep_replay_buffer_sizes(
         'time_min', 'time_sec', 'episodes_per_min',
         'total_samples_collected', 'avg_samples_per_episode',
         'first_success_episode', 'samples_at_first_success',
-        'episodes_to_convergence', 'samples_to_convergence', 'convergence_speed',
         'eps_min_reached_at_samples',
         'final_buffer_occupancy', 'samples_dropped_overwritten',
-        'reward_variance_full', 'reward_variance_last100', 'success_rate_variance_full', 'success_rate_variance_last100', 'loss_variance_full', 'loss_variance_last100', 'overwritten_count',
-        # 早停聚合字段移除
+        'mem_start_mb', 'mem_end_mb', 'mem_peak_mb',
     ]
 
     # 输出聚合CSV

@@ -1,0 +1,62 @@
+Chapter 4 - Batch Size Effects on DQN Learning Dynamics
+
+MOTIVATION
+
+Chapter 3 showed that replay buffer capacity is a primary driver of learning in our autonomous path-finding task: there is a task-specific sweet spot balancing diversity, recency, and reuse. Small buffers discard useful trajectories too early; very large buffers retain obsolete exploration that dilutes gradients late in training. In this chapter we examine the interaction between WHAT we retain (buffer capacity) and HOW we consume it per update (mini-batch size). We broaden the perspective from a one-dimensional memory axis to a two-dimensional view that couples experience curation with gradient estimation; these two parameters jointly shape the statistical and computational profile of Deep Q-learning.
+
+Buffer capacity (|D|_max) determines the stationary replay distribution and mediates the diversity–recency trade-off. Batch size (B) determines temporal-difference (TD) gradient variance and the rate at which stored data are consumed. Large B relative to the occupied buffer (|D|) strongly averages available data: this reduces gradient noise but (1) increases per-update cost and (2) can overweight stale transitions if refresh is slow. Very small B raises gradient variance enough to undermine Double DQN and target network stability, especially with large terminal rewards. Capacity is the data reservoir; batch size is the sampling aperture. Effective learning co-tunes both.
+
+Coupling effects observed in Chapter 3 become clearer here. Near the transition from fill phase to FIFO overwrite, large batches amplify early suboptimal exploration in oversized buffers, delaying adaptation. In small buffers that reach overwrite early, large B increases reuse intensity (expected gradient contributions per stored transition), accelerating early convergence while risking overfitting to a narrow slice of experience. Because ε-greedy decay is tied to learning steps (not environment steps), B indirectly controls exploration tempo: fewer updates per episode slow ε contraction and delay the shift to on-policy dominance in replay. Target network sync frequency sets a propagation timescale; altering gradient noise through B changes drift between syncs and shifts the stability–plasticity balance.
+
+From a systems viewpoint batch size adds a practical axis: wall-clock efficiency. Chapter 3 emphasized sample complexity and success trajectories; deployment also cares about throughput (episodes per minute) and memory footprint. Larger B lowers variance but increases latency. Effective training speed traces a Pareto frontier between sample efficiency and compute efficiency. We therefore expand metrics: episodes per minute, first-success timing (in samples), and buffer utilization to separate “learns efficiently per sample” from “learns quickly in real time.”
+
+Guiding questions:
+1. Performance landscape: How does performance vary over the grid (|D|_max, B) in sample efficiency, stability (return variance, success-rate trajectories), and wall-clock throughput? Do buffer sweet spots extend to ridges/plateaus when B varies?
+2. Effective scale relationships: Is there a robust batch-to-buffer ratio B / |D|_max that balances diversity, recency, and variance across seeds, or is the optimum phase-dependent (early exploration vs late refinement)?
+3. Parameter interactions: How do learn-starts and target replacement frequency interact with (|D|_max, B)? Does capping learn-starts by a fraction of capacity prevent premature updates in small buffers while avoiding cold-start delay in large ones?
+
+We keep environment, reward shaping, and D3QN architecture unchanged to isolate (|D|_max, B). Protocol extends from a single sweep to a grid: capacities from small to large and batch sizes 4–256. Learn-starts are clamped to max(B, α * |D|_max) with conservative α to prevent degenerate sampling when B approaches capacity. We log sliding-window success rates, buffer occupancy, overwritten samples, and ε-floor timing to reveal how each configuration sculpts replay.
+
+Interpretive lens: capacity applies a data “low-pass filter” (preserve/forget behaviors); batch size applies a gradient “low-pass filter” (average stochastic TD targets). Poor alignment causes reactive/noisy (small B, small buffer) or stable/sluggish (large B, large buffer) learning. Well-matched filters exploit dense shaping rewards without drowning sparse decisive terminal events on the circular track.
+
+In sum, we co-design memory and optimization scale. Mapping (|D|_max, B) with instrumentation from Chapter 3 and reporting sample- plus time-based efficiency and stability produces practical heuristics: choosing B for a fixed memory (or vice versa), setting coherent learn-starts, and knowing when marginal gains no longer justify compute cost.
+
+PROBLEM SETTING
+
+We investigate the joint parameter space (|D|_max, B) for replay-based Deep Q-learning in our autonomous racing task. Objective: identify regions maximizing sample efficiency, stability, and throughput under fixed task dynamics from Chapter 3.
+
+Task Environment
+Track: circular, 70 px width; constant forward velocity v = 3 px/step. Actions: {left, right, forward, slow} adjusting heading (≈4 degrees/step for turns). State s ∈ R^5 encodes: (1) heading alignment cos(Δθ_h) and cross-track sinusoidal component sin(Δθ_h); (2) normalized lateral deviation from centerline; (3) angular position as (cos θ_p, sin θ_p) to avoid discontinuity at 2π.
+
+Reward function:
+r_t = 0.2 (survival) + 10 * max(0, Δθ_t) (progress) + 12 * (1 - |d_t - d_mid| / d_mid) (centering) + 8 * align_t (heading)
+where Δθ_t is counterclockwise angular advancement, d_t the distance from vehicle contour to nearest boundary, d_mid = 35 px half-width, align_t a weighted dot product between displacement and either track tangent (curves) or previous step direction (straights). Terminal rewards: collision -500; lap completion +3000; timeout (1200 steps) -100; stagnation (120 steps with angular progress < 0.003 rad) -300.
+
+Agent Architecture
+Dueling Double DQN unchanged: two FC hidden layers (256, 200 ReLU) then value head V(s) and advantage head A(s,a). Combine: Q(s,a) = V(s) + [A(s,a) - mean_{a'} A(s,a')]. Target network hard replace every C_replace steps (or optional soft τ). Optimizer: Adam lr = 5e-4, Huber (SmoothL1) loss, gradient clip L2 norm ≤ 10. Exploration: ε-greedy decays per learning step: ε_t = max(ε_min, ε_0 - t * δ_ε) with ε_0 = 1.0, ε_min = 0.05, δ_ε = 1e-4. Decay tied to update count couples indirectly with B.
+
+Two-Dimensional Parameter Grid
+Buffer capacities: {1000, 5000, 10000, 20000, 100000}. Batch sizes: {4, 16, 64, 128, 256}. Feasibility constraint: B ≤ |D|_max to avoid degenerate sampling. Nominal 25 cells reduce to 15 valid combinations after constraint. Each evaluated with R = 3 seeds (base seed 123, incremented).
+
+Adaptive Learn-Starts
+learn_starts = max(B, min(5000, floor(0.1 * |D|_max))). Guarantees: ≥ one full batch; small buffers start after 10% fill for diversity; large buffers begin by 5000 to avoid delay. Examples: |D|_max=1000, B=64 ⇒ 100; |D|_max=100000, B=128 ⇒ 5000.
+
+Termination Criteria
+1. Success: 100 completed laps (+3000 reward episodes).
+2. Episode cap: 2000 episodes to bound total wall-clock. Cap lower than Chapter 3 (10000) due to grid cost. Favorable configs converge in ≈1000–1500 episodes; failing configs plateau early.
+
+Evaluation Metrics
+Sample Efficiency: episodes to 100 successes; total samples collected; first success episode; samples at first success; samples at ε_min.
+Stability and Quality: success rate; avg episode reward and std; avg TD loss; avg attempts per success and std.
+Computational Efficiency: wall-clock minutes; episodes per minute (EPM); average samples per episode.
+Replay Buffer Utilization: final occupancy; samples dropped (overwritten); effective learn-starts.
+
+Output and Logging
+Directory pattern: base_dir/tag/size_<N>/batch_<B>/rep_<i>/. Files: curve_data.txt (episode series: reward, loss, ε, sliding success); summary.txt (aggregated metrics); train_log.txt (per-episode details). Master grid_summary.csv consolidates all runs; plotting via companion script plot_replay_sweep.py.
+
+Research Questions Revisited
+1. Performance landscape: Do sample efficiency, stability, and throughput exhibit ridges/valleys over (|D|_max, B)?
+2. Scale invariance: Does ratio B / |D|_max (or inverse) predict performance across scales or reveal phase transitions (<10k vs ≥10k capacity)?
+3. Interaction: Does adaptive learn_starts scheduling help small buffers by delaying updates or do earlier updates aid credit assignment with dense shaping rewards?
+
+Methodology will detail infrastructure and statistical procedures, followed by results.

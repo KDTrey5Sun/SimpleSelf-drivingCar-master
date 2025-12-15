@@ -1,0 +1,42 @@
+DQN Replay Buffer Research Questions Design
+Overall RQ
+How does replay buffer size shape sample efficiency and training stability in value-based deep reinforcement learning for a racing task?
+ 
+Experiment 1: Replay Buffer Size (Buffer Size Only)
+Experiment 1 RQ
+How does replay buffer size alone impact sample efficiency and training stability in DQN?
+Experiment 1 Sub-Research Questions
+SRQ1.1: How does buffer size affect sample efficiency (convergence speed)?
+•	Metrics: first_success_episode, samples_at_first_success, convergence_speed
+•	Hypothesis H1.1: Small buffers → faster initial convergence (less data to process); large buffers → slower convergence (more stable but delayed)
+SRQ1.2: How does buffer size affect training stability and variance?
+•	Metrics: success_rate_variance, avg_reward_variance, avg_loss_variance (across seeds)
+•	Hypothesis H1.2: Small buffers → high variance (limited diversity); large buffers → low variance (diverse replay pool)
+SRQ1.3: What is the optimal buffer size for balancing efficiency and stability?
+•	Metrics: pareto_frontier of (convergence_speed, stability)
+•	Hypothesis H1.3: Optimal buffer size exists in the middle range—balancing diversity and computational efficiency
+Experiment 1 Design
+•	Independent Variable: Replay buffer size (e.g., 10K, 50K, 100K, 500K, 1M)
+•	Fixed Variables: Batch size (constant, e.g., 32), all other hyperparameters constant
+•	Dependent Variables: Sample efficiency metrics, stability metrics, final performance
+ 
+Experiment 2: Replay Buffer Size × Batch Size (Interaction)
+Experiment 2 RQ
+How do replay buffer size and batch size interact to shape sample efficiency and training stability in DQN?
+Experiment 2 Sub-Research Questions
+SRQ2.1: Does batch size moderate the effect of buffer size on sample efficiency?
+•	Metrics: first_success_episode, samples_at_first_success (across buffer_size × batch_size combinations)
+•	Hypothesis H2.1: Large batch + small buffer → severe overfitting; small batch + large buffer → stable but slow; optimal pairing exists
+SRQ2.2: How does the buffer_size:batch_size ratio affect training dynamics?
+•	Metrics: avg_loss_variance, training_stability_score, learning_curve_smoothness
+•	Hypothesis H2.2: High ratio (large buffer, small batch) → smoother updates; low ratio (small buffer, large batch) → noisy updates
+SRQ2.3: What buffer-batch combinations optimize the efficiency-stability trade-off?
+•	Metrics: Pareto frontier of (convergence_speed, stability) across all combinations
+•	Hypothesis H2.3: Optimal combinations follow a principle (e.g., ratio ≈ 1000:1 or buffer_size ≥ batch_size × N)
+Experiment 2 Design
+•	Independent Variables: 
+o	Replay buffer size (e.g., 10K, 100K, 500K, 1M)
+o	Batch size (e.g., 8, 16, 32, 64)
+•	Design: Factorial design (all combinations) or subset based on computational budget
+•	Fixed Variables: All other hyperparameters constant
+•	Dependent Variables: Sample efficiency, stability, final performance

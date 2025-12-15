@@ -1,0 +1,723 @@
+\chapter{Background}
+\section{Reinforcement Learning Fundamentals}
+
+\subsection{Markov Decision Process and Bellman Equation}
+
+Reinforcement learning (RL) provides a framework for teaching agents to make decisions through trial and error. The core mathematical model is the Markov Decision Process (MDP), defined by five components: states ($S$), actions ($A$), transition probabilities ($P$), rewards ($R$), and a discount factor ($\gamma$).
+
+The agent observes a state, chooses an action, receives a reward, and moves to a new state. The Markov property means the next state depends only on the current state and action, not on past history. While real systems may violate this assumption, it enables practical algorithms and works well in many applications.\textbf{}
+
+Each interaction between the agent and environment produces an \textit{experience tuple} $(s, a, r, s', \text{done})$, where:
+\begin{itemize}
+    \item $s$ is the current state before taking action
+    \item $a$ is the action selected by the agent
+    \item $r$ is the immediate reward received
+    \item $s'$ is the next state after taking action $a$
+    \item $\text{done}$ is a boolean flag indicating whether $s'$ is a terminal state
+\end{itemize}
+This tuple captures all information needed to evaluate the quality of an action. The terminal flag $\text{done}$ is crucial: when true, it signals that the episode has ended (e.g., the car crashed or reached the goal), so no future rewards follow from $s'$. In the Bellman equation, this means $Q(s', a') = 0$ for terminal states. These tuples form the basic units of experience that can be stored and reused for learning, as we will see in experience replay mechanisms.
+
+The agent's goal is to learn a policy $\pi(a|s)$---a rule for selecting actions---that maximizes total discounted rewards: $\sum \gamma^t r_t$. The discount factor $\gamma$ (between 0 and 1) controls how much the agent values future rewards. A value near 1 (like 0.99) makes the agent plan far ahead, while smaller values create short-sighted behavior.
+
+The action-value function $Q(s,a)$ estimates expected total reward when taking action $a$ in state $s$ and following policy $\pi$ afterward. The optimal Q-function satisfies the Bellman equation:
+
+\begin{equation}
+Q^*(s, a) = \mathbb{E}[r + \gamma \cdot \max_{a'} Q^*(s', a')]
+\end{equation}
+
+This equation says the value of an action equals immediate reward plus the discounted best value from the next state. This turns the decision problem into a fixed-point equation that can be solved through repeated updates.
+
+When states and actions are discrete and few, we can store Q-values in a table and compute exact solutions. However, for large or continuous state spaces (like images), we need function approximation---representing $Q(s,a)$ with a neural network $Q(s,a;\theta)$ that can generalize across similar states.
+
+
+\subsection{Q-Learning and Temporal Difference Methods}
+
+Temporal-difference (TD) learning combines two ideas: using current estimates to improve themselves (like dynamic programming) and learning from sampled experience (like Monte Carlo methods). The basic TD update is:
+
+\begin{equation}
+V(s) \leftarrow V(s) + \alpha \cdot [r + \gamma \cdot V(s') - V(s)]
+\end{equation}
+
+\noindent where $\alpha$ is the learning rate and the bracketed term is the TD error. Unlike methods requiring complete episodes, TD updates after each step, enabling online learning.
+
+Q-learning extends this to action-values:
+
+\begin{equation}
+Q(s, a) \leftarrow Q(s, a) + \alpha \cdot [r + \gamma \cdot \max_{a'} Q(s', a') - Q(s, a)]
+\end{equation}
+
+The key feature is off-policy learning: Q-learning learns the optimal policy even when the agent explores randomly. This separates exploration (generating diverse experience) from exploitation (improving the policy).
+
+The exploration-exploitation trade-off is central to RL. Always choosing the best-known action (exploitation) risks missing better options. Always exploring randomly wastes learned knowledge. The $\epsilon$-greedy strategy balances both: with probability $\epsilon$, choose randomly; otherwise, choose the best action. Decreasing $\epsilon$ over time (e.g., from 1.0 to 0.05) implements a ``explore early, exploit later'' approach.
+
+For tabular Q-learning with proper learning rates and sufficient exploration, convergence to optimal $Q^*$ is guaranteed. However, using neural networks breaks these guarantees and introduces instability: (1) consecutive samples are correlated, violating gradient descent assumptions; (2) the training target depends on parameters being updated, creating a moving target; (3) small changes can drastically alter the policy.
+
+Deep Q-Networks (DQN) solve these problems with two techniques. Experience replay stores transitions in a buffer and samples random batches for training. This breaks correlations, enables reusing each experience multiple times, and stabilizes learning. Target networks maintain a separate copy of parameters for computing targets, updated slowly every few thousand steps. This provides stable targets and reduces oscillations.
+
+Double DQN addresses overestimation bias. Standard Q-learning uses the same network to both select and evaluate the best next action, causing systematic overestimation. Double DQN uses the online network to select actions and the target network to evaluate them, significantly reducing bias.
+
+Dueling architectures split $Q(s,a)$ into state value $V(s)$ and action advantage $A(s,a)$. This helps when action choice matters little in some states---the network can learn a good state value shared across actions, focusing its capacity on learning advantages where actions differ meaningfully.
+
+These innovations---experience replay, target networks, Double DQN, and dueling---enable stable learning in complex environments. While theoretical guarantees from tabular methods no longer apply, these techniques have proven effective across diverse applications from game playing to robot control.
+
+\section{Deep Q-Network and Algorithmic Extensions}
+
+\subsection{DQN (Deep Q-Network)}
+
+Deep Q-Network (DQN) extends Q-learning to high-dimensional state spaces by using neural networks to approximate the action-value function $Q(s,a;\theta)$. This approach enables learning from raw sensory inputs like images, which would be impossible with tabular methods due to the exponential growth of state-action pairs.
+
+The core DQN algorithm addresses two fundamental instabilities that arise when combining Q-learning with function approximation. First, sequential experience collected from environment interactions is highly correlated. Training on consecutive samples $(s_t, a_t, r_t, s_{t+1})$ violates the independence assumption underlying stochastic gradient descent, causing the network to overfit recent experiences and forget earlier learning---a problem known as catastrophic interference.
+
+Experience replay solves this by storing transitions in a replay buffer and sampling random mini-batches for training. Each transition $(s, a, r, s', \text{done})$ is stored when it occurs and can be reused multiple times in gradient updates. This breaks temporal correlations, stabilizes learning, and improves sample efficiency by allowing the agent to learn from the same experience multiple times. The replay buffer operates as a fixed-size queue: once capacity is reached, old transitions are discarded (FIFO) to make room for new ones.
+
+The second instability comes from the TD target $y = r + \gamma \cdot \max_{a'} Q(s', a'; \theta)$. Because the same network parameters $\theta$ appear in both the prediction $Q(s,a;\theta)$ and the target, updates can cause rapid oscillations. Small changes to $Q$ can drastically alter the target values, creating a moving goalpost that prevents convergence.
+
+Target networks address this by maintaining a separate copy of parameters $\theta^-$ used only for computing targets. The target network is updated infrequently (every $C$ steps) by copying the online network's weights, or gradually via soft updates: $\theta^- \leftarrow \tau \cdot \theta + (1-\tau) \cdot \theta^-$. This provides stable targets over short timescales, reducing oscillations and improving convergence reliability.
+
+The DQN training loop alternates between two phases. During interaction, the agent selects actions using $\epsilon$-greedy exploration and stores transitions in the replay buffer. During learning, random mini-batches are sampled from the buffer, and the network is updated via gradient descent on the Huber loss:
+
+\begin{equation}
+\mathcal{L}(\theta) = 
+\begin{cases}
+\frac{1}{2} \delta_t^2, & \text{if } |\delta_t| < 1 \\
+|\delta_t| - \frac{1}{2}, & \text{otherwise}
+\end{cases}
+\end{equation}
+
+\noindent where
+\begin{equation}
+\delta_t = r + \gamma \max_{a'} Q(s', a'; \theta^{-}) - Q(s, a; \theta)
+\end{equation}
+
+This loss function (also known as SmoothL1Loss) is more robust to outliers than mean squared error, reducing sensitivity to large TD errors. Gradient clipping further stabilizes training by preventing exploding gradients.
+\subsection{Double Dueling DQN}
+
+While standard DQN achieves stable learning, it suffers from systematic overestimation bias. The $\max$ operator in the target computation selects and evaluates actions using the same network, amplifying approximation errors. When multiple actions have similar but noisy Q-values, the $\max$ consistently picks the action with the highest noise, leading to overoptimistic value estimates that propagate through the Bellman updates.
+
+Double DQN decouples action selection from value estimation. The online network selects the best action: $a^* = \arg\max_{a'} Q(s', a'; \theta)$. The target network then evaluates that action's value: $Q(s', a^*; \theta^-)$. This two-step process prevents the same approximation errors from affecting both selection and evaluation, significantly reducing overestimation. The modified target becomes:
+
+\begin{equation}
+y = r + \gamma \cdot Q(s', \arg\max_{a'} Q(s',a';\theta); \theta^-)
+\end{equation}
+
+Empirical studies show Double DQN reduces value overestimation by 30--50\% in complex environments, leading to more reliable policies and faster convergence.
+
+Dueling architectures further improve learning efficiency by decomposing the Q-function into state value and action advantage:
+
+\begin{equation}
+Q(s,a) = V(s) + [A(s,a) - \frac{1}{|\mathcal{A}|}\sum_{a'} A(s,a')]
+\end{equation}
+
+The network splits after shared feature layers into two streams: a scalar value head $V(s)$ estimating how good it is to be in state $s$ regardless of action, and an advantage head $A(s,a)$ measuring the relative benefit of each action. The mean subtraction enforces identifiability---without it, $V$ and $A$ could trade off arbitrarily.
+
+This factorization accelerates learning in two ways. In states where action choice matters little (e.g., safe regions far from hazards), all advantage values are near zero, and learning focuses on improving the shared $V(s)$. This reduces redundancy compared to learning separate $Q(s,a)$ for each action. In states where actions differ significantly, the advantage stream captures these differences while still leveraging the shared state value.
+
+Combining Double DQN and Dueling architectures yields a robust algorithm that addresses overestimation bias while efficiently representing value functions across diverse state types. This combination, often called D3QN (Double Dueling Deep Q-Network), has become a standard baseline for value-based deep reinforcement learning, particularly in domains with discrete action spaces and complex state representations.
+
+\section{Key Techniques in Deep Reinforcement Learning}
+
+\subsection{Experience Replay: Buffer Design and Capacity Trade-offs}
+
+Experience replay is a critical technique that enables stable learning in deep reinforcement learning by breaking temporal correlations in sequential data. When an agent interacts with an environment, consecutive states are highly correlated---for example, the position at time $t+1$ is very close to the position at time $t$. Training directly on such correlated sequences causes the neural network to overfit recent experiences and forget earlier useful patterns.
+
+The replay buffer stores past transitions $(s, a, r, s', \text{done})$ in a fixed-size memory and samples random mini-batches during training. This randomization decorrelates training samples, allowing the network to learn from diverse experiences collected over many episodes. Each transition can be reused multiple times, improving sample efficiency---a crucial advantage when environment interactions are expensive.
+
+Buffer capacity presents a fundamental trade-off. Small buffers (e.g., 1000 transitions) refresh quickly with recent data but discard potentially useful past experiences too soon. If the agent discovers a successful strategy, small buffers may overwrite those valuable transitions before the network can learn from them adequately. Large buffers (e.g., 100000 transitions) retain diverse experiences spanning many episodes, but they also preserve outdated data from early random exploration long after the policy has improved, diluting gradient signals during late-stage training.
+
+The optimal capacity depends on task characteristics. For tasks with stable dynamics and clear reward signals, larger buffers provide broader coverage. For tasks where the optimal strategy changes over time, smaller buffers adapt faster by discarding stale data. Empirical tuning is typically required: common starting points range from 10000 to 100000 transitions for moderately complex environments.
+
+Implementation uses FIFO (first-in-first-out) eviction: once capacity is reached, the oldest transition is discarded to make room for new data. Uniform random sampling ensures all stored experiences have equal probability of selection, though more advanced methods like prioritized replay can weight important transitions higher.
+
+\subsection{Exploration: Epsilon-Greedy and Parameter Noise}
+
+Exploration is essential in reinforcement learning: without trying new actions, the agent cannot discover better strategies. Pure exploitation (always choosing the action with highest estimated value) risks missing superior alternatives. Pure exploration (random actions) wastes time on poor choices.
+
+$\epsilon$-greedy is the most common exploration strategy. With probability $\epsilon$ (epsilon), the agent selects a random action; otherwise, it chooses the greedy action $\arg\max_a Q(s,a)$. The exploration rate $\epsilon$ typically decays over time: starting at 1.0 (fully random) and decreasing to a small value like 0.05. This schedule implements ``optimism in the face of uncertainty'': early exploration builds broad knowledge of the environment, while later exploitation refines the policy based on learned values.
+
+The decay schedule matters significantly. Too fast decay causes premature convergence to suboptimal policies before sufficient exploration. Too slow decay wastes training time on random actions after the agent has already found good strategies. Linear decay ($\epsilon_t = \max(\epsilon_{\min}, \epsilon_0 - t \cdot \delta)$) is simple and widely used. Exponential decay and step decay are alternatives that adjust exploration tempo differently.
+
+An important subtlety: should $\epsilon$ decrease per environment step or per gradient update? If tied to updates (as in most implementations), larger batch sizes reduce update frequency, slowing $\epsilon$ decay and prolonging exploration. This creates an implicit coupling between batch size and exploration that can affect learning dynamics.
+
+Parameter noise is an alternative exploration method that adds random perturbations directly to network weights rather than action selection. This induces consistent behavioral changes across an episode, potentially more effective than action-level randomness in environments with long-horizon dependencies. However, it is computationally more expensive and less commonly used than $\epsilon$-greedy in practice.
+
+\subsection{Engineering Best Practices: Gradient Clipping and Loss Functions}
+
+Deep reinforcement learning combines neural network optimization with temporal-difference learning, inheriting stability challenges from both domains. Several engineering techniques are essential for reliable training.
+
+Gradient clipping prevents exploding gradients. In early training, Q-values are poorly initialized and TD targets can be extremely large (e.g., when terminal rewards like +3000 or -500 suddenly appear). Computing loss against such targets produces huge gradients that destabilize learning. Clipping limits gradient magnitude to a maximum norm (e.g., 10): if $\|\nabla\|_2 > 10$, scale it down to $\|\nabla\|_2 = 10$. This allows training to proceed smoothly through early instability without diverging.
+
+Loss function choice matters. Mean squared error (MSE) is sensitive to outliers: a single large TD error dominates the gradient, potentially skewing updates. Huber loss (SmoothL1Loss) combines MSE for small errors with absolute loss for large errors:
+
+\begin{equation}
+L(x) = 
+\begin{cases}
+0.5 \cdot x^2 & \text{if } |x| \leq \delta \\
+\delta \cdot (|x| - 0.5 \cdot \delta) & \text{otherwise}
+\end{cases}
+\end{equation}
+
+where $\delta$ (typically 1.0) is the transition threshold. This reduces sensitivity to outliers while maintaining smooth gradients near zero, yielding more stable convergence in noisy environments.
+
+Learning rate selection requires balancing adaptation speed and stability. Too high (e.g., $10^{-3}$) causes oscillations and failure to converge. Too low (e.g., $10^{-6}$) learns extremely slowly. Typical values range from $10^{-4}$ to $5 \times 10^{-4}$ for DQN. Adaptive optimizers like Adam automatically adjust per-parameter learning rates, improving robustness across different network architectures.
+
+Target network update frequency also needs tuning. Updating too often (e.g., every step) defeats the purpose of stabilization. Updating too rarely (e.g., every 10000 steps) produces stale targets that lag behind the online network. Common choices are 1000--5000 steps, or soft updates every step with small coefficient $\tau \approx 0.005$, gradually blending online weights into the target network.
+
+Network architecture impacts learning efficiency. Deeper networks with more parameters can represent complex value functions but require more data and careful initialization. Simpler architectures (e.g., two hidden layers with 256 and 128 units) often suffice for moderately complex tasks and train more reliably. Activation functions like ReLU are standard, though alternatives like ELU can improve gradient flow in very deep networks.
+
+These engineering choices collectively determine whether deep RL training succeeds or fails. While theoretical guarantees are limited with function approximation, these empirically validated practices have enabled successful applications across diverse domains from game playing to robotic control.
+
+
+\section{Related Work}
+
+This section reviews prior work relevant to our DQN-based autonomous racing system, covering three main areas: deep reinforcement learning algorithms, experience replay mechanisms, and applications of RL to autonomous driving tasks.
+
+\subsection{Deep Reinforcement Learning}
+
+\subsubsection{Foundational Methods}
+
+Deep Q-Networks (DQN) introduced by Mnih et al. successfully combined Q-learning with deep neural networks to learn control policies from high-dimensional sensory inputs \cite{mnih2013playing, mnih2015human}. The key innovations—experience replay and fixed target networks—addressed the instability issues that plagued earlier attempts at neural function approximation in RL. Our work builds directly on this foundation, implementing both mechanisms in a continuous control racing environment.
+
+The original DQN architecture used convolutional neural networks to process raw pixel inputs from Atari games. While our implementation uses a compact geometric state representation (5-dimensional vector encoding car pose and track alignment), we retain DQN's core algorithmic components: $\epsilon$-greedy exploration, experience replay sampling, and periodic target network updates. This design choice follows the principle established by Mnih et al. that separating data correlation (via replay) from network updates (via target networks) is crucial for stable learning.
+
+\subsubsection{Algorithmic Improvements}
+
+Van Hasselt et al. identified overestimation bias in standard Q-learning and proposed Double DQN \cite{van2016deep}, which decouples action selection from action evaluation. In Double DQN, the online network selects the best action, while the target network evaluates its value. This modification reduces overoptimistic value estimates, particularly in early training when the Q-function is poorly initialized. Our implementation incorporates Double DQN as it is particularly beneficial in racing scenarios where collision penalties create large negative TD errors.
+
+Wang et al. introduced Dueling DQN \cite{wang2016dueling}, which decomposes the Q-function into state value $V(s)$ and advantage $A(s,a)$ streams that recombine as $Q(s,a) = V(s) + A(s,a) - \bar{A}(s)$. This architecture enables the network to learn which states are valuable independent of actions, improving generalization when many actions yield similar rewards. In racing, this is relevant because staying centered on the track is valuable regardless of whether the agent turns left or right at gentle curves.
+
+\subsection{Experience Replay Mechanisms}
+
+\subsubsection{Buffer Size and Sampling Strategy}
+
+Experience replay, first applied to neural networks by Lin \cite{lin1992self}, stores transitions in a memory buffer and samples mini-batches uniformly for training. However, the optimal buffer size remains an open question. Zhang et al. demonstrated in a multi-task setting that excessively large buffers can slow convergence by retaining outdated experiences from early exploratory behavior \cite{zhang2018study}. Conversely, Fedus et al. argued that large replay ratios (number of gradient updates per environment step) can be beneficial when combined with appropriate data augmentation \cite{fedus2020revisiting}.
+
+Our work systematically investigates this trade-off in a single-task continuous control setting. We control for replay ratio by fixing batch size (128) and update frequency (every step), isolating the effect of buffer capacity. This differs from prior studies that often vary multiple hyperparameters simultaneously, making it difficult to attribute performance changes to specific design choices.
+
+Schaul et al. proposed Prioritized Experience Replay (PER) \cite{schaul2015prioritized}, which samples transitions based on their TD error magnitude, focusing learning on surprising experiences. While PER can accelerate learning, it introduces additional hyperparameters (priority exponent, importance sampling correction) and computational overhead. Our study focuses on uniform sampling to establish baseline buffer size effects before considering more complex sampling strategies.
+
+\subsubsection{Stability and Plasticity}
+
+Recent work has examined the "loss of plasticity" phenomenon in deep RL: networks trained on old data can become less responsive to new experiences \cite{lyle2023understanding}. This is directly relevant to our research question (RQ1), as larger buffers retain older transitions longer, potentially inducing such rigidity. Kumar et al. showed that distribution shift between replay buffer and current policy can degrade performance \cite{kumar2020conservative}, motivating our variance-based stability metrics.
+
+Our TD error tracking (mean and standard deviation over the last 100 episodes) and loss variance measurements provide empirical signals for detecting whether large buffers induce training instability in the racing domain. These metrics complement standard performance measures (success rate, convergence speed) by capturing the quality of the learning process itself.
+
+\subsection{Hyperparameter Sensitivity in Deep RL}
+
+Henderson et al. demonstrated that deep RL algorithms are highly sensitive to hyperparameter choices and random seeds \cite{henderson2018deep}. They found that minor changes in network architecture, learning rate, or initialization can drastically alter final performance, emphasizing the need for systematic evaluation with multiple random seeds. Our experimental design follows these best practices: we run 50-100 repetitions per configuration and report statistical significance tests (Spearman rank correlation, two-way ANOVA) rather than single-run results.
+
+Andrychowicz et al. conducted a large-scale study on on-policy algorithms (PPO, A2C) and identified batch size as a critical hyperparameter that interacts with learning rate and entropy regularization \cite{andrychowicz2020what}. Our RQ2 extends this line of inquiry to off-policy learning (DQN), investigating whether batch size moderates the effects of buffer size—a question not addressed in their work, which focused on algorithms without experience replay.
+
+\subsection{Reinforcement Learning for Autonomous Driving}
+
+\subsubsection{End-to-End Learning from Vision}
+
+Sallab et al. applied DQN to lane-keeping tasks in highway driving scenarios, demonstrating that deep RL can learn robust control policies from visual input \cite{sallab2017deep}. Bojarski et al. at NVIDIA trained end-to-end driving models using behavioral cloning (supervised learning from human demonstrations) rather than RL, achieving impressive real-world performance \cite{bojarski2016end}. However, behavioral cloning requires large datasets of expert demonstrations, whereas RL can learn from self-generated experience.
+
+Our work uses RL rather than imitation learning, but we simplify the state representation to geometric features (distance to track border, heading alignment, angular position) rather than raw pixels. This choice follows Pomerleau's early work on autonomous driving with ALVINN \cite{pomerleau1989alvinn}, which showed that compact representations can be sufficient for control tasks when properly designed. Our 5-dimensional state vector provides enough information for the agent to learn track-centered, smooth driving without the computational burden of processing high-dimensional visual observations.
+
+\subsubsection{Racing and High-Speed Control}
+
+Wurman et al. demonstrated that RL agents trained with model-free methods (soft actor-critic) can achieve professional-level performance in the Gran Turismo racing simulation \cite{wurman2022outracing}. Their work used distributed training across thousands of CPU cores and carefully designed reward shaping to encourage smooth, competitive driving. While we use a simpler 2D racing environment and fewer computational resources, we share their emphasis on reward design: our reward function incorporates angular progress (lap completion), centering (staying in the middle of the track), and alignment (smooth trajectory following).
+
+Chisari et al. surveyed deep RL applications in autonomous racing and identified common challenges: sparse rewards (only receiving feedback at track completion), safety constraints (avoiding collisions), and sim-to-real transfer \cite{chisari2022survey}. Our reward shaping addresses the sparse reward problem by providing dense feedback at every timestep based on progress and alignment. The safety constraint (collision = episode termination with large penalty) naturally emerges from the track border mask collision detection.
+
+\subsection{Reward Shaping}
+
+Ng et al. formalized reward shaping through potential-based functions that preserve optimal policies \cite{ng1999policy}. A potential function $\Phi(s)$ allows augmenting the reward as $r'(s, a, s') = r(s, a, s') + \gamma \Phi(s') - \Phi(s)$ without altering the optimal policy. Our angular progress reward (Equation 2.2 in Chapter 2) can be viewed as a potential function where $\Phi(s)$ is the cumulative angle traversed around the track's center. This ensures that the agent is incentivized to move forward (increasing angle) while maintaining the same optimal policy as the sparse task reward (lap completion).
+
+The centering and alignment bonuses in our reward function are non-potential-based shaping terms that explicitly encourage stylistic preferences (smooth, track-centered driving) beyond task success. This follows the approach of Brys et al., who showed that combining potential-based and non-potential shaping can accelerate learning in practice, even if it technically alters the optimal policy \cite{brys2015reinforcement}.
+
+\subsection{Open Questions and Our Contributions}
+
+Despite extensive research on DQN and experience replay, several questions remain underexplored:
+
+\begin{enumerate}
+    \item \textbf{Buffer size trade-offs in continuous control:} Most buffer size studies focus on discrete action spaces (Atari) or investigate multi-task settings. Racing tasks involve continuous state spaces, rapid dynamics, and safety-critical constraints (collision avoidance), potentially altering the optimal buffer capacity compared to prior domains.
+    
+    \item \textbf{Convergence vs. stability:} Existing work often reports final performance (episodic return, success rate) but not training stability. We introduce variance-based metrics (TD error variance, loss variability over the last 100 episodes, coefficient of variation across seeds) to quantify whether large buffers induce training instability or improve robustness.
+    
+    \item \textbf{Interaction effects:} Few studies systematically examine interactions between replay buffer size and other hyperparameters. Our two-way ANOVA design (RQ2: buffer size × batch size) tests whether these factors exhibit independent main effects or significant interactions that would require joint optimization.
+    
+    \item \textbf{Statistical rigor:} Henderson et al. highlighted that many RL papers report results from single runs or few seeds, making it unclear whether performance differences are statistically significant \cite{henderson2018deep}. We address this by running 50-100 repetitions per configuration and employing hypothesis testing (Spearman ρ for ranking consistency, ANOVA $\eta^2$ for interaction strength) rather than relying on visual inspection of learning curves.
+\end{enumerate}
+
+Our work addresses these gaps through a rigorous empirical study with systematic hyperparameter sweeps, comprehensive stability metrics, and statistical hypothesis testing. The insights gained inform practical guidelines for hyperparameter selection in autonomous racing and related continuous control tasks where sample efficiency and training stability are critical.
+
+
+
+
+
+
+
+
+\section{Reinforcement Learning Fundamentals}
+\subsection{Markov Decision Process and Bellman Equation}
+\subsection{Q-Learning and Temporal Difference Methods}
+
+\section{Deep Q-Network and Algorithmic Extensions}
+\subsection{DQN}
+\subsection{Double Dueling DQN}
+
+\section{Key Techniques in Deep Reinforcement Learning}
+\subsection{Experience Replay: Buffer Design and Capacity Trade-offs}
+\subsection{Exploration: Epsilon-Greedy and Parameter Noise}
+\subsection{Engineering Best Practices: Gradient Clipping and Loss Functions}
+
+\section{Related Work}
+\subsection{Empirical Studies on Experience Replay Capacity}
+\subsection{DQN Applications in Autonomous Driving}
+\subsection{Hyperparameter Sensitivity and Reproducibility}
+=\subsection{Summary: Positioning of Our Work}
+
+\section{Conclusion}
+
+
+
+
+
+
+% Journals
+
+% First the Full Name is given, then the abbreviation used in the AMS Math
+% Reviews, with an indication if it could not be found there.
+% Note the 2nd overwrites the 1st, so swap them if you want the full name.
+
+ %{AMS}
+ @String{AMSTrans = "American Mathematical Society Translations" }
+ @String{AMSTrans = "Amer. Math. Soc. Transl." }
+ @String{BullAMS = "Bulletin of the American Mathematical Society" }
+ @String{BullAMS = "Bull. Amer. Math. Soc." }
+ @String{ProcAMS = "Proceedings of the American Mathematical Society" }
+ @String{ProcAMS = "Proc. Amer. Math. Soc." }
+ @String{TransAMS = "Transactions of the American Mathematical Society" }
+ @String{TransAMS = "Trans. Amer. Math. Soc." }
+
+ %ACM
+ @String{CACM = "Communications of the {ACM}" }
+ @String{CACM = "Commun. {ACM}" }
+ @String{CompServ = "Comput. Surveys" }
+ @String{JACM = "J. ACM" }
+ @String{ACMMathSoft = "{ACM} Transactions on Mathematical Software" }
+ @String{ACMMathSoft = "{ACM} Trans. Math. Software" }
+ @String{SIGNUM = "{ACM} {SIGNUM} Newsletter" }
+ @String{SIGNUM = "{ACM} {SIGNUM} Newslett." }
+
+ @String{AmerSocio = "American Journal of Sociology" }
+ @String{AmerStatAssoc = "Journal of the American Statistical Association" }
+ @String{AmerStatAssoc = "J. Amer. Statist. Assoc." }
+ @String{ApplMathComp = "Applied Mathematics and Computation" }
+ @String{ApplMathComp = "Appl. Math. Comput." }
+ @String{AmerMathMonthly = "American Mathematical Monthly" }
+ @String{AmerMathMonthly = "Amer. Math. Monthly" }
+ @String{BIT = "{BIT}" }
+ @String{BritStatPsych = "British Journal of Mathematical and Statistical
+          Psychology" }
+ @String{BritStatPsych = "Brit. J. Math. Statist. Psych." }
+ @String{CanMathBull = "Canadian Mathematical Bulletin" }
+ @String{CanMathBull = "Canad. Math. Bull." }
+ @String{CompApplMath = "Journal of Computational and Applied Mathematics" }
+ @String{CompApplMath = "J. Comput. Appl. Math." }
+ @String{CompPhys = "Journal of Computational Physics" }
+ @String{CompPhys = "J. Comput. Phys." }
+ @String{CompStruct = "Computers and Structures" }
+ @String{CompStruct = "Comput. \& Structures" }
+ @String{CompJour = "The Computer Journal" }
+ @String{CompJour = "Comput. J." }
+ @String{CompSysSci = "Journal of Computer and System Sciences" }
+ @String{CompSysSci = "J. Comput. System Sci." }
+ @String{Computing = "Computing" }
+ @String{ContempMath = "Contemporary Mathematics" }
+ @String{ContempMath = "Contemp. Math." }
+ @String{Crelle = "Crelle's Journal" }
+ @String{GiornaleMath = "Giornale di Mathematiche" }
+ @String{GiornaleMath = "Giorn. Mat." } % didn't find in AMS MR., ibid.
+
+ %IEEE
+ @String{Computer = "{IEEE} Computer" }
+ @String{IEEETransComp = "{IEEE} Transactions on Computers" }
+ @String{IEEETransComp = "{IEEE} Trans. Comput." }
+ @String{IEEETransAC = "{IEEE} Transactions on Automatic Control" }
+ @String{IEEETransAC = "{IEEE} Trans. Automat. Control" }
+ @String{IEEESpec = "{IEEE} Spectrum" } % didn't find in AMS MR
+ @String{ProcIEEE = "Proceedings of the {IEEE}" }
+ @String{ProcIEEE = "Proc. {IEEE}" } % didn't find in AMS MR
+ @String{IEEETransAeroElec = "{IEEE} Transactions on Aerospace and Electronic
+     Systems" }
+ @String{IEEETransAeroElec = "{IEEE} Trans. Aerospace Electron. Systems" }
+
+ @String{IMANumerAna = "{IMA} Journal of Numerical Analysis" }
+ @String{IMANumerAna = "{IMA} J. Numer. Anal." }
+ @String{InfProcLet = "Information Processing Letters" }
+ @String{InfProcLet = "Inform. Process. Lett." }
+ @String{InstMathApp = "Journal of the Institute of Mathematics and
+     its Applications" }
+ @String{InstMathApp = "J. Inst. Math. Appl." }
+ @String{IntControl = "International Journal of Control" }
+ @String{IntControl = "Internat. J. Control" }
+ @String{IntNumerEng = "International Journal for Numerical Methods in
+     Engineering" }
+ @String{IntNumerEng = "Internat. J. Numer. Methods Engrg." }
+ @String{IntSuper = "International Journal of Supercomputing Applications" }
+ @String{IntSuper = "Internat. J. Supercomputing Applic." } % didn't find
+%% in AMS MR
+ @String{Kibernetika = "Kibernetika" }
+ @String{JResNatBurStand = "Journal of Research of the National Bureau
+     of Standards" }
+ @String{JResNatBurStand = "J. Res. Nat. Bur. Standards" }
+ @String{LinAlgApp = "Linear Algebra and its Applications" }
+ @String{LinAlgApp = "Linear Algebra Appl." }
+ @String{MathAnaAppl = "Journal of Mathematical Analysis and Applications" }
+ @String{MathAnaAppl = "J. Math. Anal. Appl." }
+ @String{MathAnnalen = "Mathematische Annalen" }
+ @String{MathAnnalen = "Math. Ann." }
+ @String{MathPhys = "Journal of Mathematical Physics" }
+ @String{MathPhys = "J. Math. Phys." }
+ @String{MathComp = "Mathematics of Computation" }
+ @String{MathComp = "Math. Comp." }
+ @String{MathScand = "Mathematica Scandinavica" }
+ @String{MathScand = "Math. Scand." }
+ @String{TablesAidsComp = "Mathematical Tables and Other Aids to Computation" }
+ @String{TablesAidsComp = "Math. Tables Aids Comput." }
+ @String{NumerMath = "Numerische Mathematik" }
+ @String{NumerMath = "Numer. Math." }
+ @String{PacificMath = "Pacific Journal of Mathematics" }
+ @String{PacificMath = "Pacific J. Math." }
+ @String{ParDistComp = "Journal of Parallel and Distributed Computing" }
+ @String{ParDistComp = "J. Parallel and Distrib. Comput." } % didn't find
+%% in AMS MR
+ @String{ParComputing = "Parallel Computing" }
+ @String{ParComputing = "Parallel Comput." }
+ @String{PhilMag = "Philosophical Magazine" }
+ @String{PhilMag = "Philos. Mag." }
+ @String{ProcNAS = "Proceedings of the National Academy of Sciences
+                    of the USA" }
+ @String{ProcNAS = "Proc. Nat. Acad. Sci. U. S. A." }
+ @String{Psychometrika = "Psychometrika" }
+ @String{QuartMath = "Quarterly Journal of Mathematics, Oxford, Series (2)" }
+ @String{QuartMath = "Quart. J. Math. Oxford Ser. (2)" }
+ @String{QuartApplMath = "Quarterly of Applied Mathematics" }
+ @String{QuartApplMath = "Quart. Appl. Math." }
+ @String{RevueInstStat = "Review of the International Statisical Institute" }
+ @String{RevueInstStat = "Rev. Inst. Internat. Statist." }
+
+ %SIAM
+ @String{JSIAM = "Journal of the Society for Industrial and Applied
+     Mathematics" }
+ @String{JSIAM = "J. Soc. Indust. Appl. Math." }
+ @String{JSIAMB = "Journal of the Society for Industrial and Applied
+     Mathematics, Series B, Numerical Analysis" }
+ @String{JSIAMB = "J. Soc. Indust. Appl. Math. Ser. B Numer. Anal." }
+ @String{SIAMAlgMeth = "{SIAM} Journal on Algebraic and Discrete Methods" }
+ @String{SIAMAlgMeth = "{SIAM} J. Algebraic Discrete Methods" }
+ @String{SIAMAppMath = "{SIAM} Journal on Applied Mathematics" }
+ @String{SIAMAppMath = "{SIAM} J. Appl. Math." }
+ @String{SIAMComp = "{SIAM} Journal on Computing" }
+ @String{SIAMComp = "{SIAM} J. Comput." }
+ @String{SIAMMatrix = "{SIAM} Journal on Matrix Analysis and Applications" }
+ @String{SIAMMatrix = "{SIAM} J. Matrix Anal. Appl." }
+ @String{SIAMNumAnal = "{SIAM} Journal on Numerical Analysis" }
+ @String{SIAMNumAnal = "{SIAM} J. Numer. Anal." }
+ @String{SIAMReview = "{SIAM} Review" }
+ @String{SIAMReview = "{SIAM} Rev." }
+ @String{SIAMSciStat = "{SIAM} Journal on Scientific and Statistical
+     Computing" }
+ @String{SIAMSciStat = "{SIAM} J. Sci. Statist. Comput." }
+
+ @String{SoftPracExp = "Software Practice and Experience" }
+ @String{SoftPracExp = "Software Prac. Experience" } % didn't find in AMS MR
+ @String{StatScience = "Statistical Science" }
+ @String{StatScience = "Statist. Sci." }
+ @String{Techno = "Technometrics" }
+ @String{USSRCompMathPhys = "{USSR} Computational Mathematics and Mathematical
+     Physics" }
+ @String{USSRCompMathPhys = "{U. S. S. R.} Comput. Math. and Math. Phys." }
+ @String{VLSICompSys = "Journal of {VLSI} and Computer Systems" }
+ @String{VLSICompSys = "J. {VLSI} Comput. Syst." }
+ @String{ZAngewMathMech = "Zeitschrift fur Angewandte Mathematik und
+     Mechanik" }
+ @String{ZAngewMathMech = "Z. Angew. Math. Mech." }
+ @String{ZAngewMathPhys = "Zeitschrift fur Angewandte Mathematik und Physik" }
+ @String{ZAngewMathPhys = "Z. Angew. Math. Phys." }
+
+% Publishers % ================================================= |
+
+ @String{Academic = "Academic Press" }
+ @String{ACMPress = "{ACM} Press" }
+ @String{AdamHilger = "Adam Hilger" }
+ @String{AddisonWesley = "Addison-Wesley" }
+ @String{AllynBacon = "Allyn and Bacon" }
+ @String{AMS = "American Mathematical Society" }
+ @String{Birkhauser = "Birkha{\"u}ser" }
+ @String{CambridgePress = "Cambridge University Press" }
+ @String{Chelsea = "Chelsea" }
+ @String{ClaredonPress = "Claredon Press" }
+ @String{DoverPub = "Dover Publications" }
+ @String{Eyolles = "Eyolles" }
+ @String{HoltRinehartWinston = "Holt, Rinehart and Winston" }
+ @String{Interscience = "Interscience" }
+ @String{JohnsHopkinsPress = "The Johns Hopkins University Press" }
+ @String{JohnWileySons = "John Wiley and Sons" }
+ @String{Macmillan = "Macmillan" }
+ @String{MathWorks = "The Math Works Inc." }
+ @String{McGrawHill = "McGraw-Hill" }
+ @String{NatBurStd = "National Bureau of Standards" }
+ @String{NorthHolland = "North-Holland" }
+ @String{OxfordPress = "Oxford University Press" }  %address Oxford or London?
+ @String{PergamonPress = "Pergamon Press" }
+ @String{PlenumPress = "Plenum Press" }
+ @String{PrenticeHall = "Prentice-Hall" }
+ @String{SIAMPub = "{SIAM} Publications" }
+ @String{Springer = "Springer-Verlag" }
+ @String{TexasPress = "University of Texas Press" }
+ @String{VanNostrand = "Van Nostrand" }
+ @String{WHFreeman = "W. H. Freeman and Co." }
+
+%Entries
+
+@article{lecun2015deep,
+  title={Deep learning},
+  author={LeCun, Yann and Bengio, Yoshua and Hinton, Geoffrey},
+  journal={Nature},
+  volume={521},
+  number={7553},
+  pages={436--444},
+  year={2015},
+  publisher={Nature Publishing Group}
+}
+
+
+
+
+
+
+
+@inproceedings{hessel2018rainbow,
+  title={Rainbow: Combining improvements in deep reinforcement learning},
+  author={Hessel, Matteo and Modayil, Joseph and Van Hasselt, Hado and Schaul, Tom and Ostrovski, Georg and Dabney, Will and Horgan, Dan and Piot, Bilal and Azar, Mohammad and Silver, David},
+  booktitle={Thirty-Second AAAI Conference on Artificial Intelligence},
+  year={2018}
+}
+
+@inproceedings{fortunato2018noisy,
+  title={Noisy networks for exploration},
+  author={Fortunato, Meire and Azar, Mohammad Gheshlaghi and Piot, Bilal and Menick, Jacob and Osband, Ian and Graves, Alex and Mnih, Vlad and Munos, Remi and Hassabis, Demis and Pietquin, Olivier and others},
+  booktitle={International Conference on Learning Representations},
+  year={2018}
+}
+
+@inproceedings{bellemare2017distributional,
+  title={A distributional perspective on reinforcement learning},
+  author={Bellemare, Marc G and Dabney, Will and Munos, R{\'e}mi},
+  booktitle={International Conference on Machine Learning},
+  pages={449--458},
+  year={2017},
+  organization={PMLR}
+}
+
+@article{thrun1993issues,
+  title={Issues in using function approximation for reinforcement learning},
+  author={Thrun, Sebastian and Schwartz, Anton},
+  journal={Proceedings of the 1993 Connectionist Models Summer School},
+  pages={255--263},
+  year={1993}
+}
+
+@inproceedings{debruin2018experience,
+  title={Experience selection in deep reinforcement learning for control},
+  author={De Bruin, Tim and Kober, Jens and Tuyls, Karl and Babu{\v{s}}ka, Robert},
+  booktitle={Journal of Machine Learning Research},
+  volume={19},
+  number={1},
+  pages={347--402},
+  year={2018}
+}
+
+@article{kapturowski2019recurrent,
+  title={Recurrent experience replay in distributed reinforcement learning},
+  author={Kapturowski, Steven and Ostrovski, Georg and Quan, John and Munos, Remi and Dabney, Will},
+  journal={International Conference on Learning Representations},
+  year={2019}
+}
+
+@inproceedings{nikishin2022primacy,
+  title={The primacy bias in deep reinforcement learning},
+  author={Nikishin, Evgenii and Schwarzer, Max and D'Oro, Pierluca and Bacon, Pierre-Luc and Courville, Aaron},
+  booktitle={International Conference on Machine Learning},
+  pages={16828--16847},
+  year={2022},
+  organization={PMLR}
+}
+
+@inproceedings{doro2023sample,
+  title={Sample-efficient reinforcement learning by breaking the replay ratio barrier},
+  author={D'Oro, Pierluca and Schwarzer, Max and Nikishin, Evgenii and Bacon, Pierre-Luc and Bellemare, Marc G and Courville, Aaron},
+  booktitle={International Conference on Learning Representations},
+  year={2023}
+}
+
+@article{islam2017reproducibility,
+  title={Reproducibility of benchmarked deep reinforcement learning tasks for continuous control},
+  author={Islam, Riashat and Henderson, Peter and Gomrokchi, Maziar and Precup, Doina},
+  journal={arXiv preprint arXiv:1708.04133},
+  year={2017}
+}
+
+@article{engstrom2020implementation,
+  title={Implementation matters in deep RL: A case study on PPO and TRPO},
+  author={Engstrom, Logan and Ilyas, Andrew and Santurkar, Shibani and Tsipras, Dimitris and Janoos, Firdaus and Rudolph, Larry and Madry, Aleksander},
+  journal={International Conference on Learning Representations},
+  year={2020}
+}
+
+@inproceedings{codevilla2018end,
+  title={End-to-end driving via conditional imitation learning},
+  author={Codevilla, Felipe and M{\"u}ller, Matthias and L{\'o}pez, Antonio and Koltun, Vladlen and Dosovitskiy, Alexey},
+  booktitle={2018 IEEE International Conference on Robotics and Automation (ICRA)},
+  pages={4693--4700},
+  year={2018},
+  organization={IEEE}
+}
+
+@inproceedings{ross2011reduction,
+  title={A reduction of imitation learning and structured prediction to no-regret online learning},
+  author={Ross, St{\'e}phane and Gordon, Geoffrey and Bagnell, Drew},
+  booktitle={Proceedings of the fourteenth international conference on artificial intelligence and statistics},
+  pages={627--635},
+  year={2011},
+  organization={JMLR Workshop and Conference Proceedings}
+}
+
+@article{ladosz2022exploration,
+  title={Exploration in deep reinforcement learning: A survey},
+  author={Ladosz, Pawel and Weng, Lilian and Kim, Minwoo and Oh, Hyondong},
+  journal={Information Fusion},
+  volume={85},
+  pages={1--22},
+  year={2022},
+  publisher={Elsevier}
+}
+
+@inproceedings{fuchs2021super,
+  title={Super-human performance in Gran Turismo Sport using deep reinforcement learning},
+  author={Fuchs, Florian and Song, Yunlong and Kaufmann, Elia and Scaramuzza, Davide and D{\"u}rr, Peter},
+  journal={IEEE Robotics and Automation Letters},
+  volume={6},
+  number={3},
+  pages={4257--4264},
+  year={2021},
+  publisher={IEEE}
+}
+
+@inproceedings{perot2017deep,
+  title={Deep reinforcement learning for autonomous driving: A survey},
+  author={Perot, Etienne and Jaritz, Maximilian and Toromanoff, Marin and De Charette, Raoul},
+  journal={arXiv preprint arXiv:2002.00444},
+  year={2020}
+}
+
+@inproceedings{konidaris2011autonomous,
+  title={Autonomous shaping: Knowledge transfer in reinforcement learning},
+  author={Konidaris, George and Barto, Andrew G},
+  booktitle={Proceedings of the 23rd International Conference on Machine Learning},
+  pages={489--496},
+  year={2006}
+}
+
+@article{devlin2014dynamic,
+  title={Dynamic potential-based reward shaping},
+  author={Devlin, Sam and Kudenko, Daniel},
+  journal={Proceedings of the 11th International Conference on Autonomous Agents and Multiagent Systems},
+  pages={433--440},
+  year={2012}
+}
+
+@inproceedings{grzes2009online,
+  title={Online learning of shaping rewards in reinforcement learning},
+  author={Grze{\'s}, Marek and Kudenko, Daniel},
+  journal={Neural Networks},
+  volume={23},
+  number={4},
+  pages={541--559},
+  year={2010},
+  publisher={Elsevier}
+}
+
+@inproceedings{lesort2018state,
+  title={State representation learning for control: An overview},
+  author={Lesort, Timoth{\'e}e and Seurin, Mathieu and Li, Xinrui and D{\'\i}az-Rodr{\'\i}guez, Natalia and Filliat, David},
+  journal={Neural Networks},
+  volume={108},
+  pages={379--392},
+  year={2018},
+  publisher={Elsevier}
+}
+
+@inproceedings{jonschkowski2015learning,
+  title={Learning state representations with robotic priors},
+  author={Jonschkowski, Rico and Brock, Oliver},
+  journal={Autonomous Robots},
+  volume={39},
+  number={3},
+  pages={407--428},
+  year={2015},
+  publisher={Springer}
+}
+
+@article{raffin2021smooth,
+  title={Smooth exploration for robotic reinforcement learning},
+  author={Raffin, Antonin and Kober, Jens and Stulp, Freek},
+  journal={Conference on Robot Learning},
+  pages={1634--1644},
+  year={2022},
+  organization={PMLR}
+}
+
+@inproceedings{achiam2017constrained,
+  title={Constrained policy optimization},
+  author={Achiam, Joshua and Held, David and Tamar, Aviv and Abbeel, Pieter},
+  booktitle={International Conference on Machine Learning},
+  pages={22--31},
+  year={2017},
+  organization={PMLR}
+}
+
+@inproceedings{anschel2017averaged,
+  title={Averaged-DQN: Variance reduction and stabilization for deep reinforcement learning},
+  author={Anschel, Oron and Baram, Nir and Shimkin, Nahum},
+  booktitle={International Conference on Machine Learning},
+  pages={176--185},
+  year={2017},
+  organization={PMLR}
+}
+
+@article{pascanu2013difficulty,
+  title={On the difficulty of training recurrent neural networks},
+  author={Pascanu, Razvan and Mikolov, Tomas and Bengio, Yoshua},
+  booktitle={International Conference on Machine Learning},
+  pages={1310--1318},
+  year={2013},
+  organization={PMLR}
+}
+
+@inproceedings{lillicrap2016continuous,
+  title={Continuous control with deep reinforcement learning},
+  author={Lillicrap, Timothy P and Hunt, Jonathan J and Pritzel, Alexander and Heess, Nicolas and Erez, Tom and Tassa, Yuval and Silver, David and Wierstra, Daan},
+  booktitle={International Conference on Learning Representations},
+  year={2016}
+}
+
+@inproceedings{mahmood2018benchmarking,
+  title={Benchmarking reinforcement learning algorithms on real-world robots},
+  author={Mahmood, A Rupam and Korenkevych, Dmytro and Vasan, Gautham and Ma, William and Bergstra, James},
+  booktitle={Conference on Robot Learning},
+  pages={561--591},
+  year={2018},
+  organization={PMLR}
+}
+
+@inproceedings{colas2019hitchhiker,
+  title={How many random seeds? Statistical power analysis in deep reinforcement learning experiments},
+  author={Colas, C{\'e}dric and Sigaud, Olivier and Oudeyer, Pierre-Yves},
+  journal={arXiv preprint arXiv:1806.08295},
+  year={2018}
+}

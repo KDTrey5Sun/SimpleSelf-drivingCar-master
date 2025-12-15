@@ -89,7 +89,6 @@ class Agent:
         self.Q_eval = Net(self.lr, input_dims=input_dims, fc1_dims=256, fc2_dims=200, n_actions=n_actions)
         self.Q_next = Net(self.lr, input_dims=input_dims, fc1_dims=256, fc2_dims=200, n_actions=n_actions)
         self.Q_next.load_state_dict(self.Q_eval.state_dict())
-        self._batch_index = None
 
     def save_model(self, path: str):
         state = {'Q_eval': self.Q_eval.state_dict(),'Q_next': self.Q_next.state_dict(),
@@ -119,11 +118,6 @@ class Agent:
             for t_param, param in zip(self.Q_next.parameters(), self.Q_eval.parameters()):
                 t_param.data.mul_(1.0 - tau).add_(tau * param.data)
 
-    def _get_batch_index(self) -> T.Tensor:
-        if self._batch_index is None or self._batch_index.device != self.Q_eval.device or self._batch_index.numel() != self.batch_size:
-            self._batch_index = T.arange(self.batch_size, dtype=T.long, device=self.Q_eval.device)
-        return self._batch_index
-
     def learn(self):
         if not self.memory.is_sufficient():
             return None
@@ -131,7 +125,7 @@ class Agent:
             return None
 
         self.Q_eval.optimizer.zero_grad()
-        batch_index = self._get_batch_index()
+        batch_index = T.arange(self.batch_size, dtype=T.long, device=self.Q_eval.device)
         states, actions, rewards, new_states, dones = self.memory.sample_memory()
 
         states = T.as_tensor(states, dtype=T.float32, device=self.Q_eval.device)
@@ -157,14 +151,12 @@ class Agent:
                 q_next[dones] = 0.0
                 q_target = rewards + self.gamma * T.max(q_next, dim=1)[0]
 
-        # 计算 TD 误差（用于稳定性 / 方差分析）
-        with T.no_grad():
-            td_delta = q_target - q_eval
-            td_abs = td_delta.abs()
-            self.last_td_mean = float(td_abs.mean().item())
-            self.last_td_std = float(td_abs.std(unbiased=False).item())
-
-        loss = self.Q_eval.loss(q_eval, q_target)
+    # TD error (for stability diagnostics)
+    td_error = q_target.detach() - q_eval.detach()
+    td_abs = td_error.abs()
+    self.last_td_mean = float(td_abs.mean().item())
+    self.last_td_std = float(td_abs.std(unbiased=False).item())
+    loss = self.Q_eval.loss(q_eval, q_target)
         loss.backward()
         # 更稳的梯度：Huber损失 + 可配置的梯度裁剪
         clip_grad_norm_(self.Q_eval.parameters(), max_norm=self.max_grad_norm)
@@ -181,6 +173,6 @@ class Agent:
 
         return float(loss.item()) if loss is not None else None
 
+    # Helper getters (optional use in training scripts without breaking old API)
     def get_last_td_stats(self):
-        """返回最近一次 learn 的 TD 绝对误差均值与标准差 (mean, std)。若尚未学习过则返回 (None, None)。"""
         return getattr(self, 'last_td_mean', None), getattr(self, 'last_td_std', None)

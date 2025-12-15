@@ -67,8 +67,7 @@ class Agent:
     def __init__(self, gamma, epsilon, lr, input_dims, batch_size, n_actions,
                  combined=False, max_mem_size=100000, eps_end=0.05,
                  eps_dec=1e-4, learn_starts=1000, replace_target=3000,
-                 double_dqn=True, dueling=True, clip_reward=False, target_soft_tau=0.0,
-                 max_grad_norm: float = 10.0):
+                 double_dqn=True, dueling=True, clip_reward=False, target_soft_tau=0.0):
         self.gamma = gamma
         self.epsilon = epsilon
         self.eps_min = eps_end
@@ -80,7 +79,6 @@ class Agent:
         self.dueling = dueling
         self.clip_reward = clip_reward
         self.target_soft_tau = target_soft_tau
-        self.max_grad_norm = float(max_grad_norm)
         self.action_space = [i for i in range(n_actions)]
         self.memory = ReplayMemory(input_dims, max_mem_size, batch_size, combined)
         self.iter_cntr = 0
@@ -89,7 +87,6 @@ class Agent:
         self.Q_eval = Net(self.lr, input_dims=input_dims, fc1_dims=256, fc2_dims=200, n_actions=n_actions)
         self.Q_next = Net(self.lr, input_dims=input_dims, fc1_dims=256, fc2_dims=200, n_actions=n_actions)
         self.Q_next.load_state_dict(self.Q_eval.state_dict())
-        self._batch_index = None
 
     def save_model(self, path: str):
         state = {'Q_eval': self.Q_eval.state_dict(),'Q_next': self.Q_next.state_dict(),
@@ -119,19 +116,12 @@ class Agent:
             for t_param, param in zip(self.Q_next.parameters(), self.Q_eval.parameters()):
                 t_param.data.mul_(1.0 - tau).add_(tau * param.data)
 
-    def _get_batch_index(self) -> T.Tensor:
-        if self._batch_index is None or self._batch_index.device != self.Q_eval.device or self._batch_index.numel() != self.batch_size:
-            self._batch_index = T.arange(self.batch_size, dtype=T.long, device=self.Q_eval.device)
-        return self._batch_index
-
     def learn(self):
-        if not self.memory.is_sufficient():
-            return None
-        if self.memory.mem_cntr < self.learn_starts:
-            return None
+        if not self.memory.is_sufficient(): return
+        if self.memory.mem_cntr < self.learn_starts: return
 
         self.Q_eval.optimizer.zero_grad()
-        batch_index = self._get_batch_index()
+        batch_index = T.arange(self.batch_size, dtype=T.long, device=self.Q_eval.device)
         states, actions, rewards, new_states, dones = self.memory.sample_memory()
 
         states = T.as_tensor(states, dtype=T.float32, device=self.Q_eval.device)
@@ -157,17 +147,9 @@ class Agent:
                 q_next[dones] = 0.0
                 q_target = rewards + self.gamma * T.max(q_next, dim=1)[0]
 
-        # 计算 TD 误差（用于稳定性 / 方差分析）
-        with T.no_grad():
-            td_delta = q_target - q_eval
-            td_abs = td_delta.abs()
-            self.last_td_mean = float(td_abs.mean().item())
-            self.last_td_std = float(td_abs.std(unbiased=False).item())
-
         loss = self.Q_eval.loss(q_eval, q_target)
         loss.backward()
-        # 更稳的梯度：Huber损失 + 可配置的梯度裁剪
-        clip_grad_norm_(self.Q_eval.parameters(), max_norm=self.max_grad_norm)
+        clip_grad_norm_(self.Q_eval.parameters(), max_norm=1.0)
         self.Q_eval.optimizer.step()
 
         self.iter_cntr += 1
@@ -180,7 +162,3 @@ class Agent:
             self.Q_next.load_state_dict(self.Q_eval.state_dict())
 
         return float(loss.item()) if loss is not None else None
-
-    def get_last_td_stats(self):
-        """返回最近一次 learn 的 TD 绝对误差均值与标准差 (mean, std)。若尚未学习过则返回 (None, None)。"""
-        return getattr(self, 'last_td_mean', None), getattr(self, 'last_td_std', None)

@@ -1,0 +1,386 @@
+\chapter{Chapter 3}
+\section{Motivation}
+Experience replay is a cornerstone mechanism in Deep Q-Network (DQN) algorithms, fundamentally addressing two critical challenges in deep reinforcement learning: breaking temporal correlations inherent in sequential decision-making and enabling efficient reuse of costly environmental interactions. By storing past experiences as transition tuples $(s, a, r, s', done)$ in a replay buffer and sampling mini-batches uniformly during training, DQN agents can learn from diverse, decorrelated experiences rather than highly correlated consecutive states. This mechanism has proven instrumental in achieving superhuman performance across various domains, from Atari games to robotic manipulation\cite{}. However, despite its widespread adoption, the replay buffer size—a fundamental hyperparameter governing memory capacity—remains surprisingly understudied, with practitioners often selecting values based on computational constraints or conventional wisdom rather than principled analysis.\\
+\\
+In the context of our autonomous racing task, the agent must master a complex set of interdependent skills: maintaining high-speed navigation along a circular track, staying centered within narrow track boundaries (70 pixels wide), and continuously aligning its heading with the tangent direction of the curved path. This task presents several characteristics that make it particularly demanding for reinforcement learning algorithms. First, the state space exhibits continuous dynamics with cyclic dependencies—angular positions wrap around at 2$\pi$, and heading angles must be interpreted modulo 360 degrees, creating topological challenges for function approximation. Second, successful task completion requires learning long-horizon sequential behaviors spanning hundreds of time steps, as a single lap involves coordinated steering decisions across the entire track circumference.\\
+\\
+These task properties create a unique interplay between replay buffer dynamics and learning efficiency. Unlike episodic tasks with frequent reward signals (e.g., Atari games where scores update continuously), our racing environment requires the agent to maintain coherent policies across extended temporal horizons while exploring a state space that combines geometric constraints (track boundaries) with continuous control demands (steering angles). The replay buffer thus serves not merely as a decorrelation mechanism but as a critical repository of diverse trajectory segments that must collectively represent the full spectrum of racing scenarios: straight sections requiring aggressive speed, tight curves demanding precise steering modulation, recovery maneuvers from near-boundary states, and successful finish-line approaches.\\
+\\
+Existing deep reinforcement learning literature exhibits substantial heterogeneity in replay buffer configuration. The original DQN work \cite{} established 1,000,000 transitions as a standard for Atari benchmarks, a choice subsequently adopted by algorithmic variants including Rainbow\cite{} and distributed methods. However, practical applications demonstrate significant deviation: robotic learning systems frequently employ 10,000-50,000 transitions due to memory constraints on embedded hardware\cite{}, while autonomous driving simulators adopt intermediate values of 100,000-500,000 depending on computational resources\cite{}. These choices are rarely justified through systematic experimentation. Recent theoretical work has analyzed asymptotic convergence guarantees of DQN variants but typically assumes idealized replay conditions without addressing finite-buffer effects. Empirical studies in continuous control domains have focused primarily on algorithmic innovations (e.g., prioritized replay, hindsight experience replay) while treating buffer size as a fixed background parameter. This leaves critical questions unanswered: What constitutes the minimum effective buffer capacity for stable learning in continuous control tasks with long-horizon dependencies? How does buffer size interact with exploration dynamics governed by epsilon-greedy policies? Can oversized buffers harm performance by retaining obsolete exploratory experiences that dilute high-quality data from later training phases?.\\
+\\
+Our preliminary investigations revealed striking performance variability across buffer configurations. In initial trials, agents trained with ?-capacity buffers achieved ***\% success rates within *** episodes, whereas identical agents with ***-capacity buffers exhibited oscillatory learning curves and plateaued at ***\% success. Conversely, buffers exceeding *** transitions showed diminishing returns, with learning curves nearly indistinguishable from mid-range configurations despite consuming *** times memory resources. These observations suggest a task-specific "sweet spot" in buffer capacity that balances several competing factors: sufficient diversity to cover the state-action space, adequate retention of successful trajectories for policy refinement, and timely eviction of outdated experiences from early exploration phases characterized by inefficient wandering behaviors.\\
+\\
+Furthermore, computational efficiency considerations amplify the practical importance of buffer size selection. In our experimental setup, each training run generates approximately 50,000-80,000 total transitions before convergence. With batch sizes of 128 and learning intervals every step, larger buffers not only increase memory footprint (ranging from approximately 50MB for minimal configurations to over 500MB for maximum capacities) but also affect sampling dynamics: early in training when $|\mathcal{D}| < |\mathcal{D}_{max}|$  , the buffer operates in a transient regime where all experiences remain available, whereas post-saturation behavior fundamentally changes as a FIFO eviction policy discards older data. Understanding these phase transitions and their impact on learning efficiency is crucial for deploying DQN agents in resource-constrained real-world applications, such as embedded systems for autonomous vehicles or edge computing devices where memory budgets are strictly limited.\\
+\\
+Therefore, this study conducts a systematic investigation of replay buffer size effects on DQN learning dynamics in the autonomous racing domain. We examine buffer capacities ranging from 10,000 to 200,000 transitions across multiple random seeds, tracking key metrics including success rate trajectories, sample complexity (transitions required until first success), convergence stability, and memory utilization efficiency. Our analysis aims to: (1) characterize the relationship between buffer capacity and learning performance, (2) identify minimum viable buffer sizes for stable convergence, (3) detect potential degradation mechanisms in oversized configurations, and (4) provide evidence-based guidelines for practitioners facing similar continuous control tasks with long-horizon temporal dependencies and multi-objective reward structures.\\
+\\
+\section{Problem Setting}
+I investigate replay buffer size effects in the context of an \textbf{autonomous path-finding task} where an agent must learn to navigate a circular track while maintaining lane discipline and directional alignment. Unlike competitive racing scenarios that emphasize speed optimization, our task operates at a constant velocity of 3 pixels per timestep, transforming the control problem into pure directional decision-making. The task is formulated as a continuous-state, discrete-action Markov Decision Process (MDP) $\mathcal{M} = \langle \mathcal{S}, \mathcal{A}, \mathcal{P}, \mathcal{R}, \gamma \rangle$, where the state space $\mathcal{S} \subset \mathbb{R}^5$ encodes geometry-aware features including the agent's angular position on the circular track, heading alignment with the track's tangent direction, and lateral deviation from the centerline. The action space $\mathcal{A} = \{a_0, a_1, a_2\}$ consists of three discrete steering commands (turn left, turn right, move forward). The transition dynamics $\mathcal{P}(s_{t+1}|s_t, a_t)$ follow deterministic physics-based motion on a 2D plane with collision detection against track boundaries. The reward function $\mathcal{R}(s_t, a_t)$ employs a dense multi-objective structure that provides immediate feedback at every timestep through four components: survival incentives ($r_{survive} = 0.2$), angular progress rewards (proportional to counterclockwise advancement), centering bonuses (maximum when maintaining lane center within the 70-pixel-wide corridor), and heading alignment gains (matching orientation to track curvature). Terminal rewards of +3000 (successful lap completion), -500 (collision), -100 (timeout after 1,200 steps), and -300 (stagnation with < 0.003 rad/step progress for 120 consecutive steps) punctuate trajectory endpoints. The discount factor $\gamma = 0.99$ balances immediate shaping signals with long-horizon goal achievement.\\
+\\
+The autonomous path-finding domain exhibits several characteristics that make it particularly suitable for studying replay buffer dynamics. First, completing a full lap requires approximately 600-800 coordinated steering decisions, creating long-horizon temporal dependencies where the large terminal bonus (+3000) remains delayed until sustained correct behavior culminates in finish-line crossing. While intermediate rewards provide dense feedback at every step (typical per-step reward ranges from 0.2 to ~20), the substantial temporal gap between actions and ultimate success generates credit assignment challenges across extended trajectories. Second, the \textbf{cyclic state topology} of the circular track introduces periodic boundaries in angular positions ($\theta \in [0, 2\pi)$) and heading angles (modulo 360°), requiring state representations that avoid discontinuities inherent to Cartesian coordinates. This geometric structure differs fundamentally from linear navigation tasks and necessitates careful feature engineering. Third, the agent must perform multi-objective optimization by simultaneously balancing four competing sub-goals: survival (avoiding collisions with track boundaries), progress (advancing counterclockwise along the circular path), centering (maintaining position within the narrow lane), and alignment (matching heading to instantaneous track curvature). Achieving high performance demands diverse experiences spanning straight sections requiring consistent forward motion, tight curves demanding precise steering modulation, recovery maneuvers from near-boundary states, and successful approaches to the finish line. Fourth, the geometric constraints coupled with discrete control create a challenging approximation problem where four discrete steering commands must produce smooth trajectories through a continuous state space that combines spatial position, angular orientation, and motion alignment. Finally, the task exhibits an interesting duality: while success is sparse initially (< 1\% completion rate during early random exploration phases), making the replay buffer critical for preserving and resampling scarce high-value trajectories, the dense intermediate feedback ensures every transition carries informative gradient signals for local behavior refinement, distinguishing this setup from purely sparse-reward environments.\\
+\\
+Given this task structure, our experimental investigation focuses on three specific research questions regarding replay buffer capacity effects. First, we examine how buffer size influences \textbf{sample efficiency} by measuring the number of environmental interactions (episodes and total transitions) required to achieve the first successful lap completion and subsequent convergence to stable high-performance policies. We investigate whether larger capacities monotonically improve learning speed or exhibit diminishing returns beyond certain thresholds, and identify the minimum viable buffer size below which learning degrades significantly. Second, we analyze the impact of buffer capacity on \textbf{learning stability and convergence dynamics} by tracking success rate trajectories computed over sliding 100-episode windows, variance in episodic returns across training phases, and the smoothness of convergence to policies achieving $\geq 90\%$ success rates. This addresses whether oversized buffers harm performance by retaining obsolete exploratory experiences that dilute high-quality data from later training phases, or conversely, whether undersized buffers cause instability through rapid overwriting of useful historical trajectories. Third, we quantify memory utilization trade-offs by monitoring buffer occupancy dynamics during the transition from Phase 1 (filling period where $|\mathcal{D}| < |\mathcal{D}_{\max}|$ and all experiences remain available) to Phase 2 (steady-state FIFO replacement where older transitions are continuously evicted), measuring the total number of transitions overwritten (total collected minus buffer capacity), and recording wall-clock training time to assess computational efficiency across different capacity configurations.\\
+
+\section{Proposed Approach}
+Our experimental methodology employs a Dueling Double Deep Q-Network (D3QN) agent operating in a custom-built 2D path-finding environment implemented using the Pygame framework. This section details the technical components of our system, including state representation design, network architecture, training procedure, and replay buffer implementation, which collectively enable systematic investigation of buffer capacity effects on learning dynamics.
+
+\subsection{Environment Implementation}
+The path-finding environment simulates a vehicle navigating a circular track rendered at 30 frames per second. The track is defined by two bitmap masks: a background track image (scaled to $0.3\times$ original resolution) and a collision boundary mask detecting contacts with track edges. The racing corridor measures 70 pixels in width, creating a constrained navigation space that requires precise steering control. The finish line is positioned at pixel coordinates $(453, 410)$ with a dedicated collision mask triggering episode termination upon successful crossing. The vehicle sprite (scaled to $0.4\times$ original size for the agent, $0.05\times$ for visual centerline reference) moves at a constant velocity of 3 pixels per timestep, with steering actions applying angular adjustments of $\pm 4$ degrees per step. The environment operates in a headless mode using SDL's dummy video driver (\texttt{SDL\_VIDEODRIVER=dummy}) and disabled audio (\texttt{SDL\_AUDIODRIVER=dummy}) to eliminate rendering overhead and ensure deterministic timing across experiments. Window dimensions are set to match the scaled track size, approximately $800 \times 600$ pixels, though actual rendering is suppressed during training runs.
+
+\subsection{State Representation Design}
+We adopt a geometry-centric state encoding that leverages the circular track structure to provide rotation-invariant, discontinuity-free representations. Rather than using raw Cartesian coordinates $(x, y)$ relative to arbitrary reference points—which introduce spatial discontinuities near the finish line and directional ambiguities—we transform observations into a polar coordinate system anchored at the track's geometric center $(c_x, c_y) = (W/2, H/2)$. Each state $s_t \in \mathbb{R}^5$ consists of five normalized features:
+
+$$
+s_t = [\cos(\Delta\theta_h), \sin(\Delta\theta_h), \delta_c, \cos(\theta_p), \sin(\theta_p)]
+$$
+\\
+The \textbf{heading alignment error} $\Delta\theta_h = \theta_{vehicle} - \theta_{tangent}$ quantifies the angular discrepancy between the vehicle's current orientation $\theta_{vehicle}$ and the counterclockwise (CCW) tangent direction $\theta_{tangent}$ at its position. The tangent angle is computed as $\theta_{tangent} = \arctan2(c_y - y, x - c_x) + \pi/2$, where the $+\pi/2$ offset rotates the position vector by 90° to obtain the CCW tangent. We encode this angular error using sinusoidal components $(\cos(\Delta\theta_h), \sin(\Delta\theta_h))$ rather than a raw scalar, ensuring continuity across the $\pm\pi$ boundary and providing smooth gradient signals for the Q-network. This representation naturally handles the wraparound property of angles: for example, errors of $+179°$ and $-181°$ map to nearby points in the $(\cos, \sin)$ space rather than distant scalar values.\\
+\\
+The \textbf{centering deviation} $\delta_c$ captures the vehicle's lateral displacement from the track centerline, computed as:
+\\
+$$
+\delta_c = \frac{d_{mid} - d_{border}}{d_{mid}}
+$$
+\\
+where $d_{border}$ is the minimum Euclidean distance from any point on the vehicle's bounding box to the nearest track boundary pixel (calculated via mask collision detection), and $d_{mid} = 35$ pixels represents the ideal centerline offset (half of the 70-pixel track width). This signed scalar ranges from $-1$ (vehicle touching outer boundary) through $0$ (perfectly centered) to $+1$ (touching inner boundary), providing an intuitive measure of lane position that remains consistent across all track locations.\\
+\\
+The \textbf{position angle} $\theta_p = \arctan2(c_y - y, x - c_x)$ encodes the vehicle's angular location along the circular path measured counterclockwise from the positive x-axis. Similar to heading alignment, we apply sinusoidal encoding $(\cos(\theta_p), \sin(\theta_p))$ to handle the cyclic topology, ensuring that positions near $0°$ and $360°$ are treated as neighbors rather than extremes in the input space.\\
+\\
+This 5-dimensional representation exhibits several critical properties: (1) \textbf{Boundedness} – all components lie in $[-1, 1]$, facilitating neural network training without requiring extensive input normalization; (2) \textbf{Rotational invariance} – the state description remains consistent regardless of the vehicle's absolute position on the circular track, as all measurements are relative to track geometry; (3) \textbf{Continuity} – sinusoidal angle encoding eliminates discontinuities that would otherwise occur at angular wraparound points; (4) \textbf{Geometric interpretability} – each feature directly corresponds to a meaningful aspect of the pathfinding task (heading correctness, lane centering, progress along path).
+
+\subsection{Action Space}
+
+The action space $\mathcal{A} = \{a_0, a_1, a_2\}$ consists of three discrete steering commands: (1) $a_0$: turn left (apply -4° angular velocity while maintaining 3 pixels/step forward motion), (2) $a_1$: turn right (apply +4° angular velocity with forward motion), (3) $a_2$: move forward (continue straight-line motion at constant velocity without angular adjustment). The constant velocity of 3 pixels per timestep eliminates speed control complexity, transforming the pathfinding problem into pure directional decision-making. This design reduces the effective action space to three distinct behaviors while maintaining a four-action interface for potential future extensions to variable-speed scenarios.\\
+\\
+\subsection{Reward Function Design}
+
+The reward structure employs dense multi-component shaping to guide the agent toward desired behaviors at every timestep, while terminal bonuses provide strong goal-oriented signals. The per-step reward aggregates four terms:
+\\
+$$
+r_t = r_{survive} + r_{progress} + r_{center} + r_{align}
+$$
+\\
+\textbf{Survival Reward:} The baseline $r_{survive} = 0.2$ is a constant encouraging episode longevity and penalizing premature collisions through opportunity cost. This small positive value accumulates over successful trajectories, making longer episodes inherently more valuable.\\
+\\
+\textbf{Angular Progress Reward:} This component incentivizes counterclockwise movement along the circular path:
+\\
+$$
+r_{progress} = k_p \cdot \max(0, \Delta\theta_t)
+$$
+\\
+where $k_p = 10.0$ and $\Delta\theta_t$ is the signed angular displacement between consecutive timesteps, computed as:
+\\
+$$
+\Delta\theta_t = \text{wrap}_{[-\pi, \pi]}(\theta_{p,t} - \theta_{p,t-1})
+$$
+\\
+The angle wrapping operation normalizes differences to $(-\pi, \pi]$ to handle the $2\pi$ periodicity, and the $\max(0, \cdot)$ clipping ensures backward motion yields zero reward rather than negative values (collision penalties handle backward driving separately). This term typically contributes 0.1-0.3 per step during successful navigation, providing immediate feedback on forward progress.\\
+\\
+\textbf{Centering Reward:} This component encourages lane discipline:
+\\
+$$
+r_{center} = k_c \cdot \left(1 - \min\left(1, \frac{|d_{mid} - d_{border}|}{d_{mid}}\right)\right)
+$$
+\\
+where $k_c = 12.0$. The formulation provides maximum reward (12.0) when $d_{border} = d_{mid}$ (perfect centering) and decreases linearly to zero as the vehicle approaches either boundary. The $\min(1, \cdot)$ clipping prevents negative rewards if the vehicle's collision box extends slightly beyond the ideal centerline tolerance. This substantial reward magnitude (12.0 vs. 0.2 survival) prioritizes maintaining proper lane position over mere survival.\\
+\\
+\textbf{Alignment Reward:} This component adaptively balances two objectives based on local track curvature:
+\\
+$$
+r_{align} = k_a \cdot [w_{curve} \cdot \cos(\angle(\vec{v}_t, \vec{t}_{\theta_t})) + (1 - w_{curve}) \cdot \cos(\angle(\vec{v}_t, \vec{v}_{t-1}))]
+$$
+\\
+where $k_a = 8.0$, $\vec{v}_t$ is the normalized velocity vector at timestep $t$, $\vec{t}_{\theta_t}$ is the unit tangent vector in the CCW direction at position angle $\theta_t$, and $\cos(\angle(\cdot, \cdot))$ computes the dot product between unit vectors (equivalent to the cosine of the angle between them). The curvature-dependent weight $w_{curve} = \min(1, |\Delta\theta_t| / \tau_{curve})$ with threshold $\tau_{curve} = 0.012$ radians ($\approx 0.69^\circ$) dynamically blends two alignment criteria: in sharp curves where $|\Delta\theta_t| > \tau_{curve}$, the reward emphasizes matching the instantaneous tangent direction ($w_{curve} \approx 1$), promoting smooth cornering; in straight sections where $|\Delta\theta_t| < \tau_{curve}$, it rewards consistency with the previous velocity direction ($w_{curve} \approx 0$), preventing oscillatory steering. This adaptive mechanism allows the agent to learn context-dependent control strategies without manual segmentation of track geometry.\\
+\\
+\textbf{Terminal Rewards:} These override the intermediate shaping components when episodes end: (1) Success: $r_{finish} = +3000$ upon crossing the finish line, providing a strong goal completion signal that dominates the cumulative intermediate rewards (typically 5,000-8,000 over 300-800 steps); (2) Collision: $r_{collision} = -500$ when any part of the vehicle's sprite contacts the track boundary mask, penalizing unsafe navigation; (3) Timeout: $r_{timeout} = -100$ if the episode exceeds 1,200 timesteps without finishing, discouraging excessively conservative policies; (4) Stagnation: $r_{stagnation} = -300$ if angular progress falls below 0.003 rad/step for 120 consecutive steps, detecting scenarios where the agent becomes trapped in local minima (e.g., spinning in circles or stuck against walls).\\
+
+\subsection{Network Architecture}
+We implement a Dueling Double DQN architecture that decomposes Q-value estimation into separate value and advantage streams. The network processes the 5-dimensional state input through two fully connected hidden layers with ReLU activations: the first layer maps from 5 to 256 neurons, and the second from 256 to 200 neurons. At this point, the architecture splits into two heads:\\
+\\
+(1) Value head: A linear layer mapping 200 → 1 that estimates the state value function $V(s)$, representing the expected return independent of action choice.\\
+\\
+(2) Advantage head: A linear layer mapping 200 → 4 that estimates the advantage function $A(s,a)$ for each action, representing the relative benefit of choosing action $a$ in state $s$ compared to the average action.\\
+\\
+The final Q-values are computed by combining these streams with mean-centering:\\
+\\
+$$
+Q(s,a) = V(s) + \left[A(s,a) - \frac{1}{|\mathcal{A}|}\sum_{a' \in \mathcal{A}} A(s,a')\right]
+$$
+\\
+This decomposition has been shown to improve learning stability by explicitly separating the estimation of state values from action advantages, particularly in environments where many states have similar values across actions (as in our path-finding task where most steering decisions have comparable long-term consequences). The network uses PyTorch's default Xavier uniform initialization for linear layer weights and zero initialization for biases. During training, we apply gradient clipping with maximum L2 norm of 1.0 to prevent exploding gradients, and optimize using the Adam optimizer with learning rate $\alpha = 5 \times 10^{-4}$, $\beta_1 = 0.9$, $\beta_2 = 0.999$, and $\epsilon = 10^{-8}$.\\
+
+\subsection{Double DQN Update Mechanism}
+
+We employ the Double DQN modification to mitigate overestimation bias inherent in standard Q-learning. When computing target values for the Bellman update, the online network selects actions while the target network evaluates them:
+\\
+$$
+y_t = r_t + \gamma \cdot Q_{\theta^-}(s_{t+1}, \arg\max_{a'} Q_\theta(s_{t+1}, a')) \cdot (1 - \text{done}_t)
+$$
+\\
+where $Q_\theta$ represents the online network parameters, $Q_{\theta^-}$ the target network parameters, and $(1 - \text{done}_t)$ zeros out future value for terminal states. This decoupling prevents the positive bias that arises when the same network both selects and evaluates actions, as the max operator in standard DQN tends to select overestimated values. The loss function employs smooth L1 (Huber) loss:
+\\
+$$
+\mathcal{L}(\theta) = \frac{1}{B}\sum_{i=1}^{B} \text{SmoothL1}(Q_\theta(s_i, a_i) - y_i)
+$$
+\\
+where $B = 128$ is the batch size, and SmoothL1 transitions from L2 loss (for errors $< 1$) to L1 loss (for errors $\geq 1$), providing robustness to outliers while maintaining smooth gradients near convergence. Target network parameters are updated via hard replacement every $2{,}000$ learning steps: $\theta^- \leftarrow \theta$. This periodic synchronization provides a stable regression target during the $2{,}000$-step interval, reducing the moving-target problem that can destabilize Q-learning. The update frequency of $2{,}000$ was chosen to balance stability (longer intervals provide more consistent targets) against staleness (shorter intervals incorporate recent improvements faster), following conventions established in DQN literature.\
+
+\subsection{Exploration Strategy}
+
+We implement $\epsilon$-greedy exploration where the agent selects a random action with probability $\epsilon$ and the greedy action $\arg\max_a Q_\theta(s,a)$ with probability $1-\epsilon$. The exploration rate decays linearly from $\epsilon_0 = 1.0$ (pure random exploration at initialization) to $\epsilon_{min} = 0.05$ (5\% residual exploration at convergence) with decay rate $\Delta\epsilon = 10^{-4}$ per learning step:
+\\
+$$
+\epsilon_{t} = \max(\epsilon_{min}, \epsilon_0 - t \cdot \Delta\epsilon)
+$$
+\\
+where $t$ counts the number of gradient updates performed (not environment steps). This schedule ensures approximately 9,500 learning steps to reach minimum exploration $(1.0 - 0.05)/10^{-4} = 9500$, allowing the agent to progressively shift from broad exploration to exploitation as it accumulates experience. The non-zero $\epsilon_{min}$ maintains continuous exploration throughout training, preventing premature convergence to suboptimal policies and enabling recovery from temporary performance degradations.\\
+
+\subsection{Replay Buffer Implementation}
+
+The replay memory is implemented as a circular buffer storing transition tuples $(s_t, a_t, r_t, s_{t+1}, \text{done}_t)$ in contiguous NumPy arrays. The buffer maintains five separate arrays: \texttt{state\_memory} (shape: \texttt{[mem\_size, 5]}, dtype: \texttt{float32}), \texttt{new\_state\_memory} (shape: \texttt{[mem\_size, 5]}, dtype: \texttt{float32}), \texttt{action\_memory} (shape: \texttt{[mem\_size]}, dtype: \texttt{int32}), \texttt{reward\_memory} (shape: \texttt{[mem\_size]}, dtype: \texttt{float32}), and \texttt{terminal\_memory} (shape: \texttt{[mem\_size]}, dtype: \texttt{bool}). Transitions are stored using modular indexing:
+\\
+$$
+\text{index} = \text{mem\_cntr} \mod \text{mem\_size}
+$$
+\\
+where `mem\_cntr` increments indefinitely, causing automatic overwriting of the oldest entries once the buffer reaches capacity (First-In-First-Out policy). This design provides O(1) insertion complexity and efficient memory layout for vectorized sampling operations.\\
+\\
+During training, we sample uniformly at random from the occupied portion of the buffer:
+\\
+$$
+\text{batch\_indices} \sim \text{Uniform}\{0, 1, \ldots, \min(\text{mem\_cntr}, \text{mem\_size}) - 1\}
+$$
+\\
+with batch size $B = 128$ and without replacement (each transition appears at most once per batch). This ensures each stored transition has equal probability of selection regardless of when it was collected. The buffer capacity $|\mathcal{D}|_{max}$ varies across experimental conditions (10,000 to 500,000 transitions) while the sampling procedure remains constant. We do not implement prioritized experience replay, importance sampling corrections, or recency-weighted sampling, as our goal is to isolate the effect of raw buffer capacity without confounding factors from advanced sampling strategies.
+
+\subsection{Training Protocol}
+
+Learning begins after collecting a minimum threshold of experiences: $\max(5000, \text{batch\_size}) = 5000$ transitions, ensuring the buffer contains sufficient diversity before gradient updates commence. During each environment step:\\
+\\
+(1) The agent observes state $s_t$ and selects action $a_t$ via $\epsilon$-greedy policy based on current Q-network estimates.\\
+\\
+(2) The environment executes $a_t$, applying the corresponding steering adjustment (±4° or 0°) and advancing the vehicle 3 pixels in the current heading direction.\\
+\\
+(3) The environment returns reward $r_t$ (computed via the multi-component function), next state $s_{t+1}$ (5-dimensional geometry-aware representation), and termination flag $\text{done}_t$ (true if success/collision/timeout/stagnation occurred).\\
+\\
+(4) The transition $(s_t, a_t, r_t, s_{t+1}, \text{done}_t)$ is stored in the replay buffer at index `mem\_cntr \% mem\_size`.\\
+\\
+(5) If `mem\_cntr` ≥ 5000 (buffer sufficiently filled), a batch of 128 transitions is sampled uniformly, target Q-values $y_i$ are computed via Double DQN 
+
+\section{Pseudocode}
+
+This section presents pseudocode for the core components of our experimental system: the replay buffer mechanism, the DQN training loop with Double DQN updates, and the environment step function with dense reward computation. These algorithms collectively implement the framework for investigating replay buffer capacity effects on learning dynamics.\\
+
+\subsection{Replay Buffer Operations}
+The circular replay buffer provides O(1) storage and uniform random sampling operations:
+
+% ==========================
+% Replay Buffer (Part 1)
+% ==========================
+\begin{algorithm}[H]
+\caption{Replay Buffer Storage and Sampling (Part 1)}
+\label{alg:replay_buffer_part1}
+\begin{algorithmic}[1]
+\Statex \textbf{Input:} $max\_mem\_size$ (buffer capacity), $batch\_size$
+\Statex \textbf{Data:} 
+$state\_memory \gets zeros[max\_mem\_size, 5]$ (float32), 
+$new\_state\_memory \gets zeros[max\_mem\_size, 5]$ (float32),
+$action\_memory \gets zeros[max\_mem\_size]$ (int32),
+$reward\_memory \gets zeros[max\_mem\_size]$ (float32),
+$terminal\_memory \gets zeros[max\_mem\_size]$ (bool),
+$mem\_cntr \gets 0$
+\Function{StoreTransition}{$s, a, r, s', done$}
+    \State $index \gets mem\_cntr \bmod max\_mem\_size$ \Comment{Circular indexing (FIFO)}
+    \State $state\_memory[index] \gets s$
+    \State $action\_memory[index] \gets a$
+    \State $reward\_memory[index] \gets r$
+    \State $new\_state\_memory[index] \gets s'$
+    \State $terminal\_memory[index] \gets done$
+    \State $mem\_cntr \gets mem\_cntr + 1$
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+% ==========================
+% Replay Buffer (Part 2)
+% ==========================
+\begin{algorithm}[H]
+\ContinuedFloat
+\caption{Replay Buffer Storage and Sampling (Part 2)}
+\label{alg:replay_buffer_part2}
+\begin{algorithmic}[1]
+\Function{SampleMemory}{}
+    \State $max\_mem \gets \min(mem\_cntr, max\_mem\_size)$
+    \State $batch\_indices \gets random\_choice(0 \text{ to } max\_mem-1, size=batch\_size, replace=False)$
+    \State $states \gets state\_memory[batch\_indices]$
+    \State $actions \gets action\_memory[batch\_indices]$
+    \State $rewards \gets reward\_memory[batch\_indices]$
+    \State $new\_states \gets new\_state\_memory[batch\_indices]$
+    \State $terminals \gets terminal\_memory[batch\_indices]$
+    \State \Return $(states, actions, rewards, new\_states, terminals)$
+\EndFunction
+
+\Function{IsSufficient}{}
+    \State \Return $(mem\_cntr \ge batch\_size)$
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+\vspace{3pt}
+\noindent\textbf{Key Properties:}\\[2pt]
+\hspace*{1em}• \textbf{FIFO replacement:} Modular indexing automatically overwrites oldest transitions when full.\\
+\hspace*{1em}• \textbf{Phase transition:} Behavior changes at $mem\_cntr = max\_mem\_size$, from accumulation to steady-state replacement.\\
+\hspace*{1em}• \textbf{Uniform sampling:} Each transition has equal probability $1/\min(mem\_cntr, max\_mem\_size)$ of selection.\\
+
+
+% ==========================
+% DQN Training Loop
+% ==========================
+\subsection{Dueling Double DQN Training Loop}
+\begin{algorithm}[H]
+\caption{Dueling Double DQN Training Loop (Part 1)}
+\label{alg:dueling_double_dqn_part1}
+\begin{algorithmic}[1]
+\Statex \textbf{Input:} $env$ (environment), $max\_success$ (stopping criterion)
+\Statex \textbf{Hyperparameters:} $max\_mem\_size$, $batch\_size$, $learn\_starts$, $\gamma=0.99$, $lr=5\times10^{-4}$, $\varepsilon_{init}=1.0$, $\varepsilon_{min}=0.05$, $\varepsilon_{dec}=1\times10^{-4}$, $replace\_target=2000$
+\Statex \textbf{Initialize:}
+$Q_{eval} \gets$ DuelingDeepQNetwork$(input\_dims=5, hidden=[256,200], n\_actions=4)$; 
+$Q_{target} \gets copy(Q_{eval})$;
+$replay\_buffer \gets ReplayBuffer(max\_mem\_size)$;
+$optimizer \gets Adam(Q_{eval}.parameters(), lr=lr)$;
+$\varepsilon \gets \varepsilon_{init}$; $success\_count \gets 0$; $learn\_step\_counter \gets 0$
+
+\While{$success\_count < max\_success$}
+    \State $s \gets env.reset()$
+    \State $done \gets False$, $episode\_reward \gets 0$
+    \While{$\lnot done$}
+        \If{$random() < \varepsilon$}
+            \State $a \gets random\_choice([0,1,2,3])$ \Comment{Exploration}
+        \Else
+            \State \textbf{with} torch.no\_grad(): $Q\_values \gets Q_{eval}(s)$; $a \gets argmax(Q\_values)$ \Comment{Exploitation}
+        \EndIf
+        \State $(s', r, done) \gets env.step(a)$
+        \State $episode\_reward \gets episode\_reward + r$
+        \State $replay\_buffer.StoreTransition(s, a, r, s', done)$
+\end{algorithmic}
+\end{algorithm}
+
+% ==========================
+% DQN (Part 2)
+% ==========================
+\begin{algorithm}[H]
+\ContinuedFloat
+\caption{Dueling Double DQN Training Loop (Part 2)}
+\label{alg:dueling_double_dqn_part2}
+\begin{algorithmic}[1]
+\If{$replay\_buffer.mem\_cntr \ge \max(learn\_starts, batch\_size)$}
+    \State $(S, A, R, S', Done) \gets replay\_buffer.SampleMemory()$
+    \State $S, A, R, S', Done \gets$ convert to tensors
+    \State $batch\_indices \gets [0,1,\dots,batch\_size-1]$
+    \State $Q_{pred} \gets Q_{eval}(S)[batch\_indices, A]$
+    \State \textbf{with} torch.no\_grad():
+    \Statex \hspace{1em}$Q_{next}^{online} \gets Q_{eval}(S')$
+    \Statex \hspace{1em}$A_{next} \gets argmax(Q_{next}^{online}, dim=1)$
+    \Statex \hspace{1em}$Q_{next}^{target} \gets Q_{target}(S')[batch\_indices, A_{next}]$
+    \Statex \hspace{1em}$Q_{next}^{target}[Done] \gets 0.0$
+    \Statex \hspace{1em}$y \gets R + \gamma \times Q_{next}^{target}$
+    \State $loss \gets SmoothL1Loss(Q_{pred}, y)$
+    \State $optimizer.zero\_grad()$; $loss.backward()$
+    \State $clip\_grad\_norm\_(Q_{eval}.parameters(), max\_norm=1.0)$
+    \State $optimizer.step()$
+    \State $\varepsilon \gets \max(\varepsilon_{min}, \varepsilon - \varepsilon_{dec})$
+    \State $learn\_step\_counter \gets learn\_step\_counter + 1$
+    \If{$learn\_step\_counter \bmod replace\_target = 0$}
+        \State $Q_{target} \gets copy(Q_{eval})$
+    \EndIf
+\EndIf
+\State $s \gets s'$
+\EndWhile
+\If{$env.is\_finished$}
+    \State $success\_count \gets success\_count + 1$
+\EndIf
+\EndWhile
+\State \Return training results
+\end{algorithmic}
+\end{algorithm}
+
+\vspace{3pt}
+\noindent\textbf{Key Properties:}\\[2pt]
+\hspace*{1em}• \textbf{Dueling Architecture:} $Q(s,a)=V(s)+[A(s,a)-\frac{1}{|A|}\sum_{a'}A(s,a')]$ ensures stable decomposition.\\
+\hspace*{1em}• \textbf{Double DQN:} Uses decoupled selection/evaluation to reduce overestimation bias.\\
+\hspace*{1em}• \textbf{Exploration Decay:} $\varepsilon_t=\max(\varepsilon_{min},\varepsilon_0 - t\Delta\varepsilon)$.\\
+\hspace*{1em}• \textbf{Target Update:} Hard copy every 2000 learning steps.\\
+\hspace*{1em}• \textbf{Gradient Clipping:} L2 norm $\le 1.0$.\\
+\hspace*{1em}• \textbf{Huber Loss:} SmoothL1 ensures robustness to outliers.\\
+\hspace*{1em}• \textbf{Success-Based Stopping:} Training stops after $max\_success$ completions.
+
+
+\section{Experimental Setup}
+
+This section describes the experimental infrastructure, algorithmic configurations, and evaluation protocols used to investigate replay buffer capacity effects on DQN learning dynamics in the autonomous pathfinding task.
+
+\subsection{Compared Methods}
+
+Our experimental investigation focuses on a single algorithmic framework—Dueling Double DQN with experience replay—while systematically varying replay buffer capacity as the primary independent variable. This design choice isolates memory management effects from confounding algorithmic differences that would arise when comparing heterogeneous methods such as DQN variants, policy gradient algorithms, or model-based approaches. The Dueling architecture decomposes Q-value estimation into state value and action advantage streams through $Q(s,a) = V(s) + [A(s,a) - \frac{1}{4}\sum_{a'} A(s,a')]$, where mean-centering ensures identifiability by constraining advantages to zero mean and preventing arbitrary value-advantage decomposition ambiguities. Double DQN decouples action selection from value evaluation by using the online network to choose $a^* = \argmax_{a'} Q_{\theta}(s', a')$ and the target network to evaluate $Q_{\theta^-}(s', a^*)$, mitigating overestimation bias inherent to standard DQN's maximum operator over noisy Q-value estimates.
+
+The buffer capacity sweep spans six logarithmically-spaced configurations from 10,000 to 500,000 transitions, covering two orders of magnitude to capture potential phase transitions in learning dynamics. Smaller buffers (10,000--25,000) induce high experience reuse with early Phase 2 entry where FIFO replacement begins discarding data after 13--83 episodes, amplifying gradient signals from limited samples but risking catastrophic forgetting of diverse exploration strategies. Medium buffers (50,000--100,000) balance reuse frequency against diversity retention, maintaining both recent high-quality experiences and earlier exploratory trajectories throughout mid-training convergence. Large buffers (200,000--500,000) extend Phase 1 accumulation deep into training, preserving initial random exploration until episodes 250--1667 but diluting recent policy improvements with obsolete low-reward transitions that may slow late-stage refinement. This experimental design enables identification of capacity regimes where sample efficiency, convergence stability, and asymptotic performance exhibit distinct trends attributable to the diversity-recency-reuse tradeoff governing experience replay effectiveness.
+
+\ subsection{Hardware}
+
+All experiments execute on a uniform hardware platform consisting of an Apple M4 chip with 8-core CPU architecture (4 performance cores at 3.2 GHz and 4 efficiency cores at 2.1 GHz), 16 GB unified LPDDR4X memory at 4266 MHz bandwidth, and an integrated 8-core Apple GPU supporting Metal Performance Shaders acceleration. Storage operations leverage a 512 GB NVMe SSD with sequential read speeds exceeding 2 GB/s, enabling rapid checkpoint saves and data logging without I/O bottlenecks. The M4's unified memory architecture eliminates CPU-GPU transfer overhead by allowing neural network computations to access the same physical memory as environment simulation, reducing per-step latency by approximately 15--20\% compared to discrete GPU configurations requiring explicit data movement. This hardware consistency across all experimental runs ensures that observed performance differences stem from algorithmic properties of buffer capacity rather than hardware-dependent optimization artifacts such as cache hit rates, memory bandwidth saturation, or GPU utilization variability.
+
+The software stack operates on macOS Ventura 13.x with Python 3.9.13 providing the runtime environment. Deep learning computations employ PyTorch 2.0.1 configured with MPS backend support, which compiles neural network operations into Metal shader programs executed on the Apple GPU. Automatic device selection prioritizes CUDA availability first, falls back to MPS on compatible Apple hardware, and defaults to CPU execution if neither accelerator is accessible, as implemented in the \texttt{\_select\_device()} utility function. On our M4 platform, MPS acceleration provides 3--5$\times$ speedup over CPU-only training for the three forward passes per Double DQN update (online Q-values, next-state action selection, target Q-evaluation), reducing per-step wall-clock time from approximately 45 milliseconds to 12 milliseconds while maintaining numerical consistency verified through PyTorch's deterministic execution guarantees. Numerical operations outside neural network inference utilize NumPy 1.24.3 for vectorized array manipulations, while Pygame 2.5.0 handles environment simulation including sprite rendering, collision detection via optimized mask overlap tests, and boundary distance computations through precomputed coordinate arrays.
+
+\subsection{Experimental Protocol}
+
+The experimental protocol employs a fully automated sweep across buffer capacities with threefold replication per configuration to quantify inter-run variability from random initialization and sampling stochasticity. Each configuration-repeat pair receives a deterministic seed computed as $\text{seed}_{\text{rep}} = 123 + \text{rep} - 1$, controlling randomness in Python's \texttt{random} module for $\varepsilon$-greedy action selection and NumPy's generator for replay buffer sampling operations. Training terminates upon achieving 100 successful episode completions defined as finish line crossings detected through Pygame mask overlap, ensuring all buffer configurations reach comparable proficiency levels for fair sample efficiency comparison. Individual episodes enforce a 1,200-step timeout to prevent infinite loops from stagnation, with timeout episodes contributing to failure counts but still providing gradient updates from sub-optimal experiences that guide policy refinement.
+
+Headless execution mode eliminates display rendering overhead by initializing Pygame with disabled video and audio drivers through environment variables \texttt{SDL\_VIDEODRIVER=dummy} and \texttt{SDL\_AUDIODRIVER=dummy}, allocating a minimal 1$\times$1 pixel surface while preserving collision detection accuracy through in-memory mask operations. This optimization reduces per-step wall-clock time by 30--40\% compared to windowed execution, enabling the full 18-run sweep (6 buffer sizes $\times$ 3 repeats) to complete within 12--18 hours on the M1 platform. Output organization employs isolated directories structured as \texttt{./v5\_faster/v5\_exp\_data/replay\_sweep/size\_\{size\}/rep\_\{rep\}/} to prevent cross-contamination, with each run generating per-episode logs (\texttt{train\_log.txt}), time-series data for plotting (\texttt{curve\_data.txt}), and aggregate summaries (\texttt{summary.txt}). A unified CSV file (\texttt{sweep\_summary.csv}) consolidates 18 key metrics across all runs including total samples until 100 successes, episodes required, first success timing, average episode score, final TD-error loss, exploration decay progress, buffer occupancy rate, Phase 2 entry episode, samples dropped through FIFO replacement, and wall-clock training duration.
+
+Safety constraints automatically clamp batch size and learning start thresholds to buffer capacity for small configurations, preventing undefined behavior when sampling requirements exceed available experiences. Checkpoint management combines periodic model snapshots every 600 seconds with success-triggered saves at episodes 1, 10, 25, 50, 75, and 100 completions, preserving training state at critical milestones for post-hoc policy evaluation and ablation studies. Command-line automation accepts sweep parameters through \texttt{argparse} flags including buffer size list (\texttt{--sizes}), repeat count (\texttt{--repeats}), experiment tag (\texttt{--tag}), base seed (\texttt{--seed}), headless mode (\texttt{--windowless}), and success threshold (\texttt{--max-success}), enabling batch execution via shell scripts or job schedulers on compute clusters.
+
+\subsection{Network Architecture}
+
+The agent implements a Dueling Deep Q-Network defined in \texttt{DuelingDeepQNetwork} within \texttt{DQN.py}, featuring a shared feature extractor followed by parallel value and advantage streams. The backbone consists of two fully-connected layers: \texttt{fc1} applies Linear$(5 \to 256)$ transformation with ReLU activation to the 5-dimensional state input, producing a 256-dimensional hidden representation that captures spatial relationships between position angle, heading alignment, and centering deviation. Layer \texttt{fc2} compresses this representation through Linear$(256 \to 200)$ with ReLU nonlinearity, creating a 200-dimensional bottleneck that balances expressive capacity against sample efficiency in the low-dimensional state space. The value head employs a single-output Linear$(200 \to 1)$ layer estimating scalar state value $V(s)$, while the advantage head uses Linear$(200 \to 4)$ to generate action-specific advantages $A(s,a)$ for the four discrete steering commands. Final Q-values combine these components via $Q(s,a) = V(s) + [A(s,a) - \frac{1}{4}\sum_{a'=0}^{3} A(s,a')]$, where mean-centering prevents arbitrary shifts between value and advantage estimates that would destabilize gradient flow.
+
+The complete architecture contains 53,941 trainable parameters distributed as follows: \texttt{fc1} contributes $5 \times 256 + 256 = 1,536$ parameters (weight matrix plus bias vector), \texttt{fc2} adds $256 \times 200 + 200 = 51,400$ parameters, the value head provides $200 \times 1 + 1 = 201$ parameters, and the advantage head completes the count with $200 \times 4 + 4 = 804$ parameters. This moderate parameter budget avoids overfitting in the geometry-aware 5D state space while providing sufficient representational capacity to learn complex nonlinear mappings from heading alignment and centering deviation to optimal steering policies. Weight initialization follows PyTorch's default Kaiming uniform distribution scaled by $\sqrt{5}$ to preserve gradient variance across layers during early training, while biases initialize to zero except for the final layers where small random perturbations break symmetry in the dueling streams.
+
+\subsection{Hyperparameters}
+
+Learning dynamics employ a discount factor $\gamma = 0.99$ for exponential reward discounting with effective horizon $1/(1-\gamma) = 100$ steps, aligning temporal credit assignment with typical lap completion durations of 300--800 steps. Gradient-based optimization uses the Adam algorithm with learning rate $\alpha = 5 \times 10^{-4}$ and default momentum parameters $\beta_1 = 0.9, \beta_2 = 0.999$ for first and second moment estimation, processing batches of $B = 128$ transitions sampled uniformly from the replay buffer. Temporal difference errors pass through the SmoothL1 (Huber) loss function with $\delta = 1.0$ threshold separating quadratic penalty for small errors from linear penalty for outliers, providing robustness against high-variance terminal rewards ($\pm 3000, -500, -100, -300$) that could destabilize training with pure L2 loss. Gradient magnitudes undergo clipping to maximum L2 norm of 1.0 via \texttt{clip\_grad\_norm\_}, preventing exploding gradients during early training when TD-errors remain large and value function approximation exhibits high uncertainty.
+
+Exploration follows an $\varepsilon$-greedy schedule initializing at $\varepsilon_0 = 1.0$ for pure random action selection, linearly decaying by $\Delta\varepsilon = 1 \times 10^{-4}$ per learning step until reaching minimum $\varepsilon_{\min} = 0.05$ for sustained 5\% exploration throughout convergence. This schedule requires 9,500 gradient updates to transition from full exploration to residual exploration according to $\varepsilon_t = \max(\varepsilon_{\min}, \varepsilon_0 - t \cdot \Delta\varepsilon)$, decoupling decay from episode boundaries to ensure consistent progression across varying episode lengths. Target network stabilization employs hard parameter replacement every 2,000 learning steps through full copy $\theta^- \gets \theta$, balancing target staleness (which improves stability by reducing moving target effects) against target obsolescence (which slows convergence by propagating outdated value estimates). Soft update mechanisms remain disabled (soft\_tau $= 0.0$) to avoid gradual drift between online and target networks that could accumulate numerical errors over extended training horizons.
+
+Experience replay configuration delays learning onset until collecting \texttt{learn\_starts} $= \max(5000, B)$ initial transitions, ensuring sufficient diversity before gradient updates commence and preventing overfitting to limited early experiences from random exploration. Uniform sampling without replacement treats all stored transitions with equal probability $1/\min(\text{mem\_cntr}, |\mathcal{D}|_{\max})$, avoiding recency bias that would undermine off-policy correction benefits. Combined mode remains disabled, eliminating forced inclusion of the most recent transition that would shift sampling distribution toward on-policy data and reduce experience replay's decorrelation advantages. All hyperparameters remain fixed across buffer configurations to isolate capacity effects from confounding parameter interactions, with only buffer size $|\mathcal{D}|_{\max}$ varying across the experimental sweep.
+
+\subsection{Memory Management}
+
+The replay buffer implements a circular FIFO queue through five preallocated NumPy arrays storing state vectors (\texttt{state\_memory}), actions (\texttt{action\_memory}), rewards (\texttt{reward\_memory}), next-state vectors (\texttt{new\_state\_memory}), and terminal flags (\texttt{terminal\_memory}). Storage operations execute in $\mathcal{O}(1)$ time via modular indexing $\text{index} = \text{mem\_cntr} \bmod |\mathcal{D}|_{\max}$, automatically overwriting oldest experiences when the buffer reaches capacity without explicit deletion or memory reallocation overhead. Memory footprint scales linearly as $M = |\mathcal{D}|_{\max} \times 49$ bytes, derived from two float32 state arrays (40 bytes per transition), two scalar arrays for actions and rewards (8 bytes), and one boolean terminal flag (1 byte), yielding concrete allocations ranging from 0.49 MB for 10,000-capacity buffers to 24.41 MB for 500,000-capacity configurations.
+
+The buffer exhibits two distinct operational phases: Phase 1 (accumulation) where $\text{mem\_cntr} < |\mathcal{D}|_{\max}$ and every new experience expands the available training data, and Phase 2 (steady-state FIFO) where $\text{mem\_cntr} \geq |\mathcal{D}|_{\max}$ and oldest transitions undergo replacement to maintain constant capacity. Phase transition timing critically influences learning dynamics by determining how long early random exploration persists in the buffer versus when recent high-quality experiences dominate sampling distributions. For 10,000-capacity buffers with typical episode lengths of 400 steps, Phase 2 begins around episode 25, rapidly discarding initial exploration but achieving reuse rates approaching 640 gradient contributions per stored transition. For 500,000-capacity buffers, Phase 2 onset delays until episode 1250, retaining diverse exploratory data throughout convergence but reducing reuse to approximately 13 gradient updates per transition, potentially diluting learning signals from recent policy improvements with obsolete low-reward experiences collected under outdated strategies.
+
+Sampling operations employ NumPy's optimized \texttt{random.choice} with Fisher-Yates shuffle variants, selecting batch indices in $\mathcal{O}(B)$ time independent of buffer capacity and retrieving transitions via direct array indexing at $\mathcal{O}(1)$ cost per element. This computational decoupling ensures that time complexity remains constant at $\mathcal{O}(28.8M)$ operations per training step across all buffer sizes, isolating algorithmic effects of capacity from performance artifacts due to sampling overhead or memory access patterns. Buffer occupancy tracking through \texttt{mem\_cntr} enables dynamic adjustment of sampling ranges, ensuring uniform distributions over $[0, \min(\text{mem\_cntr}, |\mathcal{D}|_{\max}) - 1]$ during Phase 1 accumulation and full buffer utilization $[0, |\mathcal{D}|_{\max} - 1]$ during Phase 2 steady-state operation.
+
+\subsection{Code Framework}
+
+The experimental codebase organizes into four primary modules: \texttt{autocar\_v5.py} implements the Pygame-based racing environment with collision detection, reward computation, and state extraction logic; \texttt{memory.py} defines the \texttt{ReplayMemory} class managing circular buffer storage and sampling; \texttt{DQN.py} contains neural network architectures (\texttt{DuelingDeepQNetwork}), the \texttt{Agent} class orchestrating action selection and learning updates, and device selection utilities; and \texttt{DQN\_CAR\_v5 copy 2.py} provides the high-level training loop and sweep automation framework. The environment exposes a standard Gym-like interface with \texttt{reset()} initializing episode state at the start position $(488, 370)$ with heading $-90^\circ$ and \texttt{step(action)} advancing simulation by one timestep, returning a 5-dimensional state vector, scalar reward, terminal flag, and auxiliary information dictionary containing episode statistics.
+
+State extraction within \texttt{get\_state()} computes angular position $\theta_{\text{pos}} = \arctan2(C_y - y, x - C_x)$ relative to ring center $(300, 300)$ using mathematical coordinate conventions, calculates counter-clockwise tangent direction as $\theta_{\text{tangent}} = \theta_{\text{pos}} + 90^\circ$, and measures heading alignment through trigonometric conversions followed by vector dot and cross products to avoid coordinate system dependencies. Centering deviation quantification calls \texttt{get\_distance\_to\_border()}, which iterates over approximately 80 vehicle outline pixels (obtained by scaling the car sprite to 0.4$\times$ original size and extracting occupied coordinates) and computes minimum Euclidean distances to 8,000 precomputed track boundary points stored in the global \texttt{TRACK\_BORDER\_POINTS} array. This nested iteration executes $\mathcal{O}(P \cdot B) \approx \mathcal{O}(640k)$ distance calculations per state observation, contributing approximately 5\% of total per-step computational cost dominated by neural network forward and backward passes.
+
+The \texttt{Agent} class encapsulates learning algorithms through \texttt{choose\_action()} for $\varepsilon$-greedy policy execution, \texttt{learn()} for Double DQN gradient updates, and \texttt{replace\_target\_network()} for periodic parameter synchronization. Action selection queries the online network $Q_{\theta}$ under \texttt{torch.no\_grad()} context to disable gradient tracking, extracts the argmax action, and overrides with random sampling when uniform draws exceed current epsilon. Learning operations sample a batch from the replay buffer, convert NumPy arrays to PyTorch tensors on the appropriate device (MPS/CUDA/CPU), compute current Q-values $Q_{\theta}(s, a)$, generate Double DQN targets $y = r + \gamma Q_{\theta^-}(s', \argmax_{a'} Q_{\theta}(s', a'))$ under gradient detachment, calculate SmoothL1 loss, execute backward pass with gradient clipping, and step the Adam optimizer. Target network replacement copies online network parameters via \texttt{load\_state\_dict()} every 2,000 learning iterations, amortizing the $\mathcal{O}(54k)$ copy cost to negligible $\mathcal{O}(27)$ per training step.
+
+\subsection{Metrics and Evaluation}
+
+Performance evaluation employs a hierarchical metric structure distinguishing primary sample efficiency indicators from secondary learning dynamics characterizations and buffer-specific utilization patterns. The primary metric quantifies sample efficiency as mean total environment interactions (transition count) required to achieve 100 successful episode completions, aggregating over three independent repeats per configuration with standard deviation capturing inter-run variability. Episode efficiency complements this measure by counting episodes until 100 successes, distinguishing configurations achieving comparable transition counts through different episode length distributions. First success timing identifies episode index and cumulative sample count at initial finish line crossing, serving as an early learning indicator sensitive to exploration thoroughness and reward interpretability during the transition from random actions to emergent steering competence.
+
+Secondary metrics characterize convergence stability and learning dynamics beyond aggregate counts. The coefficient of variation (CV = std/mean) applied to attempts-per-success distributions (consecutive failures plus one before each success) quantifies policy consistency, with lower CV indicating reliable performance and higher CV suggesting brittle strategies vulnerable to initialization variations. Success rate trajectories computed over 20-episode sliding windows reveal temporal acquisition dynamics, fitted with exponential saturation curves $r(t) = r_{\infty}(1 - e^{-t/\tau})$ to extract asymptotic success rate $r_{\infty}$ and learning time constant $\tau$. Mean TD-error averaged over gradient updates provides complementary learning signal quality assessment, with monotonic decrease indicating stable value function approximation and persistent oscillations signaling overestimation bias or target staleness. Exploration utilization measures cumulative samples before epsilon reaches minimum, distinguishing efficient exploitation transitions from extended random search requirements.
+
+Buffer-specific metrics probe capacity-dependent experience reuse patterns and phase transition timing. Expected reuse rate $E[\text{samples per transition}] = (B \times \text{total learning steps}) / |\mathcal{D}|_{\max}$ estimates gradient contribution frequency before FIFO eviction, ranging from over 600 for 10,000-capacity buffers to approximately 13 for 500,000-capacity configurations. Phase 2 entry episode marks accumulation-to-FIFO transition when \texttt{mem\_cntr} exceeds capacity, quantifying early exploration data persistence. Final occupancy rate $\min(\text{total samples}, |\mathcal{D}|_{\max}) / |\mathcal{D}|_{\max}$ measures buffer saturation, with values below unity indicating insufficient data collection potentially explaining underperformance relative to full-capacity configurations.
+
+Statistical inference employs Welch's t-test for pairwise buffer comparisons under unequal variance assumptions, applying Bonferroni correction to control family-wise error rate at $\alpha = 0.05$ across 15 pairwise tests. Effect sizes supplement hypothesis tests through Cohen's d standardized mean differences $(d = (\mu_1 - \mu_2) / \sqrt{(\sigma_1^2 + \sigma_2^2)/2})$, distinguishing statistically significant but practically negligible differences (small: $d < 0.5$) from meaningful performance gaps (medium: $0.5 \le d < 0.8$, large: $d \ge 0.8$) warranting architectural adjustments. This dual framework ensures reported findings reflect both reproducible trends across repeats and sufficient magnitude to inform buffer capacity selection in resource-constrained deployments.
+
+
+
+\section{Evaluation}
+\section{Runtime}
+\section{Conclusion}
